@@ -37,7 +37,7 @@ TaiwanCultureProject
   * **main.jsx:** 主應用程式入口
 * **.env:** 配置應用的環境變數。
 * **index.html:** 頁面入口，主要 HTML 檔案。
-  * **public:** 靜態文件
+* **public:** 靜態文件
 * **eslint.config.js:** ESLint 的配置文件。它用來定義代碼檢查規則，以確保代碼風格的一致性。
 * **vite.config.js:** Vite 配置檔案
 * **package.json:** 依賴管理
@@ -46,16 +46,16 @@ TaiwanCultureProject
 
 1. 安裝 ```Node.js``` 和 ```npm:``` 請確保您的系統已安裝 ```Node.js``` (版本 v16 以上) 和 ```npm。```
 2. ```clone 專案:```
-   ```bash
-   git clone [https://github.com/codebreakers2025/TaiwanCultureProject.git]
-   ```
+```bash
+  git clone [https://github.com/codebreakers2025/taiwan-culture-project.git]
+```
 3. **安裝依賴:**
-  ```bash
+```bash
   cd TaiwanCultureProject
   npm install
 ```
 4. **啟動開發伺服器:**
-  ```bash
+```bash
   npm run dev
 ```
 
@@ -77,16 +77,16 @@ TaiwanCultureProject
 部署到 GitHub Pages (Windows)
 1. 初始化 Git:
 ```bash
-git init
-git add .
-git commit -m 'first commit'
-git branch -M master
-git remote add origin [https://github.com/codebreakers2025/TaiwanCultureProject.git]
-git push -u origin master
+  git init
+  git add .
+  git commit -m 'first commit'
+  git branch -M master
+  git remote add origin [https://github.com/codebreakers2025/taiwan-culture-project.git]
+  git push -u origin master
 ```
 2. 執行部署指令:
 ```bash
-npm run deploy
+  npm run deploy
 ```
 
 提醒:
