@@ -9,6 +9,11 @@ import axios from 'axios'
 //     return config;
 // });
 
+// 设置baseURL
+axios.defaults.baseURL = process.env.NODE_ENV === 'production'
+ ? 'https://taiwancultureproject.onrender.com'
+ : 'http://localhost:3001'
+
 export const getActivity = async () => {
     try {
         const response = await axios.get(`/api/activity`);

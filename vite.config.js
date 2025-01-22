@@ -8,9 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3001', // 對應 JSON Server URL
+        target: process.env.NODE_ENV === 'production' ? 'https://taiwancultureproject.onrender.com/' : 'http://localhost:3001', // 對應 JSON Server URL
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   },
