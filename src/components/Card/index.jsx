@@ -23,7 +23,7 @@ export const ActivityCard = ({ id, city, images, isFavorited, rating, date, even
         <img src={images} className="card-img-top" />
         <div className="card-body">
             <div className="d-flex justify-content-between align-items-center">
-              <p className="card-text">{date}.{eventType}</p>
+              <p className="card-text">{date}·{eventType}</p>
               <span className="rating">★ {rating}</span>
             </div>
             <h5 className="card-title">{city}: {content.title}</h5>
