@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Header.scss';
 import { register, login } from '@/utils/api';
+import logo from '@/assets/images/logo.svg';
 
 const Header = () => {
     // 設定語言
@@ -160,7 +161,7 @@ useEffect(() => {
             <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
                 <h1 className="header-logo-side m-0 d-flex align-items-center">
                 <img
-                    src="/img/logo.svg"
+                    src={logo}
                     alt="logo" 
                     className="logo-img"
                 />
@@ -187,10 +188,10 @@ useEffect(() => {
                         <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.zhCn')}</button>
                     </li>
                     <li>
-                        <button className="dropdown-item" onClick={() => changeLanguage('en')}>{t('lang.en')}</button>
+                        <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.en')}</button>
                     </li>
                     <li>
-                        <button className="dropdown-item" onClick={() => changeLanguage('jp')}>{t('lang.jp')}</button>
+                        <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.jp')}</button>
                     </li>
                     </ul>
                 </li>

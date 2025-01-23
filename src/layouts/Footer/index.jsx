@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './footer.scss';
+import logo from '@/assets/images/logo.svg';
+
 const Footer = () => {
     const { t } = useTranslation();
 
@@ -11,7 +13,7 @@ const Footer = () => {
                 <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
                     <h1 className="header-logo-side m-0 d-flex align-items-center">
                     <img
-                        src="/img/logo.svg"
+                        src={logo}
                         alt="logo" 
                         className="logo-img"
                     />

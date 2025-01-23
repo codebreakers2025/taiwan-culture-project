@@ -2,9 +2,9 @@
 import PropTypes from 'prop-types';
 import './Card.scss';
 
-export const Card = ({ id, city, images, isFavorited, rating, date, eventType, content, onFavoriteToggle }) => {
+export const ActivityCard = ({ id, city, images, isFavorited, rating, date, eventType, content, onFavoriteToggle }) => {
   // PropTypes for validation
-  Card.propTypes = {
+  ActivityCard.propTypes = {
     id: PropTypes.number.isRequired,
     city: PropTypes.string.isRequired,
     images: PropTypes.string.isRequired,
@@ -88,7 +88,7 @@ export const ReviewCard = ({ avatar, name, rating, activityTitle, reviewContent 
 
 export const BlogCard = ({ image, title, body, date }) => {
   // PropTypes for validation
-  ReviewCard.propTypes = {
+  BlogCard.propTypes = {
     image: PropTypes.string.isRequired, 
     title: PropTypes.string.isRequired, 
     date: PropTypes.string.isRequired, 

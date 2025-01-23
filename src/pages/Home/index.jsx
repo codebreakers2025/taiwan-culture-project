@@ -1,6 +1,13 @@
-import { Card, ReviewCard, BlogCard} from '@/components/Card';
+import { ActivityCard, ReviewCard, BlogCard} from '@/components/Card';
 import './Home.scss';
 import { useTranslation } from 'react-i18next';
+
+import beach from '@/assets/images/choosing/beach.svg';
+import communication from '@/assets/images/choosing/communication.svg';
+import fishing from '@/assets/images/choosing/fishing.svg';
+import travel from '@/assets/images/choosing/travel.svg';
+
+
 
 import React, { useEffect, useState } from 'react';
 import { getActivity, getJournal, getReviews } from '@/utils/api';
@@ -91,7 +98,7 @@ const Home = () => {
                         {activityData.length > 0 ? (
                             activityData.map((item) => (
                             <div className="col-md-6 col-lg-4" key={item.id}>
-                                <Card
+                                <ActivityCard
                                 {...item}
                                 onFavoriteToggle={(id) => {
                                     setActivityData((prevData) =>
@@ -121,7 +128,7 @@ const Home = () => {
                         <div className="main-body-section row">
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src="/img/choosing/beach.svg" alt="..." />
+                                    <img src={ beach } alt="..." />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.culturalExperienceTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.culturalExperienceText')}</p>
@@ -130,7 +137,7 @@ const Home = () => {
                             </div>
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src="/img/choosing/communication.svg" alt="..." />
+                                    <img src={ communication } alt="..." />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.reservationPlatformTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.reservationPlatformText')}</p>
@@ -141,7 +148,7 @@ const Home = () => {
                         <div className="main-body-section row">
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src="/img/choosing/fishing.svg" alt="..." />
+                                    <img src={ fishing } alt="..." />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.recommendationsTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.recommendationsText')}</p>
@@ -150,7 +157,7 @@ const Home = () => {
                             </div>
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src="/img/choosing/travel.svg" alt="..." />
+                                    <img src={ travel } alt="..." />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.DeepConnectionTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.DeepConnectionText')}</p>
