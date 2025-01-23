@@ -179,12 +179,12 @@
       max-height: 240px;
       object-fit: cover;
     }
-    h5 {
+    .card-title {
       font-size: $text-font-header-5;
       font-weight: var(--font-weight-bold);
       margin: 8px 0;
     }
-    small {
+    .card-date {
       margin-top: 12px;
     }
   }

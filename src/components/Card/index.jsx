@@ -99,7 +99,7 @@ export const BlogCard = ({ image, title, body, date }) => {
     <div className="col-md-6 col-lg-custom">
       <div className="blog-item">
         <img src={image} alt={title} />
-        <small className="card-date">{date}</small>
+        <p className="card-date">{date}</p>
         <h5 className="card-title">{title}</h5>
         <p className="card-text">{body}</p>
       </div>

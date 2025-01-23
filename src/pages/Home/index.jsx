@@ -130,7 +130,7 @@ const Home = () => {
                             </div>
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src="/img/choosing/beach.svg" alt="..." />
+                                    <img src="/img/choosing/communication.svg" alt="..." />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.reservationPlatformTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.reservationPlatformText')}</p>
@@ -141,7 +141,7 @@ const Home = () => {
                         <div className="main-body-section row">
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src="/img/choosing/beach.svg" alt="..." />
+                                    <img src="/img/choosing/fishing.svg" alt="..." />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.recommendationsTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.recommendationsText')}</p>
@@ -150,7 +150,7 @@ const Home = () => {
                             </div>
                             <div className="col-md-5 text-center choosing-section-content-wrap">
                                 <div className="choosing-section-content">
-                                    <img src="/img/choosing/beach.svg" alt="..." />
+                                    <img src="/img/choosing/travel.svg" alt="..." />
                                     <div className="main-card-content">
                                         <h5 className="card-title">{t('choosing.content.DeepConnectionTitle')}</h5>
                                         <p className="card-text">{t('choosing.content.DeepConnectionText')}</p>
@@ -174,6 +174,7 @@ const Home = () => {
                                 <BlogCard
                                     key={item.id}
                                     image={item.images}
+                                    date={item.date}
                                     title={item.title}
                                     body={item.body}
                                 />
@@ -205,7 +206,7 @@ const Home = () => {
                             </div>
                             ))
                         ) : (
-                            <p>目前沒有好評。</p>
+                            <p className='text-center'>目前沒有好評。</p>
                         )}
                        
                     </div>
