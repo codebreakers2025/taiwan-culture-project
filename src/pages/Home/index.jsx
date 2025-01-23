@@ -1,4 +1,4 @@
-import { Card, ReviewCard} from '@/components/Card';
+import { Card, ReviewCard, BlogCard} from '@/components/Card';
 import './Home.scss';
 import { useTranslation } from 'react-i18next';
 
@@ -55,16 +55,21 @@ const Home = () => {
 
     return (
         <div className="home">
-            <section className="section banner-section">
+            <section className="banner-section">
                 <div className="container">
-                    <h2 className="section-title text-center">{t('searchViewInfo')}</h2>
+                    <h2 className="banner-section-title" dangerouslySetInnerHTML={{ __html: t('searchViewInfo') }}></h2>
                     <div className="search-wrapper">
                         <div className="search-header">
                             <div className="search-input-group">
+                                <span className="material-icons search-icon">search</span>
                                 <input type="text" className="search-input form-control" placeholder={t('banner.searchPlacehoder')} />
-                                <button className="btn search-button">{t('banner.search')}</button>
-                                <button className="btn search-button-more">{t('banner.searchMore')}</button>
-                                {/* <i className="fas fa-search search-icon"></i> */}
+                                <div className="d-flex search-input-inner">
+                                    <div className="search-button-more-wrap">
+                                        <span className="material-icons search-button-more">tune</span>
+                                        <p>{t('banner.search')}</p>
+                                    </div>
+                                    <span className="material-icons search-button">search</span>
+                                </div>
                             </div>
                             <div className="quick-filters">
                                 <span className="quick-filter">{t('banner.taichung')}</span>
@@ -82,7 +87,7 @@ const Home = () => {
                         <h2 className="section-title">{t('popularEventTitle')}</h2>
                         <p className="section-subtitle">{t('popularEventSubTitle')}</p>
                     </div>
-                    <div className="row">
+                    <div className="row main-body">
                         {activityData.length > 0 ? (
                             activityData.map((item) => (
                             <div className="col-md-6 col-lg-4" key={item.id}>
@@ -109,39 +114,51 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="section benefit-section">
+            <section className="section choosing-section">
                 <div className="container">
-                <h2 className="section-title text-center py-4">{t('benefit.mainTitle')}</h2>
-                <div className="row row-cols-1 row-cols-md-4 g-4">
-                    <div className="col">
-                    <div className="circle-image">
-                        <img src="https://placehold.co/200" alt="..." />
+                    <h2 className="section-title text-center py-4">{t('choosing.mainTitle')}</h2>
+                    <div className="main-body">
+                        <div className="main-body-section row">
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src="/img/choosing/beach.svg" alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.culturalExperienceTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.culturalExperienceText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src="/img/choosing/beach.svg" alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.reservationPlatformTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.reservationPlatformText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="main-body-section row">
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src="/img/choosing/beach.svg" alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.recommendationsTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.recommendationsText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src="/img/choosing/beach.svg" alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.DeepConnectionTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.DeepConnectionText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h5 className="card-title">{t('benefit.content.culturalExperienceTitle')}</h5>
-                    <p className="card-text">{t('benefit.content.culturalExperienceText')}</p>
-                    </div>
-                    <div className="col">
-                    <div className="circle-image">
-                        <img src="https://placehold.co/200" alt="..." />
-                    </div>
-                    <h5 className="card-title">{t('benefit.content.reservationPlatformTitle')}</h5>
-                    <p className="card-text">{t('benefit.content.reservationPlatformText')}</p>
-                    </div>
-                    <div className="col">
-                    <div className="circle-image">
-                        <img src="https://placehold.co/200" alt="..." />
-                    </div>
-                    <h5 className="card-title">{t('benefit.content.recommendationsTitle')}</h5>
-                    <p className="card-text">{t('benefit.content.recommendationsText')}</p>
-                    </div>
-                    <div className="col">
-                    <div className="circle-image">
-                        <img src="https://placehold.co/200" alt="..." />
-                    </div>
-                    <h5 className="card-title">{t('benefit.content.DeepConnectionTitle')}</h5>
-                    <p className="card-text">{t('benefit.content.DeepConnectionText')}</p>
-                    </div>
-                </div>
                 </div>
             </section>
 
@@ -151,16 +168,15 @@ const Home = () => {
                         <h2 className="section-title">{t('journalTitle')}</h2>
                         <p className="section-subtitle">{t('journalSubTitle')}</p>
                     </div>
-                    <div className="row">
+                    <div className="row main-body">
                         {journalData.length > 0 ? (
                             journalData.map((item) => (
-                                <div className="col-md-6 col-lg-3" key={item.id}>
-                                <div className="blog-item">
-                                    <img src={item.images}  />
-                                    <h5 className="card-title">{item.title}</h5>
-                                    <p className="card-text">{item.body}</p>
-                                </div>
-                                </div>
+                                <BlogCard
+                                    key={item.id}
+                                    image={item.images}
+                                    title={item.title}
+                                    body={item.body}
+                                />
                             ))
                         ) : (
                             <div className="col-12">
@@ -174,7 +190,7 @@ const Home = () => {
             <section className="section reviews-section">
                 <div className="container">
                     <h2 className="section-title text-center">{t('eventReviews')}</h2>
-                    <div className="row">
+                    <div className="row main-body">
                         {reviews.length > 0 ? ( 
                             reviews.map((review) => (
                             <div className="col-md-6 col-lg-4" key={review.id}>

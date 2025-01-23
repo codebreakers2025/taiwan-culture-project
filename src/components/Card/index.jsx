@@ -1,5 +1,6 @@
 // import React from 'react';
 import PropTypes from 'prop-types';
+import './Card.scss';
 
 export const Card = ({ id, city, images, isFavorited, rating, date, eventType, content, onFavoriteToggle }) => {
   // PropTypes for validation
@@ -21,23 +22,18 @@ export const Card = ({ id, city, images, isFavorited, rating, date, eventType, c
         <div className="card mb-3" key={id}>
         <img src={images} className="card-img-top" />
         <div className="card-body">
-            <span className="badge bg-warning text-dark">
-                評分: {rating} ★
-            </span>
-            <h5 className="card-title">{city}:{content.title}</h5>
-            <p className="card-text">
-            <small className="text-muted">日期: {date}</small>
-            </p>
-            <p className="card-text">
-            <small className="text-muted">類型: {eventType}</small>
-            </p>
+            <div className="d-flex justify-content-between align-items-center">
+              <p className="card-text">{date}.{eventType}</p>
+              <span className="rating">★ {rating}</span>
+            </div>
+            <h5 className="card-title">{city}: {content.title}</h5>
             <p className="card-text">{content.description}</p>
-            <button
-                className={`btn btn-sm ${isFavorited ? "btn-danger" : "btn-outline-danger"}`}
+            <span
+                className={`material-icons favorite-icon ${isFavorited ? "favorite" : "favorite_border"}`}
                 onClick={() => onFavoriteToggle(id)}
             >
-                {isFavorited ? "已收藏" : "收藏"}
-            </button>
+                {isFavorited ? "favorite" : "favorite_border"}
+            </span>
         </div>
         </div>
     );
@@ -55,33 +51,58 @@ export const ReviewCard = ({ avatar, name, rating, activityTitle, reviewContent 
   };
 
   return (
-    <div className="card mb-3">
-      <div className="row g-0">
-        <div className="col-md-3 text-center">
-          <img
-            src={avatar}
-            alt={`${name} avatar`}
-            className="rounded-circle"
-            style={{ width: "60px", height: "60px", objectFit: "cover" }}
-          />
+    <div className="card mb-3" style={{ padding: "32px", borderRadius: "40px"}}>
+        <div className="row g-0" >
+            <div className="col-md-3 text-center">
+            <img
+                src={avatar}
+                alt={`${name} avatar`}
+                className="rounded-circle"
+                style={{ width: "64px", height: "64px", objectFit: "cover" }}
+            />
+            </div>
+            <div className="col-md-9">
+            <div className="card-body">
+                <div className="d-flex justify-content-between align-items-center card-title-wrap">
+                <h5 className="card-title">{name}</h5>
+                <p className="card-rating">
+                    {Array.from({ length: 5 }, (_, i) => (
+                    <span
+                        key={i}
+                        className="material-icons"
+                    >
+                        {i < Math.floor(rating) ? "star" : "star_border"}
+                    </span>
+                    ))}
+                </p>
+                </div>
+                <p className="card-text">{reviewContent}</p>
+                <h6 className="card-subtitle mb-2">{activityTitle}</h6>
+            </div>
+            </div>
         </div>
-        <div className="col-md-9">
-          <div className="card-body">
-            <h5 className="card-title">{name}</h5>
-            <p className="text-warning">
-              {Array.from({ length: 5 }, (_, i) => (
-                <i
-                  key={i}
-                  className={`fa${i < Math.floor(rating) ? "s" : "r"} fa-star`}
-                ></i>
-              ))}
-            </p>
-            <h6 className="card-subtitle mb-2 text-muted">{activityTitle}</h6>
-            <p className="card-text">{reviewContent}</p>
-          </div>
         </div>
+    );
+};
+
+
+export const BlogCard = ({ image, title, body, date }) => {
+  // PropTypes for validation
+  ReviewCard.propTypes = {
+    image: PropTypes.string.isRequired, 
+    title: PropTypes.string.isRequired, 
+    date: PropTypes.string.isRequired, 
+    body: PropTypes.string.isRequired, 
+  };
+
+  return (
+    <div className="col-md-6 col-lg-custom">
+      <div className="blog-item">
+        <img src={image} alt={title} />
+        <small className="card-date">{date}</small>
+        <h5 className="card-title">{title}</h5>
+        <p className="card-text">{body}</p>
       </div>
     </div>
   );
 };
-

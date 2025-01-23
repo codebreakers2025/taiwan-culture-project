@@ -1,5 +1,4 @@
-.header {
-    background-color: #f8f9fa; /* 輕灰色背景 */
+.header {    
     padding: 10px 0;
   
     .navbar-brand {
@@ -8,25 +7,20 @@
     }
   
     .nav-item {
-      margin-left: 20px;
+      margin-left: 24px;
     }
   
-    .btn {
-      margin-left: 10px;
-      border-radius: 20px;
-      padding: 6px 20px;
-      background: #fff;
-      color: #000;
+    .navbar .btn {
+      margin-left: 32px;
+      border-radius: 100px;
+      padding:6px 24px;
+      background-color: $primary-color-5;
+      color: $text-color-1;
+      border: none;
       &:hover {
         transition: all .3s;
-        background-color: #eeeeee;
+        background-color: $primary-color-3;
       }
-    }
-
-    .header-logo {
-      margin-right: 10px;
-      margin-bottom: 0;
-      font-size: 20px;
     }
 
     .header-logo-side {
@@ -34,6 +28,11 @@
       p {
         font-size: 16px;
         margin-bottom: 0;
+      }
+      .logo-img  {
+          height: 40px;
+          width: auto;
+        
       }
     }
   
@@ -44,9 +43,38 @@
     .dropdown {
       .btn {
         background-color: transparent;
+        color: $text-color-9;
         border:none;
-        color: #fff;
         padding: 0;
+      }
+      .user-dropdown-menu {
+        margin-left: 24px;
+      }
+      .dropdown-menu {
+        .dropdown-item:hover {
+          background-color: $primary-color-3;
+          color: $text-color-1;
+        }
+      }
+    }
+
+    form {
+      .btn-primary {
+        background-color: $primary-color-5;
+        border: none;
+      }
+      .btn-outline-secondary {
+        border-color: $primary-color-5;
+        &:hover {
+          background-color: $primary-color-5;
+        }
+      }
+      .btn-link {
+        color: $primary-color-5;
+      }
+      .form-control:focus {
+        border-color: $primary-color-5;
+        box-shadow: 0 4px .25rem rgba(96, 185, 191, 0.24);
       }
     }
   
@@ -60,5 +88,9 @@
         margin-top: 10px;
       }
     }
+    .logo-img {
+      height: 30px;
+    }
   }
+  
   

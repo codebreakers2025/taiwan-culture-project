@@ -19,4 +19,11 @@ export default defineConfig({
       '@': '/src', // 設置 @ 為 src 目錄的別名
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/assets/css/variables.scss" as *;`, // 引入全局變數文件
+      },
+    },
+  },
 })

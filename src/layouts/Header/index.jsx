@@ -143,19 +143,27 @@ useEffect(() => {
             name: "Jolin",
             image: "https://mighty.tools/mockmind-api/content/cartoon/27.jpg", // 使用者圖片的 URL
         });
+    } else {
+        setIsLoggedIn(false);
+        setUserData({
+            name: "",
+            image: "", // 使用者圖片的 URL
+        });
     }
 }, []);
 
     
     return (
-        <header className="header bg-primary">
-        <nav className="navbar navbar-expand-lg navbar-light text-white">
+        <header className="header">
+        <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container d-flex justify-content-between align-items-center">
-            <Link className="navbar-brand nav-link text-white d-flex align-items-center" to="/">
-                <div className="header-logo">LOGO</div>
-                <h1 className="header-logo-side">
-                {t('websiteName')}
-                <p>{t('websiteNameEn')}</p>
+            <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
+                <h1 className="header-logo-side m-0 d-flex align-items-center">
+                <img
+                    src="/img/logo.svg"
+                    alt="logo" 
+                    className="logo-img"
+                />
                 </h1>
             </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -164,14 +172,14 @@ useEffect(() => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                    <Link className="nav-link text-white" to="/activityList">{t('menu.activityList')}</Link>
+                    <Link className="nav-link" to="/activityList">{t('menu.activityList')}</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link text-white" to="/journal">{t('menu.journal')}</Link>
+                    <Link className="nav-link" to="/journal">{t('menu.journal')}</Link>
                 </li>
                 {/* 多國語系切換 */}
                 <li className="nav-item dropdown ms-3">
-                    <a className="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {t('menu.lang')}
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -206,7 +214,7 @@ useEffect(() => {
                                 />
                                 <span className="ms-2">{userData.name}</span>
                             </button>
-                            <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                            <ul className="dropdown-menu user-dropdown-menu" aria-labelledby="userDropdown">
                                 <li>
                                     <a className="dropdown-item" href="#">
                                         會員中心
