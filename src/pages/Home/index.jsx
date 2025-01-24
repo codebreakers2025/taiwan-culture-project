@@ -73,7 +73,6 @@ const Home = () => {
                                 <div className="d-flex search-input-inner">
                                     <div className="search-button-more-wrap">
                                         <span className="material-icons search-button-more">tune</span>
-                                        <p>{t('banner.search')}</p>
                                     </div>
                                     <span className="material-icons search-button">search</span>
                                 </div>
@@ -118,6 +117,7 @@ const Home = () => {
                             </div>
                         )}
                     </div>
+                    <button className="btn btn-primary">更多活動</button>
                 </div>
             </section>
 
