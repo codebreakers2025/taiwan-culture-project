@@ -294,7 +294,7 @@ useEffect(() => {
                                     <button
                                         type="button"
                                         className="btn btn-outline-secondary w-100 mt-2"
-                                        onClick={() => console.log("Google 登入邏輯")} >
+                                        onClick={() => console.log("Google 登入")} >
                                         <i className="fab fa-google"></i> 使用 Google 登入
                                     </button>
 

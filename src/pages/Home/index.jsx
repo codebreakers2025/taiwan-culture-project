@@ -1,17 +1,12 @@
 import { ActivityCard, ReviewCard, BlogCard} from '@/components/Card';
 import './Home.scss';
 import { useTranslation } from 'react-i18next';
-
 import beach from '@/assets/images/choosing/beach.svg';
 import communication from '@/assets/images/choosing/communication.svg';
 import fishing from '@/assets/images/choosing/fishing.svg';
 import travel from '@/assets/images/choosing/travel.svg';
-
-
-
 import React, { useEffect, useState } from 'react';
 import { getActivity, getJournal, getReviews } from '@/utils/api';
-
 
 const Home = () => {
     const [activityData, setActivityData] = useState([]);
@@ -24,7 +19,6 @@ const Home = () => {
             try {
                 const response  = await getActivity(); // 呼叫 API 函數
                 setActivityData(response); // 將取得的資料設置到 state
-                // console.log(response);
             } catch (err) {
                 setError('Failed to fetch users');
             } 
@@ -33,7 +27,6 @@ const Home = () => {
             try {
                 const response  = await getJournal(); // 呼叫 API 函數
                 setJournalData(response); // 將取得的資料設置到 state
-                // console.log(response);
             } catch (err) {
                 setError('Failed to fetch users');
             } 
@@ -42,7 +35,6 @@ const Home = () => {
             try {
                 const response = await getReviews();
                 setReviews(response); // 將 API 資料存入 reviews
-                // console.log(response);
             } catch (err) {
                 setError("Failed to fetch reviews");
                 console.error(err);
@@ -213,14 +205,13 @@ const Home = () => {
                             </div>
                             ))
                         ) : (
-                            <p className='text-center'>目前沒有好評。</p>
+                            <p className='text-center'>載入中...</p>
                         )}
-                       
                     </div>
                 </div>
             </section>
     </div>
-  );
+    );
 };
 
 export default Home;

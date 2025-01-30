@@ -1,21 +1,20 @@
 
-  .section {
-    padding: 24px 0;
-      h2 {
-        font-weight: var(--font-weight-bold);
-        font-size: $text-font-header-3;
-        margin-bottom: 4px;
-      }
-    .main-body {
-      margin: 32px 0;
+.section {
+  padding: 24px 0;
+    h2 {
+      font-weight: var(--font-weight-bold);
+      font-size: $text-font-header-3;
+      margin-bottom: 4px;
     }
+  .main-body {
+    margin: 32px 0;
   }
-
+}
 
 .banner-section {
   background: url('/img/layouts/mobile-banner.png') no-repeat center center;
   background-size: cover;
-  min-height: 100vh;
+  min-height: 70vh;
   .banner-section-title {
     color: $text-color-1;
     font-size: $text-font-display-header-2;
@@ -60,7 +59,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            span,p {
+            span {
               color: $primary-color-3;
               cursor: pointer;
             }
@@ -75,7 +74,6 @@
           }
         
       }
-     
     }
   }
   .quick-filters {
@@ -88,7 +86,6 @@
       &:hover {
         color: #dee2e6;
         transition: all 0.2s ease;
-
       }
     }
   }
@@ -97,14 +94,34 @@
 .choosing-section {
   background: url('/img/layouts/mobile-section.png') no-repeat;
   background-size: cover;
+  .main-body {
+    .main-body-section {
+      justify-content: center;
+      padding: 0 12px;
+    }
+  }
+  .section-title {
+    color: $primary-color-5;
+    padding-top: 100px !important;
+  }
+  .choosing-section-content-wrap{
+    margin-bottom: 24px;
+    .choosing-section-content {
+      background-color: var(--color-background);
+      padding: 16px 24px;
+      border-radius: 40px;
+      .main-card-content {
+        margin-top: 24px;
+        h5 {
+          margin-bottom: 8px;
+          color: $primary-color-5;
+          font-weight: var(--font-weight-bold);
+          font-size: $text-font-header-4;
+        }
+      }
+    }
+  }
 }
-
-.reviews-section {
-  background: url('/img/layouts/mobile-footer.png') no-repeat;
-  background-size: cover;
-}
-
-
 
 .popular-event-section {
   text-align: center;
@@ -151,41 +168,6 @@
   }
 }
 
-.choosing-section {
-  .main-body {
-    .main-body-section {
-      justify-content: center;
-      padding: 0 12px;
-    }
-  }
-  .section-title {
-    color: $primary-color-5;
-    padding-top: 100px !important;
-  }
-  .choosing-section-content-wrap{
-    margin-bottom: 24px;
-    .choosing-section-content {
-      background-color: var(--color-background);
-      padding: 16px 24px;
-      border-radius: 40px;
-      .main-card-content {
-        margin-top: 24px;
-        h5 {
-          margin-bottom: 8px;
-          color: $primary-color-5;
-          font-weight: var(--font-weight-bold);
-          font-size: $text-font-header-4;
-        }
-      }
-    }
-  }
-
-
-  
-}
-
-
-
 .journal-section {
   .blog-item {
     img {
@@ -206,6 +188,8 @@
 }
 
 .reviews-section {
+  background: url('/img/layouts/mobile-footer.png') no-repeat;
+  background-size: cover;
   .card-body {
     padding-left: 20px;
     padding-top: 6px;
@@ -237,179 +221,55 @@
   }
 }
 
-
-
 /* 響應式設計 */
 @media (min-width: 768px) {
-.banner-section {
-  background: url('/img/layouts/banner.png') no-repeat center center;
-  background-size: cover;
-  .banner-section-title {
-    font-size: $text-font-display-header-1;
-    padding-top: 120px;
-  }
-}
-
-.choosing-section {
-  background: url('/img/layouts/section.png') no-repeat center center; 
-  padding: 200px 0;
-}
-
-.reviews-section {
-  background: url('/img/layouts/footer.png') no-repeat center center;
-}
-
-
-.search-wrapper {
-  .search-header {
-    .search-input-group {
-      width: 526px;
-      .search-input {
-        &::placeholder {
-        padding-left: 24px;
-          color: $text-color-7;
-        }
-        &:focus {
-          border-color: $primary-color-3;
-          box-shadow: none;
-        }
-      }
+  .banner-section {
+    background: url('/img/layouts/banner.png') no-repeat center center;
+    background-size: cover;
+    .banner-section-title {
+      font-size: $text-font-display-header-1;
+      padding-top: 120px;
     }
   }
-}
 
-.choosing-section {
-  .main-body {
-    .main-body-section {
-      justify-content: center;
-    }
-    .main-body-section:first-child {
-      padding: 0 120px 24px 70px;
-    }
-    .main-body-section:last-child {
-      padding-left: 120px;
-      padding-right: 70px;
-    }
-  }
-  .section-title {
-    color: $primary-color-5;
-    padding-top: 0 !important;
-  }
-  .choosing-section-content-wrap{
-    .choosing-section-content {
-      background-color: var(--color-background);
-      padding: 48px 70px;
-      border-radius: 40px;
-      .main-card-content {
-        margin-top: 24px;
-        h5 {
-          margin-bottom: 8px;
-          color: $primary-color-5;
-          font-weight: var(--font-weight-bold);
-          font-size: $text-font-header-4;
-        }
+  .search-wrapper {
+    .search-header {
+      .search-input-group {
+        width: 526px;
       }
     }
   }
 
-
-  
-}
-
-.popular-event-section {
-  .card {
-    border:none;
-    img {
-      position: relative;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 40px;
+  .choosing-section {
+    background: url('/img/layouts/section.png') no-repeat;
+    background-size: cover;
+    padding: 200px 0;
+    .main-body {
+      .main-body-section:first-child {
+        padding: 0 120px 24px 70px;
+      }
+      .main-body-section:last-child {
+        padding-left: 120px;
+        padding-right: 70px;
+      }
     }
-  }
-  .card-body {
-    span.rating {
-      color: $secondary-color-4;
+    .section-title {
+      padding-top: 0 !important;
     }
-    span.favorite-icon {
-      color: $text-color-1;
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      cursor: pointer;
-    }
-    h5 {
-      font-weight: var(--font-weight-bold);
-      margin: 8px 0;
-      font-size: $text-font-header-4;
-    }
-    p{
-      color: $text-color-9;
-    }
-    .btn {
-      border-color: $primary-color-5;
-      background-color: transparent;
-      color: $primary-color-5;
-      border-radius: 40px;
-      padding: 12px 24px;
-      &:hover {
-        background-color: $primary-color-5;
-        border: none;
+    .choosing-section-content-wrap{
+      .choosing-section-content {
+        padding: 48px 70px;
       }
     }
   }
-}
 
-.journal-section {
-  .blog-item {
-    img {
-      width: 100%;
-      max-height: 240px;
-      object-fit: cover;
-    }
-    .card-title {
-      height: 48px;
-      font-size: $text-font-header-5;
-      font-weight: var(--font-weight-bold);
-      margin: 8px 0;
-    }
-    .card-date {
-      margin-top: 12px;
+  .reviews-section {
+    background: url('/img/layouts/footer.png') no-repeat;
+    background-size: cover;
+    h2 {
+      padding-top: 120px;
     }
   }
-}
-
-.reviews-section {
-  .card-body {
-    padding-left: 20px;
-    padding-top: 6px;
-  }
-  h2 {
-    color: $text-color-1;
-    padding-top: 120px;
-  }
-  .card-title-wrap {
-    margin-bottom: 8px;
-    .card-title {
-      font-weight: var(--font-weight-bold);
-    }
-    .card-rating {
-      color: $secondary-color-4;
-      span:last-of-type {
-        color: $text-color-4;
-      }
-    }
-    
-  }
-  .card-subtitle {
-    margin-top: 16px;
-    background-color: $primary-color-1;
-    color: $primary-color-5;
-    padding: 4px 8px;
-    font-size: $text-font-header-8;
-    border-radius: 8px;
-  }
-}
-
 }
 
 @media (min-width: 1200px) {
