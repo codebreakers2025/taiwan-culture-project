@@ -19,7 +19,7 @@
   .banner-section-title {
     color: $text-color-1;
     font-size: $text-font-display-header-2;
-    font-weight: var(-font-weight-bold);
+    font-weight: var(--font-weight-bold);
     padding-top: 60px;
   }
 }
@@ -241,59 +241,30 @@
 
 /* 響應式設計 */
 @media (min-width: 768px) {
-  .section {
-    padding: 80px 0;
-      h2 {
-        font-weight: var(--font-weight-bold);
-        margin-bottom: 8px;
-      }
-    .main-body {
-      margin: 72px 0;
-    }
-  }
-
-
 .banner-section {
   background: url('/img/layouts/banner.png') no-repeat center center;
   background-size: cover;
-  min-height: 100vh;
   .banner-section-title {
-    color: $text-color-1;
     font-size: $text-font-display-header-1;
-    font-weight: var(-font-weight-bold);
     padding-top: 120px;
   }
 }
 
 .choosing-section {
-  background: url('/img/layouts/section.png') no-repeat center center;; 
+  background: url('/img/layouts/section.png') no-repeat center center; 
   padding: 200px 0;
 }
 
 .reviews-section {
-  background: url('/img/layouts/footer.png') no-repeat center center;; 
+  background: url('/img/layouts/footer.png') no-repeat center center;
 }
 
 
 .search-wrapper {
   .search-header {
     .search-input-group {
-      position: relative;
-      display: flex;
-      align-items: center;
       width: 526px;
-      span.search-icon {
-        position: absolute;
-        left: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
-        color: $text-color-7;
-      }
       .search-input {
-        padding: 16px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 80px rgba(96, 185, 191, 0.24);
         &::placeholder {
         padding-left: 24px;
           color: $text-color-7;
@@ -302,44 +273,6 @@
           border-color: $primary-color-3;
           box-shadow: none;
         }
-      }
-      .search-input-inner {
-          position: absolute;
-          right: 12px;
-          gap: 8px;
-          .search-button-more-wrap {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            span,p {
-              color: $primary-color-3;
-              cursor: pointer;
-            }
-          }
-          .search-button {
-            background-color: $primary-color-3;
-            color: $text-color-1;
-            font-size: 18px;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-          }
-        
-      }
-     
-    }
-  }
-  .quick-filters {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    .quick-filter {
-      cursor: pointer;
-      color: $text-color-1;
-      &:hover {
-        color: #dee2e6;
-        transition: all 0.2s ease;
-
       }
     }
   }
