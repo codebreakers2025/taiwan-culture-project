@@ -217,34 +217,24 @@ useEffect(() => {
                             </button>
                             <ul className="dropdown-menu user-dropdown-menu" aria-labelledby="userDropdown">
                                 <li>
-                                    <a className="dropdown-item" href="#">
-                                        會員中心
-                                    </a>
+                                    <a className="dropdown-item" href="#">{t('member.center')}</a>
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="#">
-                                        訂單管理
-                                    </a>
+                                    <a className="dropdown-item" href="#">{t('member.orderList')}</a>
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="#">
-                                        收藏列表
-                                    </a>
+                                    <a className="dropdown-item" href="#">{t('member.favoritesList')}</a>
                                 </li>
                                 <li>
-                                    <a
-                                        className="dropdown-item"
-                                        href="#"
-                                        onClick={handleLogout}
-                                    >
-                                        登出
+                                    <a className="dropdown-item" href="#" onClick={handleLogout}>
+                                        {t('member.signOut')}
                                     </a>
                                 </li>
                             </ul>
                         </div>
                         ) : (
                             <button className="btn btn-primary" onClick={handleOpenModal}>
-                                登入
+                                {t('member.signIn')}
                             </button>
                         )}
                 </li>
@@ -261,92 +251,92 @@ useEffect(() => {
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title">{isLogin ? "登入" : "註冊"}</h5>
-                            <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseModal} />
+                            <h5 className="modal-title">{isLogin ? t('form.login') : t('form.register')}</h5>
+                            <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseModal}></button>
                         </div>
                         <div className="modal-body">
                             {error && <div className="alert alert-danger">{error}</div>}
                             {isLogin ? (
                             <form onSubmit={handleLogin}>
                                 <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">電子郵件</label>
+                                    <label htmlFor="email" className="form-label">{t('form.email')}</label>
                                     <input 
                                         type="email" 
                                         className="form-control" 
                                         id="email" 
                                         value={loginData.email} 
                                         onChange={(e) => handleInputChange(e, true)} 
-                                        placeholder="請輸入電子郵件" 
+                                        placeholder={t('form.pleaseEnterYourEmail')} 
                                         required />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">密碼</label>
+                                    <label htmlFor="password" className="form-label">{t('form.password')}</label>
                                     <input
                                         type="password"
                                         className="form-control"
                                         id="password"
                                         value={loginData.password}
                                         onChange={(e) => handleInputChange(e, true)}
-                                        placeholder="請輸入密碼"
+                                        placeholder={t('form.pleaseEnterYourPassword')}
                                         required />
                                     </div>
-                                    <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? "登入中..." : "登入"}</button>
+                                    <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.loggingIn') : t('form.login')}</button>
                                     <button
                                         type="button"
                                         className="btn btn-outline-secondary w-100 mt-2"
                                         onClick={() => console.log("Google 登入")} >
-                                        <i className="fab fa-google"></i> 使用 Google 登入
+                                        <i className="fab fa-google"></i> {t('form.loginGoogle')}
                                     </button>
 
                                 <div className="text-center mt-3">
-                                    <span>還不是會員？</span>{" "}
+                                    <span>{t('form.notMember')}</span>{" "}
                                     <button
                                         type="button"
                                         className="btn btn-link"
                                         onClick={() => setIsLogin(false)} >
-                                        立即註冊
+                                        {t('form.registerNow')}
                                     </button>
                                 </div>
                             </form>
                             ) : (
                             <form onSubmit={handleRegister}>
                                 <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">電子郵件</label>
+                                    <label htmlFor="email" className="form-label">{t('form.email')}</label>
                                     <input
                                         type="email"
                                         className="form-control"
                                         id="email"
                                         value={registerData.email}
                                         onChange={(e) => handleInputChange(e, false)}
-                                        placeholder="請輸入電子郵件"
+                                        placeholder={t('form.pleaseEnterYourEmail')}
                                         required />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">密碼</label>
+                                    <label htmlFor="password" className="form-label">{t('form.password')}</label>
                                     <input
                                         type="password"
                                         className="form-control"
                                         id="password"
                                         value={registerData.password}
                                         onChange={(e) => handleInputChange(e, false)}
-                                        placeholder="請輸入密碼"
+                                        placeholder={t('form.pleaseEnterYourPassword')}
                                         required />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="confirmPassword" className="form-label">確認密碼</label>
+                                    <label htmlFor="confirmPassword" className="form-label">{t('form.confirmPassword')}</label>
                                     <input
                                         type="password"
                                         className="form-control"
                                         id="confirmPassword"
                                         value={registerData.confirmPassword}
                                         onChange={(e) => handleInputChange(e, false)}
-                                        placeholder="請再次輸入密碼"
+                                        placeholder={t('form.ReEnterPassword')}
                                         required />
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? "註冊中..." : "註冊"}</button>
+                                <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.Registering') : t('form.register')}</button>
                                 <div className="text-center mt-3">
-                                <span>已經是會員了？</span>{" "}
-                                <button type="button" className="btn btn-link" onClick={() => setIsLogin(true)}>立即登入</button>
+                                <span>{t('form.isMember')}</span>{" "}
+                                <button type="button" className="btn btn-link" onClick={() => setIsLogin(true)}>{t('form.signInNow')}</button>
                                 </div>
                             </form>
                             )}

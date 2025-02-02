@@ -82,8 +82,8 @@ const Home = () => {
             <section className="section popular-event-section">
                 <div className="container">
                     <div className="main-text text-center">
-                        <h2 className="section-title">{t('popularEventTitle')}</h2>
-                        <p className="section-subtitle">{t('popularEventSubTitle')}</p>
+                        <h2 className="section-title">{t('activity.popularEventTitle')}</h2>
+                        <p className="section-subtitle">{t('activity.popularEventSubTitle')}</p>
                     </div>
                     <div className="row main-body">
                         {activityData.length > 0 ? (
@@ -105,11 +105,11 @@ const Home = () => {
                             ))
                         ) : (
                             <div className="col-12">
-                                <p className="text-center">載入中...</p>
+                                <p className="text-center">{t('common.loading')}</p>
                             </div>
                         )}
                     </div>
-                    <button className="btn btn-primary">更多活動</button>
+                    <button className="btn btn-primary">{t('activity.moreEvents')}</button>
                 </div>
             </section>
 
@@ -164,8 +164,8 @@ const Home = () => {
             <section className="section journal-section">
                 <div className="container">
                     <div className="main-text text-center">
-                        <h2 className="section-title">{t('journalTitle')}</h2>
-                        <p className="section-subtitle">{t('journalSubTitle')}</p>
+                        <h2 className="section-title">{t('journal.title')}</h2>
+                        <p className="section-subtitle">{t('journal.subTitle')}</p>
                     </div>
                     <div className="row main-body">
                         {journalData.length > 0 ? (
@@ -180,7 +180,7 @@ const Home = () => {
                             ))
                         ) : (
                             <div className="col-12">
-                                <p className="text-center">載入中...</p>
+                                <p className="text-center">{t('common.loading')}</p>
                             </div>
                         )}
                     </div>
@@ -205,7 +205,7 @@ const Home = () => {
                             </div>
                             ))
                         ) : (
-                            <p className='text-center'>載入中...</p>
+                            <p className='text-center'>{t('common.loading')}</p>
                         )}
                     </div>
                 </div>
