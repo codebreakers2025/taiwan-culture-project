@@ -44,6 +44,10 @@
     // color: rgb(0, 0, 0);
   }
 
+  .react-datepicker-popper {
+    z-index: 10000;
+  }
+
   .react-datepicker-wrapper {
     display: block;
     .date-input {

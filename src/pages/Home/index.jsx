@@ -62,10 +62,10 @@ const Home = () => {
 
     const scrollToTop = () => {
         window.scrollTo({
-          top: 0,
+            top: 0,
           behavior: "smooth", // 平滑滾動效果
         });
-      };
+    };
 
     useEffect(() => {
         fetchGetActivity();
@@ -74,21 +74,21 @@ const Home = () => {
 
         const handleScroll = () => {
             if (window.scrollY > 300) {
-              setShowButton(true);
+            setShowButton(true);
             } else {
-              setShowButton(false);
+            setShowButton(false);
             }
-          };
-      
-          window.addEventListener("scroll", handleScroll);
-          return () => window.removeEventListener("scroll", handleScroll);
+        };
+    
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []); // 空陣列表示只在組件加載時呼叫一次
 
     useEffect(() => {
         if (showSearchModal) {
-          document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
         } else {
-          document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto';
         }
     }, [showSearchModal]);
 
@@ -98,7 +98,6 @@ const Home = () => {
         try {
             const response  = await getActivity(); // 呼叫 API 函數
             const result = response.slice(0, 3); // 只取前三筆
-            // console.log(response);
             setActivityData(result); // 將取得的資料設置到 state
             setFilteredData(result); // 預設顯示全部資料
         } catch (err) {
@@ -131,34 +130,28 @@ const Home = () => {
 
      // 處理搜尋邏輯
     const handleSearch = () => {
-    const filteredResults = activityData.filter((item) => {
-        const matchCity = selectedCity ? item.city.includes(selectedCity) : true;
-        const matchEventType = selectedType ? item.eventType.includes(selectedType) : true;
-        const matchDate =
-        startDate || endDate
-            ? new Date(item.date) >= new Date(startDate || "1970-01-01") &&
-            new Date(item.date) <= new Date(endDate || "2099-12-31")
-            : true;
-        const matchKeyword =
-        keyword ? item.content.title.includes(keyword) || item.content.description.includes(keyword) : true;
+        const filteredResults = activityData.filter((item) => {
+            const matchCity = selectedCity ? item.city.includes(selectedCity) : true;
+            const matchEventType = selectedType ? item.eventType.includes(selectedType) : true;
+            const matchDate =
+            startDate || endDate
+                ? new Date(item.date) >= new Date(startDate || "1970-01-01") &&
+                new Date(item.date) <= new Date(endDate || "2099-12-31")
+                : true;
+            const matchKeyword =
+            keyword ? item.content.title.includes(keyword) || item.content.description.includes(keyword) : true;
 
-        return matchCity && matchEventType && matchDate && matchKeyword;
-    });
+            return matchCity && matchEventType && matchDate && matchKeyword;
+        });
 
-    setFilteredData(filteredResults);
-    setShowSearchModal(false);
+        setFilteredData(filteredResults);
+        setShowSearchModal(false);
+        resetForm();
     };
 
     const handleInputChange = (e) => {
         const value = e.target.value;
         setKeyword(value);
-    
-        // 根據值判斷是否顯示 search-icon
-        if (value !== '0' && value !== null && value.trim() !== '') {
-          setIsSearchVisible(false);  // 隱藏 icon
-        } else {
-          setIsSearchVisible(true);  // 顯示 icon
-        }
     };
 
     // 切換地區選單
