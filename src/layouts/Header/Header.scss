@@ -1,6 +1,13 @@
-.header {
-    background-color: #f8f9fa; /* 輕灰色背景 */
+.header {    
     padding: 10px 0;
+    .navbar-toggler {
+      border:none !important;
+      background-color: transparent !important;
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: none !important;
+    }
   
     .navbar-brand {
       font-weight: bold;
@@ -8,26 +15,105 @@
     }
   
     .nav-item {
-      margin-left: 20px;
+      margin-left: 0px !important;
     }
   
-    .btn {
-      margin-left: 10px;
+    .navbar .btn {
+      margin-left: 0px;
+      border-radius: 100px;
+      padding:6px 24px;
+      width: 100%;
+      margin-top: 20px;
+      background-color: $primary-color-5;
+      color: $text-color-1;
+      border: none;
+      &:hover {
+        transition: all .3s;
+        background-color: $primary-color-3;
+      }
+    }
+
+    .header-logo-side {
+      font-size: 20px;
+      p {
+        font-size: 16px;
+        margin-bottom: 0;
+      }
+      .logo-img  {
+          height: 40px;
+          width: auto;
+        
+      }
     }
   
     .dropdown-menu {
       min-width: 120px;
+      border:none;
     }
-  
-    /* 響應式設計 */
-    @media (max-width: 767px) {
-      .navbar-nav {
-        text-align: center;
-      }
-  
+
+    .dropdown {
       .btn {
-        margin-top: 10px;
+        background-color: transparent;
+        color: $text-color-9;
+        border:none;
+        padding: 0;
+      }
+      .user-dropdown-menu {
+        margin-left: 24px;
+      }
+      .dropdown-menu {
+        .dropdown-item:hover {
+          background-color: $primary-color-3;
+          color: $text-color-1;
+        }
+      }
+    }
+
+    form {
+      .btn-primary {
+        background-color: $primary-color-5;
+        border: none;
+      }
+      .btn-outline-secondary {
+        border-color: $primary-color-5;
+        &:hover {
+          background-color: $primary-color-5;
+        }
+      }
+      .btn-link {
+        color: $primary-color-5;
+      }
+      .form-control:focus {
+        border-color: $primary-color-5;
+        box-shadow: 0 4px .25rem rgba(96, 185, 191, 0.24);
       }
     }
   }
   
+
+  
+/* 響應式設計 */
+@media (min-width: 768px) {
+    .header {    
+      .nav-item {
+        margin-left: 24px;
+      }
+      .navbar .btn {
+        margin-top: 0;
+        margin-left: 32px;
+        .navbar-toggler {
+          border:none;
+          background-color: transparent;
+        }
+      }
+    
+      .dropdown-menu {
+        border:inherit;
+      }
+  }
+}
+
+
+@media (min-width: 1200px) {
+  
+}

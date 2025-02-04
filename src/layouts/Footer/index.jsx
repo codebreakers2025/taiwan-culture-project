@@ -1,12 +1,39 @@
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import './footer.scss';
+import logo from '@/assets/images/logo.svg';
 
 const Footer = () => {
-  return (
-    <footer className="bg-dark text-white py-3">
-      <div className="container text-center">
-        <p className="mb-0">&copy; 2025 體驗台灣好文化Culture in Taiwan 版權所有,無商業行為.</p>
-      </div>
-    </footer>
-  );
+    const { t } = useTranslation();
+
+    return (
+        <footer className="copyright">
+        <div className="container text-center">
+            <div className="footer-menu d-flex justify-content-between align-items-center">
+                <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
+                    <h1 className="header-logo-side m-0 d-flex align-items-center">
+                    <img
+                        src={logo}
+                        alt="logo" 
+                        className="logo-img"
+                    />
+                    </h1>
+                </Link>
+                
+                <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/activityList">{t('menu.activityList')}</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/journal">{t('menu.journal')}</Link>
+                    </li>
+                </ul>
+                
+            </div>
+            <p className="">{t('copyright')}</p>
+        </div>
+        </footer>
+    );
 };
 
 export default Footer;

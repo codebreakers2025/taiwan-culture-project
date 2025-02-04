@@ -1,63 +1,352 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './Header.scss';
+import { register, login } from '@/utils/api';
+import logo from '@/assets/images/logo.svg';
 
 const Header = () => {
-  const [language, setLanguage] = useState('zh'); // 預設語言為中文
+    // 設定語言
+    const { t } = useTranslation();
+    const { i18n } = useTranslation();
+    const changeLanguage = (lng) => { i18n.changeLanguage(lng); };
 
-  const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-  };
+    // 用戶
+    const [userData, setUserData] = useState({}); // 存儲用戶資料
 
+    // 登入註冊資料
+    const [loginData, setLoginData] = useState({ email: "", password: "" });
+    const [registerData, setRegisterData] = useState({
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    // 表單輸入處理
+    const handleInputChange = (e, isLoginForm) => {
+        const { id, value } = e.target;
+        if (isLoginForm) {
+            setLoginData((prev) => {
+                const newData = { ...prev, [id]: value };
+                return newData;
+            });
+        } else {
+            setRegisterData((prev) => {
+                const newData = { ...prev, [id]: value };
+                return newData;
+            });
+        }
+    };
+
+  //登入註冊邏輯
+    const [showModal, setShowModal] = useState(false);
+    const [isLogin, setIsLogin] = useState(true); // 控制登入/註冊切換
+    const [isLoggedIn, setIsLoggedIn] = useState(true); // 控制登入/登出切換
+    const handleOpenModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+
+    const handleGoogleSignIn = () => {
+        // 在這裡處理 Google 登入邏輯
+        console.log("Google Sign-In triggered");
+    };
+
+    // 登入邏輯
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await login(loginData); // 替換為你的 API 函數
+            setIsLoggedIn(true);
+            updateUserData({
+                name: "Olivier",
+                image: "https://mighty.tools/mockmind-api/content/cartoon/27.jpg", // 使用者圖片的 URL
+            });
+            alert("登入成功!");
+            handleCloseModal(); // 關閉模態框
+        } catch (error) {
+            setError("登入失敗，請檢查帳號或密碼");
+            console.error('登入失敗:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 註冊邏輯
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        if (registerData.password !== registerData.confirmPassword) {
+            setError("密碼與確認密碼不一致");
+            return;
+        }
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await register(registerData); // 替換為你的 API 函數
+            alert("註冊成功:", response);
+            setIsLogin(true); // 切換回登入模式
+        } catch (error) {
+            setError("註冊失敗，請稍後再試");
+            console.log(registerData);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 登出函式
+    const handleLogout = () => {
+        // 清除 token
+        localStorage.removeItem("token");
+
+        // 更新登入狀態
+        setIsLoggedIn(false);
+
+        updateUserData({});
+
+        // 顯示登出成功訊息
+        alert("登出成功！");
+
+        // 關閉 modal
+        handleCloseModal();
+    };
+
+    // 更新用戶資料
+    const updateUserData = (data) => {
+        setUserData(data);
+    };
+
+    
+
+// useEffect: 控制背景滾動
+useEffect(() => {
+    if (showModal) {
+      // 禁用背景滾動
+        document.body.style.overflow = "hidden";
+    } else {
+      // 恢復背景滾動
+        document.body.style.overflow = "auto";
+    }
+    // 清理函數，確保組件卸載時恢復滾動
+    return () => {
+        document.body.style.overflow = "auto";
+    };
+
+  }, [showModal]); // 僅在 `showModal` 狀態改變時執行
+
+   // 檢查是否有 token，若有則表示已登入
+   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        setIsLoggedIn(true);
+        setUserData({
+            name: "Jolin",
+            image: "https://mighty.tools/mockmind-api/content/cartoon/27.jpg", // 使用者圖片的 URL
+        });
+    } else {
+        setIsLoggedIn(false);
+        setUserData({
+            name: "",
+            image: "", // 使用者圖片的 URL
+        });
+    }
+}, []);
+
+    
     return (
-      <header className="header bg-primary text-white py-3">
-      <nav className="navbar navbar-expand-lg navbar-light">
-        <div className="container d-flex justify-content-between align-items-center">
-          <Link className="navbar-brand nav-link text-white" to="/">{language === 'zh' ? '體驗台灣好文化' : language === 'en' ? 'Experience Taiwan’s great culture' : '台湾の素晴らしい文化を体験'}</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/">首頁</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/activityList">所有活動</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/journal">慢活日誌</Link>
-              </li>
-              {/* 多國語系切換 */}
-              <li className="nav-item dropdown ms-3">
-                <a className="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  多國語言
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <button className="dropdown-item" value="zh" onClick={handleLanguageChange}>中文</button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" value="en" onClick={handleLanguageChange}>English</button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" value="jp" onClick={handleLanguageChange}>日本語</button>
-                  </li>
+        <header className="header">
+        <nav className="navbar navbar-expand-lg navbar-light">
+            <div className="container d-flex justify-content-between align-items-center">
+            <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
+                <h1 className="header-logo-side m-0 d-flex align-items-center">
+                <img
+                    src={logo}
+                    alt="logo" 
+                    className="logo-img"
+                />
+                </h1>
+            </Link>
+            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav ms-auto">
+                <li className="nav-item">
+                    <Link className="nav-link" to="/activityList">{t('menu.activityList')}</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/journal">{t('menu.journal')}</Link>
+                </li>
+                {/* 多國語系切換 */}
+                <li className="nav-item dropdown ms-3">
+                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {t('menu.lang')}
+                    </a>
+                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                        <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.zhCn')}</button>
+                    </li>
+                    <li>
+                        <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.en')}</button>
+                    </li>
+                    <li>
+                        <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.jp')}</button>
+                    </li>
+                    </ul>
+                </li>
+                {/* 登入註冊按鈕 */}
+                <li className="nav-item">
+                    {isLoggedIn ? (
+                            <div className="dropdown">
+                            <button
+                                className="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                id="userDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                <img
+                                    src={userData.image}
+                                    alt="User"
+                                    className="rounded-circle"
+                                    width="40"
+                                    height="40"
+                                />
+                                <span className="ms-2">{userData.name}</span>
+                            </button>
+                            <ul className="dropdown-menu user-dropdown-menu" aria-labelledby="userDropdown">
+                                <li>
+                                    <a className="dropdown-item" href="#">{t('member.center')}</a>
+                                </li>
+                                <li>
+                                    <a className="dropdown-item" href="#">{t('member.orderList')}</a>
+                                </li>
+                                <li>
+                                    <a className="dropdown-item" href="#">{t('member.favoritesList')}</a>
+                                </li>
+                                <li>
+                                    <a className="dropdown-item" href="#" onClick={handleLogout}>
+                                        {t('member.signOut')}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        ) : (
+                            <button className="btn btn-primary" onClick={handleOpenModal}>
+                                {t('member.signIn')}
+                            </button>
+                        )}
+                </li>
                 </ul>
-              </li>
-              {/* 登入註冊按鈕 */}
-              {/* <li className="nav-item">
-                <a className="btn btn-primary" href="/login">登入</a>
-              </li>
-              <li className="nav-item ms-2">
-                <a className="btn btn-secondary" href="/register">註冊</a>
-              </li> */}
-            </ul>
-          </div>
-        </div>
-      </nav>
+            </div>
+            </div>
+        </nav>
+
+        {/* 登入/註冊彈窗 */}
+        {showModal && (
+            <div
+                className="modal fade show"
+                style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">{isLogin ? t('form.login') : t('form.register')}</h5>
+                            <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseModal}></button>
+                        </div>
+                        <div className="modal-body">
+                            {error && <div className="alert alert-danger">{error}</div>}
+                            {isLogin ? (
+                            <form onSubmit={handleLogin}>
+                                <div className="mb-3">
+                                    <label htmlFor="email" className="form-label">{t('form.email')}</label>
+                                    <input 
+                                        type="email" 
+                                        className="form-control" 
+                                        id="email" 
+                                        value={loginData.email} 
+                                        onChange={(e) => handleInputChange(e, true)} 
+                                        placeholder={t('form.pleaseEnterYourEmail')} 
+                                        required />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="password" className="form-label">{t('form.password')}</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="password"
+                                        value={loginData.password}
+                                        onChange={(e) => handleInputChange(e, true)}
+                                        placeholder={t('form.pleaseEnterYourPassword')}
+                                        required />
+                                    </div>
+                                    <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.loggingIn') : t('form.login')}</button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-secondary w-100 mt-2"
+                                        onClick={() => console.log("Google 登入")} >
+                                        <i className="fab fa-google"></i> {t('form.loginGoogle')}
+                                    </button>
+
+                                <div className="text-center mt-3">
+                                    <span>{t('form.notMember')}</span>{" "}
+                                    <button
+                                        type="button"
+                                        className="btn btn-link"
+                                        onClick={() => setIsLogin(false)} >
+                                        {t('form.registerNow')}
+                                    </button>
+                                </div>
+                            </form>
+                            ) : (
+                            <form onSubmit={handleRegister}>
+                                <div className="mb-3">
+                                    <label htmlFor="email" className="form-label">{t('form.email')}</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        id="email"
+                                        value={registerData.email}
+                                        onChange={(e) => handleInputChange(e, false)}
+                                        placeholder={t('form.pleaseEnterYourEmail')}
+                                        required />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="password" className="form-label">{t('form.password')}</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="password"
+                                        value={registerData.password}
+                                        onChange={(e) => handleInputChange(e, false)}
+                                        placeholder={t('form.pleaseEnterYourPassword')}
+                                        required />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="confirmPassword" className="form-label">{t('form.confirmPassword')}</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="confirmPassword"
+                                        value={registerData.confirmPassword}
+                                        onChange={(e) => handleInputChange(e, false)}
+                                        placeholder={t('form.ReEnterPassword')}
+                                        required />
+                                </div>
+                                <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.Registering') : t('form.register')}</button>
+                                <div className="text-center mt-3">
+                                <span>{t('form.isMember')}</span>{" "}
+                                <button type="button" className="btn btn-link" onClick={() => setIsLogin(true)}>{t('form.signInNow')}</button>
+                                </div>
+                            </form>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
     </header>
     );
-  };
+    };
 
-  export default Header;
+    export default Header;
