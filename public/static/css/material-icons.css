@@ -3,10 +3,7 @@
   font-style: normal;
   font-weight: 400;
   src: 
-    url('fonts/MaterialIconsOutlined-Regular.otf') format('opentype'),
     url('fonts/MaterialIconsRound-Regular.otf') format('opentype'),
-    url('fonts/MaterialIconsSharp-Regular.otf') format('opentype'),
-    url('fonts/MaterialIconsTwoTone-Regular.otf') format('opentype');
 }
 
 .material-icons {

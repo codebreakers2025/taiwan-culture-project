@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Header.scss';
 import { register, login } from '@/utils/api';
-import logo from '@/assets/images/logo.svg';
+
 
 const Header = () => {
     // 設定語言
@@ -47,10 +47,10 @@ const Header = () => {
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
-    const handleGoogleSignIn = () => {
-        // 在這裡處理 Google 登入邏輯
-        console.log("Google Sign-In triggered");
-    };
+    // const handleGoogleSignIn = () => {
+    //     // 在這裡處理 Google 登入邏輯
+    //     console.log("Google Sign-In triggered");
+    // };
 
     // 登入邏輯
     const handleLogin = async (e) => {
@@ -117,69 +117,79 @@ const Header = () => {
         setUserData(data);
     };
 
-    
+    // 處理手機選單
+    const [menuOpen, setMenuOpen] = useState(false);
 
-// useEffect: 控制背景滾動
-useEffect(() => {
-    if (showModal) {
-      // 禁用背景滾動
-        document.body.style.overflow = "hidden";
-    } else {
-      // 恢復背景滾動
-        document.body.style.overflow = "auto";
-    }
-    // 清理函數，確保組件卸載時恢復滾動
-    return () => {
-        document.body.style.overflow = "auto";
+    const toggleNavbar = () => {
+        setMenuOpen(!menuOpen);
     };
 
-  }, [showModal]); // 僅在 `showModal` 狀態改變時執行
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
+
+    useEffect(() => {
+        if (showModal) {
+        // 禁用背景滾動
+            document.body.style.overflow = "hidden";
+        } else {
+        // 恢復背景滾動
+            document.body.style.overflow = "auto";
+        }
+        // 清理函數，確保組件卸載時恢復滾動
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+
+    }, [showModal]); // 僅在 `showModal` 狀態改變時執行
 
    // 檢查是否有 token，若有則表示已登入
-   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-        setIsLoggedIn(true);
-        setUserData({
-            name: "Jolin",
-            image: "https://mighty.tools/mockmind-api/content/cartoon/27.jpg", // 使用者圖片的 URL
-        });
-    } else {
-        setIsLoggedIn(false);
-        setUserData({
-            name: "",
-            image: "", // 使用者圖片的 URL
-        });
-    }
-}, []);
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            setIsLoggedIn(true);
+            setUserData({
+                name: "Jolin",
+                image: "https://mighty.tools/mockmind-api/content/cartoon/27.jpg", // 使用者圖片的 URL
+            });
+        } else {
+            setIsLoggedIn(false);
+            setUserData({
+                name: "",
+                image: "", // 使用者圖片的 URL
+            });
+        }
+    }, []);
 
     
     return (
-        <header className="header">
+        <header className={`header ${menuOpen ? "menu-open" : ""}`}>
         <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container d-flex justify-content-between align-items-center">
             <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
-                <h1 className="header-logo-side m-0 d-flex align-items-center">
-                <img
-                    src={logo}
-                    alt="logo" 
-                    className="logo-img"
-                />
-                </h1>
+                <h1 className="header-logo-side m-0 d-flex align-items-center"></h1>
             </Link>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button 
+                className={`navbar-toggler ${menuOpen ? "" : "collapsed"}`}
+                type="button" 
+                
+                data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" 
+                aria-expanded={menuOpen} 
+                aria-label="Toggle navigation"
+                onClick={toggleNavbar}>
                 <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
+            <div className={`collapse navbar-collapse ${menuOpen ? "show" : ""}`} id="navbarNav">
                 <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                    <Link className="nav-link" to="/activityList">{t('menu.activityList')}</Link>
+                    <Link className="nav-link" to="/activityList" onClick={closeMenu}>{t('menu.activityList')}</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/journal">{t('menu.journal')}</Link>
+                    <Link className="nav-link" to="/journal" onClick={closeMenu}>{t('menu.journal')}</Link>
                 </li>
                 {/* 多國語系切換 */}
-                <li className="nav-item dropdown ms-3">
+                <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {t('menu.lang')}
                     </a>
@@ -281,12 +291,12 @@ useEffect(() => {
                                         required />
                                     </div>
                                     <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.loggingIn') : t('form.login')}</button>
-                                    <button
+                                    {/* <button
                                         type="button"
                                         className="btn btn-outline-secondary w-100 mt-2"
                                         onClick={() => console.log("Google 登入")} >
                                         <i className="fab fa-google"></i> {t('form.loginGoogle')}
-                                    </button>
+                                    </button> */}
 
                                 <div className="text-center mt-3">
                                     <span>{t('form.notMember')}</span>{" "}

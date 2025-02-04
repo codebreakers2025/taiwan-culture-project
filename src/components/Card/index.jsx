@@ -1,6 +1,7 @@
 // import React from 'react';
 import PropTypes from 'prop-types';
 import './Card.scss';
+import { SwiperSlide } from "swiper/react";
 
 export const ActivityCard = ({ id, city, images, isFavorited, rating, date, eventType, content, onFavoriteToggle }) => {
   // PropTypes for validation
@@ -96,13 +97,20 @@ export const BlogCard = ({ image, title, body, date }) => {
   };
 
   return (
-    <div className="col-custom">
-      <div className="blog-item">
+    // <div className="col-custom">
+    //   <div className="blog-item">
+    //     <img src={image} alt={title} />
+    //     <p className="card-date">{date}</p>
+    //     <h5 className="card-title">{title}</h5>
+    //     <p className="card-text">{body}</p>
+    //   </div>
+    // </div>
+
+    <>
         <img src={image} alt={title} />
         <p className="card-date">{date}</p>
         <h5 className="card-title">{title}</h5>
         <p className="card-text">{body}</p>
-      </div>
-    </div>
+    </>
   );
 };

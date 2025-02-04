@@ -1,5 +1,18 @@
+// 漢堡選單
+$navbar-toggler-icon-bg: url("data:image/svg+xml;utf8,<svg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+
 .header {    
-    padding: 10px 0;
+    padding: 32px 0;
+    transition: background 0.5s ease-in-out;
+    .header-logo-side {
+      background: url("@/assets/images/logo.svg");
+      height: 40px;
+      width: 164px;
+      &:hover {
+        opacity: 0.7;
+        transition: all .3s;
+      }
+    }
     .navbar-toggler {
       border:none !important;
       background-color: transparent !important;
@@ -12,16 +25,51 @@
     .navbar-brand {
       font-weight: bold;
       font-size: 1.5rem;
+      padding: 0;
     }
   
-    .nav-item {
-      margin-left: 0px !important;
+    .navbar-collapse.show .nav-item {
+      margin-left: 0px;
+      padding-bottom: 32px;
+      width: 100%;
+    }
+
+    .navbar-collapse.show .navbar-nav {
+      align-items: flex-start;
+      margin-top: 32px;
+    }
+
+    .dropdown-menu.show {
+      border: 1px solid $text-color-7;
+      .dropdown-item {
+        color: $text-color-7;
+        &:hover {
+          background-color: $primary-color-1;
+          color: $primary-color-4;
+        }
+      }
+    }
+
+    .navbar{
+      padding: 0;
+      .nav-link {
+        padding: 0;
+        color: $text-color-7;
+      }
+    } 
+
+    .navbar-nav .nav-link.show{
+      color: $text-color-7;
+    }
+
+    .navbar-collapse.show .navbar-nav .nav-link{
+      color: $text-color-1;
     }
   
     .navbar .btn {
       margin-left: 0px;
       border-radius: 100px;
-      padding:6px 24px;
+      padding:14px 24px;
       width: 100%;
       margin-top: 20px;
       background-color: $primary-color-5;
@@ -33,16 +81,20 @@
       }
     }
 
+    .navbar .show .btn {
+      background-color: $text-color-1;
+      color: $primary-color-5;
+      margin-left: 0;
+      &:hover {
+        background-color: $text-color-3;
+      }
+    } 
+
     .header-logo-side {
       font-size: 20px;
       p {
         font-size: 16px;
         margin-bottom: 0;
-      }
-      .logo-img  {
-          height: 40px;
-          width: auto;
-        
       }
     }
   
@@ -61,13 +113,15 @@
       .user-dropdown-menu {
         margin-left: 24px;
       }
-      .dropdown-menu {
-        .dropdown-item:hover {
-          background-color: $primary-color-3;
-          color: $text-color-1;
-        }
-      }
+      // .dropdown-menu {
+      //   .dropdown-item:hover {
+      //     background-color: $primary-color-3;
+      //     color: $text-color-1;
+      //   }
+      // }
     }
+
+
 
     form {
       .btn-primary {
@@ -76,6 +130,7 @@
       }
       .btn-outline-secondary {
         border-color: $primary-color-5;
+        color: $primary-color-5;
         &:hover {
           background-color: $primary-color-5;
         }
@@ -88,19 +143,49 @@
         box-shadow: 0 4px .25rem rgba(96, 185, 191, 0.24);
       }
     }
-  }
-  
+}
 
-  
+.menu-open {
+  background: url("/img/menu/background.png") no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+  background-color: $primary-color-5;
+  .header-logo-side {
+    background: url("@/assets/images/menu/logo.svg");
+    height: 40px;
+    width: 164px;
+  }
+  .navbar-toggler-icon {
+    background-image: $navbar-toggler-icon-bg;
+  }
+  .dropdown {
+    border-bottom: 1px solid rgba(238, 238, 238, 1);
+    margin-bottom: 24px;
+  }
+  .dropdown-menu.show {
+    background-color: transparent;
+    border: none;
+    .dropdown-item {
+      color: $text-color-1;
+    }
+  }
+}
+.navbar .show .nav-link{
+  color: $text-color-1;
+  font-size: $text-font-header-5;
+  &:hover {
+    background-color: $primary-color-3;
+  }
+}
+
 /* 響應式設計 */
 @media (min-width: 768px) {
     .header {    
       .nav-item {
-        margin-left: 24px;
+        margin-left: 32px;
       }
       .navbar .btn {
         margin-top: 0;
-        margin-left: 32px;
         .navbar-toggler {
           border:none;
           background-color: transparent;
@@ -110,9 +195,12 @@
       .dropdown-menu {
         border:inherit;
       }
+
+      .navbar-nav {
+        align-items: center;
+      }
   }
 }
-
 
 @media (min-width: 1200px) {
   
