@@ -1,165 +1,217 @@
-import Card from '@/components/Card/index.jsx';
+import { ActivityCard, ReviewCard, BlogCard} from '@/components/Card';
 import './Home.scss';
+import { useTranslation } from 'react-i18next';
+import beach from '@/assets/images/choosing/beach.svg';
+import communication from '@/assets/images/choosing/communication.svg';
+import fishing from '@/assets/images/choosing/fishing.svg';
+import travel from '@/assets/images/choosing/travel.svg';
+import React, { useEffect, useState } from 'react';
+import { getActivity, getJournal, getReviews } from '@/utils/api';
 
 const Home = () => {
-  return (
-    <div className="home">
-       <section className="section section-0">
-        <h2 className="section-title">立即搜索全台特色景點資訊！</h2>
-        {/* <p className="section-subtitle">副標題 1</p> */}
-        <div className="row row-cols-1">
-          
-        </div>
-      </section>
+    const [activityData, setActivityData] = useState([]);
+    const [journalData, setJournalData] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const [error, setError] = useState(null);
 
-      <section className="section section-1">
-        <h2 className="section-title">熱門活動</h2>
-        <p className="section-subtitle">體驗在地文化，暢遊台灣。 品嚐台灣道地美食！</p>
-        <div className="row row-cols-1 row-cols-md-3 g-4">
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 1"  
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 2"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 3"
-              description="這是卡片內容描述。"
-            />
-          </div>
-        </div>
-      </section>
+    useEffect(() => {
+        const fetchGetActivity = async () => {
+            try {
+                const response  = await getActivity(); // 呼叫 API 函數
+                setActivityData(response); // 將取得的資料設置到 state
+            } catch (err) {
+                setError('Failed to fetch users');
+            } 
+        };
+        const fetchGetJournal = async () => {
+            try {
+                const response  = await getJournal(); // 呼叫 API 函數
+                setJournalData(response); // 將取得的資料設置到 state
+            } catch (err) {
+                setError('Failed to fetch users');
+            } 
+        };
+        const fetchReviews = async () => {
+            try {
+                const response = await getReviews();
+                setReviews(response); // 將 API 資料存入 reviews
+            } catch (err) {
+                setError("Failed to fetch reviews");
+                console.error(err);
+            }
+        };
 
-      <section className="section section-2">
-        <h2 className="section-title">為什麼選擇我們</h2>
-        {/* <p className="section-subtitle">副標題 2</p> */}
-        <div className="row row-cols-1 row-cols-md-4 g-4">
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-        </div>
-      </section>
+        fetchGetActivity();
+        fetchGetJournal();
+        fetchReviews();
+    }, []); // 空陣列表示只在組件加載時呼叫一次
 
-      <section className="section section-3">
-        <h2 className="section-title">慢活日誌</h2>
-        <p className="section-subtitle">放慢腳步，細品生活之美。</p>
-        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-4">
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 1</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 2</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 3</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 4</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 5</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-        </div>
-      </section>
+    const { t } = useTranslation();
 
-      <section className="section section-4">
-        <h2 className="section-title">活動好評</h2>
-        {/* <p className="section-subtitle">副標題 4</p> */}
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 1"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 2"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 3"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 4"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 5"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 6"
-              description="這是卡片內容描述。"
-            />
-          </div>
-        </div>
-      </section>
+    if (error) {
+        return <div className="alert alert-danger">{error}</div>;
+    }
 
+    return (
+        <div className="home">
+            <section className="banner-section">
+                <div className="container">
+                    <h2 className="banner-section-title" dangerouslySetInnerHTML={{ __html: t('searchViewInfo') }}></h2>
+                    <div className="search-wrapper">
+                        <div className="search-header">
+                            <div className="search-input-group">
+                                <span className="material-icons search-icon">search</span>
+                                <input type="text" className="search-input form-control" placeholder={t('banner.searchPlacehoder')} />
+                                <div className="d-flex search-input-inner">
+                                    <div className="search-button-more-wrap">
+                                        <span className="material-icons search-button-more">tune</span>
+                                    </div>
+                                    <span className="material-icons search-button">search</span>
+                                </div>
+                            </div>
+                            <div className="quick-filters">
+                                <span className="quick-filter">{t('banner.taichung')}</span>
+                                <span className="quick-filter">{t('banner.taipei')}</span>
+                                <span className="quick-filter">{t('banner.kaohsiung')}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="section popular-event-section">
+                <div className="container">
+                    <div className="main-text text-center">
+                        <h2 className="section-title">{t('activity.popularEventTitle')}</h2>
+                        <p className="section-subtitle">{t('activity.popularEventSubTitle')}</p>
+                    </div>
+                    <div className="row main-body">
+                        {activityData.length > 0 ? (
+                            activityData.map((item) => (
+                            <div className="col-md-6 col-lg-4" key={item.id}>
+                                <ActivityCard
+                                {...item}
+                                onFavoriteToggle={(id) => {
+                                    setActivityData((prevData) =>
+                                        prevData.map((activity) =>
+                                            activity.id === id
+                                            ? { ...activity, isFavorited: !activity.isFavorited }
+                                            : activity
+                                        )
+                                    );
+                                }}
+                                />
+                            </div>
+                            ))
+                        ) : (
+                            <div className="col-12">
+                                <p className="text-center">{t('common.loading')}</p>
+                            </div>
+                        )}
+                    </div>
+                    <button className="btn btn-primary">{t('activity.moreEvents')}</button>
+                </div>
+            </section>
+
+            <section className="section choosing-section">
+                <div className="container">
+                    <h2 className="section-title text-center py-4">{t('choosing.mainTitle')}</h2>
+                    <div className="main-body">
+                        <div className="main-body-section row">
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src={ beach } alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.culturalExperienceTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.culturalExperienceText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src={ communication } alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.reservationPlatformTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.reservationPlatformText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="main-body-section row">
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src={ fishing } alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.recommendationsTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.recommendationsText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src={ travel } alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.DeepConnectionTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.DeepConnectionText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="section journal-section">
+                <div className="container">
+                    <div className="main-text text-center">
+                        <h2 className="section-title">{t('journal.title')}</h2>
+                        <p className="section-subtitle">{t('journal.subTitle')}</p>
+                    </div>
+                    <div className="row main-body">
+                        {journalData.length > 0 ? (
+                            journalData.map((item) => (
+                                <BlogCard
+                                    key={item.id}
+                                    image={item.images}
+                                    date={item.date}
+                                    title={item.title}
+                                    body={item.body}
+                                />
+                            ))
+                        ) : (
+                            <div className="col-12">
+                                <p className="text-center">{t('common.loading')}</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
+
+            <section className="section reviews-section">
+                <div className="container">
+                    <h2 className="section-title text-center">{t('eventReviews')}</h2>
+                    <div className="row main-body">
+                        {reviews.length > 0 ? ( 
+                            reviews.map((review) => (
+                            <div className="col-md-6 col-lg-4" key={review.id}>
+                                <ReviewCard
+                                    key={review.id}
+                                    avatar={review.user.avatar}
+                                    name={review.user.name}
+                                    rating={review.rating}
+                                    activityTitle={review.activityTitle}
+                                    reviewContent={review.reviewContent}
+                                />
+                            </div>
+                            ))
+                        ) : (
+                            <p className='text-center'>{t('common.loading')}</p>
+                        )}
+                    </div>
+                </div>
+            </section>
     </div>
-  );
+    );
 };
 
 export default Home;

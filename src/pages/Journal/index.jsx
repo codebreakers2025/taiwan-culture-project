@@ -1,8 +1,10 @@
 const About = () => {
     return (
-      <div>
-        <h2>慢活日誌</h2>
-      </div>
+      <div className="page-container">
+        <div className="content">
+          <h1>正在開發中...</h1>
+        </div>
+    </div>
     );
   };
   
