@@ -21,7 +21,9 @@
         "signIn": "登入",
         "continue": "繼續",
         "search": "搜尋",
-        "loading": "載入中..."
+        "cancel": "取消",
+        "loading": "載入中...",
+        "noData": "目前沒有資料..."
     },
     "banner": {
         "search": "搜尋",
@@ -29,7 +31,8 @@
         "searchPlacehoder": "搜尋關鍵字",
         "taichung": "台中",
         "taipei": "台北",
-        "kaohsiung": "高雄"
+        "kaohsiung": "高雄",
+        "tainan": "台南"
     },
     "choosing": {
         "mainTitle": "為什麼選擇我們",
@@ -59,8 +62,17 @@
         "notMember": "還不是會員？",
         "isMember": "已經是會員了？",
         "registerNow": "立即註冊",
-        "signInNow": "立即登入"
-
+        "signInNow": "立即登入",
+        "searchMore": "搜尋更多",
+        "startDate": "開始日期",
+        "endDate": "結束日期",
+        "area": "地區",
+        "eventType": "類型",
+        "oneDayItinerary": "一日行程",
+        "featuredExperiences": "特色體驗",
+        "outdoorExploration": "戶外探索",
+        "price": "價格",
+        "keyword": "搜尋關鍵字"
     },
     "member": {
         "center": "會員中心",
