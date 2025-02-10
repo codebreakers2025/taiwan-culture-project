@@ -183,7 +183,7 @@ const Header = () => {
             <div className={`collapse navbar-collapse ${menuOpen ? "show" : ""}`} id="navbarNav">
                 <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                    <Link className="nav-link" to="/activityList" onClick={closeMenu}>{t('menu.activityList')}</Link>
+                    <Link className="nav-link" to="/activity-list" onClick={closeMenu}>{t('menu.activityList')}</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" to="/journal" onClick={closeMenu}>{t('menu.journal')}</Link>

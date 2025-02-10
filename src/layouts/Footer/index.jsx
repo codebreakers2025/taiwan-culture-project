@@ -22,7 +22,7 @@ const Footer = () => {
                 
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <Link className="nav-link" to="/activityList">{t('menu.activityList')}</Link>
+                        <Link className="nav-link" to="/activity-list">{t('menu.activityList')}</Link>
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/journal">{t('menu.journal')}</Link>

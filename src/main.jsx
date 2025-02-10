@@ -8,7 +8,5 @@ import '@/assets/css/main.scss';
 
 const app = createRoot(document.getElementById('root'));
 app.render(
-    <Router>
-      <App />
-    </Router>
+    <App />
 );
