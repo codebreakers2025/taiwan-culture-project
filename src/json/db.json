@@ -1,0 +1,186 @@
+{
+    "users": [
+      {
+        "email": "admin123@gmail.com",
+        "password": "$2a$10$8MB.qmmUwep2EqNPFoLRqOkMPKq8OjVP8t8zeCdhLNIys1/najo.S",
+        "id": 1
+      },
+      {
+        "email": "sean@gmail.com",
+        "password": "$2a$10$dINa1L84l2xa8/qHp/ZGN.KPfRcMJMGyXHfpZfJp8VLZuq/jjIS12",
+        "id": 2
+      },
+      {
+        "email": "aaa123@gmail.com",
+        "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
+        "id": 3
+      },
+      {
+        "email": "bb123@gmail.com",
+        "password": "$2a$10$8vd1Exd/GU0lL7LNQgRdc.vCTh9JgZqHJ8X1skkPhdIrGVNvRXn4e",
+        "id": 4
+      }
+    ],
+    "activity": [
+      {
+        "id": 1,
+        "city": "台中",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+        "isFavorited": false,
+        "rating": 4.5,
+        "date": "2025-01-21",
+        "eventType": "一日行程",
+        "content": {
+          "title": "經典行程＆高美濕地一日遊",
+          "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
+        }
+      },
+      {
+        "id": 2,
+        "city": "台北",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
+        "isFavorited": false,
+        "rating": 4.8,
+        "date": "2025-01-25",
+        "eventType": "特色體驗",
+        "content": {
+          "title": "沉浸式 DIY 調製香水",
+          "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
+        }
+      },
+      {
+        "id": 3,
+        "city": "宜蘭",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
+        "isFavorited": false,
+        "rating": 4.7,
+        "date": "2025-01-26",
+        "eventType": "特色體驗",
+        "content": {
+          "title": "天送埤火車站 | 高空繩索體驗 ",
+          "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
+        }
+      }
+    ],
+    "journal": [
+      {
+        "id": 1,
+        "title": "注入創新泉源的職人手做工作坊",
+        "body": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
+        "date": "2025-01-21",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-1.png"
+      },
+      {
+        "id": 2,
+        "title": "喚醒感官的茶道體驗之旅",
+        "body": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
+        "date": "2025-01-22",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-2.png"
+      },
+      {
+        "id": 3,
+        "title": "編織時光的草編藝術課程",
+        "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
+        "date": "2025-01-23",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
+      },
+      {
+        "id": 4,
+        "title": "尋找味覺記憶的手作醬料體驗",
+        "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
+        "date": "2025-01-24",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
+      },
+      {
+        "id": 5,
+        "title": "染上屬於你的藍：靛藍染布體驗",
+        "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
+        "date": "2025-01-25",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
+      },
+      {
+        "id": 6,
+        "title": "編織時光的草編藝術課程",
+        "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
+        "date": "2025-01-23",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
+      },
+      {
+        "id": 7,
+        "title": "尋找味覺記憶的手作醬料體驗",
+        "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
+        "date": "2025-01-24",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
+      },
+      {
+        "id": 8,
+        "title": "染上屬於你的藍：靛藍染布體驗",
+        "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
+        "date": "2025-01-25",
+        "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "user": {
+          "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+          "name": "漩渦鳴人"
+        },
+        "rating": 4.5,
+        "activityTitle": "經典行程＆高美濕地一日遊",
+        "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！"
+      },
+      {
+        "id": 2,
+        "user": {
+          "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
+          "name": "奇犽"
+        },
+        "rating": 4.5,
+        "activityTitle": "經典行程＆高美濕地一日遊",
+        "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。"
+      },
+      {
+        "id": 3,
+        "user": {
+          "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
+          "name": "酷拉皮卡"
+        },
+        "rating": 4.5,
+        "activityTitle": "經典行程＆高美濕地一日遊",
+        "reviewContent": "自己動手調香水的過程非常有趣！每一步都很講究，最後帶回屬於自己的專屬香味，真的很滿足！"
+      },
+      {
+        "id": 4,
+        "user": {
+          "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
+          "name": "宇智波佐助"
+        },
+        "rating": 4.5,
+        "activityTitle": "經典行程＆高美濕地一日遊",
+        "reviewContent": "親手製作蛋黃酥真的超有趣！師傅很熱情，教得也很詳細，吃到自己做的酥香蛋黃酥更是有滿滿的成就感！"
+      },
+      {
+        "id": 5,
+        "user": {
+          "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
+          "name": "艾連·葉卡"
+        },
+        "rating": 4.5,
+        "activityTitle": "經典行程＆高美濕地一日遊",
+        "reviewContent": "一早看到阿里山壯麗的日出景色，真的讓人震撼！森林鐵路的懷舊感也超棒，整個行程都令人陶醉~"
+      },
+      {
+        "id": 6,
+        "user": {
+          "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
+          "name": "米卡莎"
+        },
+        "rating": 4.5,
+        "activityTitle": "經典行程＆高美濕地一日遊",
+        "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。"
+      }
+    ],
+    "settings": []
+  }

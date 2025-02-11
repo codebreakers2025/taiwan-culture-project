@@ -1,165 +1,519 @@
-import Card from '@/components/Card/index.jsx';
+import { ActivityCard, ReviewCard, BlogCard} from '@/components/Card';
 import './Home.scss';
+import { useTranslation } from 'react-i18next';
+import beach from '@/assets/images/choosing/beach.svg';
+import communication from '@/assets/images/choosing/communication.svg';
+import fishing from '@/assets/images/choosing/fishing.svg';
+import travel from '@/assets/images/choosing/travel.svg';
+import React, { useEffect, useState } from 'react';
+import { getActivity, getJournal, getReviews } from '@/utils/api';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "@/components/DatePicker/DatePicker.scss"; // 自訂 CSS
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const Home = () => {
-  return (
-    <div className="home">
-       <section className="section section-0">
-        <h2 className="section-title">立即搜索全台特色景點資訊！</h2>
-        {/* <p className="section-subtitle">副標題 1</p> */}
-        <div className="row row-cols-1">
-          
-        </div>
-      </section>
+    const [activityData, setActivityData] = useState([]);
+    const [journalData, setJournalData] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const [error, setError] = useState(null);
 
-      <section className="section section-1">
-        <h2 className="section-title">熱門活動</h2>
-        <p className="section-subtitle">體驗在地文化，暢遊台灣。 品嚐台灣道地美食！</p>
-        <div className="row row-cols-1 row-cols-md-3 g-4">
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 1"  
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 2"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/400x300"
-              title="卡片標題 3"
-              description="這是卡片內容描述。"
-            />
-          </div>
-        </div>
-      </section>
+    // input value
+    const [isSearchVisible, setIsSearchVisible] = useState(true);
 
-      <section className="section section-2">
-        <h2 className="section-title">為什麼選擇我們</h2>
-        {/* <p className="section-subtitle">副標題 2</p> */}
-        <div className="row row-cols-1 row-cols-md-4 g-4">
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-          <div className="col">
-            <div className="circle-image">
-              <img src="https://placehold.co/200" alt="..." />
-            </div>
-          </div>
-        </div>
-      </section>
+    // 搜尋功能
+    const handleOpenModalSearch = () => setShowSearchModal(true);
+    const handleCloseModalSearch = () => {
+        resetForm();
+        setShowSearchModal(false)
+    };
 
-      <section className="section section-3">
-        <h2 className="section-title">慢活日誌</h2>
-        <p className="section-subtitle">放慢腳步，細品生活之美。</p>
-        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-4">
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 1</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 2</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 3</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 4</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-          <div className="col">
-            <div className="blog-item">
-              <img src="https://placehold.co/300x600" alt="..." />
-              <h5 className="blog-title py-2">部落格標題 5</h5>
-              <p className="blog-description">這是部落格文章簡介。</p>
-            </div>
-          </div>
-        </div>
-      </section>
+    // 轉址功能
+    const navigate = useNavigate();
+    const handleNavigate = () => {
+        navigate("/activityList");
+        window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
+    };
+    
+    const [showSearchModal, setShowSearchModal] = useState(false);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [selectedCity, setSelectedCity] = useState("");  // 存放選擇的城市
+    const [selectedType, setSelectedType] = useState(""); // 存放選擇的活動類型
+    const [price, setPrice] = useState("");
+    const [keyword, setKeyword] = useState("");
+    const [filteredData, setFilteredData] = useState([]); // 篩選後的資料
+    const [loading, setLoading] = useState(false);
 
-      <section className="section section-4">
-        <h2 className="section-title">活動好評</h2>
-        {/* <p className="section-subtitle">副標題 4</p> */}
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 1"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 2"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 3"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 4"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 5"
-              description="這是卡片內容描述。"
-            />
-          </div>
-          <div className="col">
-            <Card
-              image="https://placehold.co/200x100"
-              title="卡片標題 6"
-              description="這是卡片內容描述。"
-            />
-          </div>
-        </div>
-      </section>
+    // dropdown
+    const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false); // 控制地區下拉選單
+    const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false); // 控制類型下拉選單
+    
+    const cities = ["台北", "台中", "高雄"]; // 城市列表
+    const eventTypes = ["一日行程", "特色體驗", "戶外探索"]; // 活動類型列表
 
-    </div>
-  );
+    // back to top
+    const [showButton, setShowButton] = useState(false);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+          behavior: "smooth", // 平滑滾動效果
+        });
+    };
+
+    useEffect(() => {
+        fetchGetActivity();
+        fetchGetJournal();
+        fetchReviews();
+
+        const handleScroll = () => {
+            if (window.scrollY > 300) {
+            setShowButton(true);
+            } else {
+            setShowButton(false);
+            }
+        };
+    
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []); // 空陣列表示只在組件加載時呼叫一次
+
+    useEffect(() => {
+        if (showSearchModal) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [showSearchModal]);
+
+    const fetchGetActivity = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response  = await getActivity(); // 呼叫 API 函數
+            const result = response.slice(0, 3); // 只取前三筆
+            setActivityData(result); // 將取得的資料設置到 state
+            setFilteredData(result); // 預設顯示全部資料
+        } catch (err) {
+            setError('Failed to fetch users');
+        } 
+    };
+    const fetchGetJournal = async () => {
+        setLoading(true);
+        try {
+            const response  = await getJournal(); // 呼叫 API 函數
+            setJournalData(response); // 將取得的資料設置到 state
+        } catch (err) {
+            setError('Failed to fetch users');
+        } finally {
+            setLoading(false);
+        }
+    };
+    const fetchReviews = async () => {
+        setLoading(true);
+        try {
+            const response = await getReviews();
+            const result = response.slice(0, 6); // 只取前六筆
+            setReviews(result); // 將 API 資料存入 reviews
+        } catch (err) {
+            setError("Failed to fetch reviews");
+        }finally {
+            setLoading(false);
+        }
+    };
+
+     // 處理搜尋邏輯
+    const handleSearch = () => {
+        const filteredResults = activityData.filter((item) => {
+            const matchCity = selectedCity ? item.city.includes(selectedCity) : true;
+            const matchEventType = selectedType ? item.eventType.includes(selectedType) : true;
+            const matchDate =
+            startDate || endDate
+                ? new Date(item.date) >= new Date(startDate || "1970-01-01") &&
+                new Date(item.date) <= new Date(endDate || "2099-12-31")
+                : true;
+            const matchKeyword =
+            keyword ? item.content.title.includes(keyword) || item.content.description.includes(keyword) : true;
+
+            return matchCity && matchEventType && matchDate && matchKeyword;
+        });
+
+        setFilteredData(filteredResults);
+        setShowSearchModal(false);
+        resetForm();
+    };
+
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setKeyword(value);
+    };
+
+    // 切換地區選單
+    const toggleDropdownCity = () => {
+        setIsCityDropdownOpen((prev) => !prev);
+        setIsTypeDropdownOpen(false); // 確保另一個選單關閉
+    };
+
+    // 選擇城市
+    const selectOptionCity = (city) => {
+        setSelectedCity(city);
+        setIsCityDropdownOpen(false); // 選擇後關閉選單
+    };
+
+    // 切換類型選單
+    const toggleDropdownType = () => {
+        setIsTypeDropdownOpen((prev) => !prev);
+        setIsCityDropdownOpen(false); // 確保另一個選單關閉
+    };
+
+    // 選擇活動類型
+    const selectOptionType = (eventType) => {
+        setSelectedType(eventType);
+        setIsTypeDropdownOpen(false); // 選擇後關閉選單
+    };
+
+     // 重設表單資料
+    const resetForm = () => {
+        setSelectedCity("");
+        setSelectedType("");
+        setStartDate("");
+        setEndDate("");
+        setPrice("");
+        setKeyword("");
+    };
+
+
+
+    const { t } = useTranslation();
+
+    if (error) {
+        return <div className="alert alert-danger">{error}</div>;
+    }
+
+    return (
+        <div className="home">
+            <section className="banner-section">
+                <div className="container">
+                    <h2 className="banner-section-title" dangerouslySetInnerHTML={{ __html: t('searchViewInfo') }}></h2>
+                    <div className="search-wrapper">
+                        <div className="search-input-group">
+                            <div className="search-input-wrap">
+                            {isSearchVisible &&<span className="material-icons search-icon">search</span>}
+                                <input 
+                                    type="text" 
+                                    className="search-input form-control" 
+                                    placeholder={t('banner.searchPlacehoder')}
+                                    value={keyword}
+                                    onChange={handleInputChange}
+                                    />
+                            </div>
+                            <div className="search-button-more-wrap" onClick={handleOpenModalSearch}>
+                                <span className="material-icons search-button-more">tune</span>
+                            </div>
+                            <span className="material-icons search-button" onClick={handleSearch}>search</span>
+                        </div>
+                        <div className="quick-filters">
+                            <span className="quick-filter">{t('banner.taichung')}</span>
+                            <span className="quick-filter">{t('banner.taipei')}</span>
+                            <span className="quick-filter">{t('banner.kaohsiung')}</span>
+                            <span className="quick-filter">{t('banner.tainan')}</span>
+                        </div>
+                    </div>
+                    {/* 搜尋彈窗 */}
+                    {showSearchModal && (
+                        <div className="modal fade show" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+                        <div className="modal-dialog modal-dialog-centered search-modal">
+                            <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">{t('form.searchMore')}</h5>
+                            </div>
+                            <div className="modal-body">
+                                {/* 日期選擇 */}
+                                <div className="mb-3 modal-body-list">
+                                    <span className="material-icons">today</span>
+                                    <DatePicker
+                                        selected={startDate}
+                                        onChange={(date) => setStartDate(date)}
+                                        dateFormat="yyyy-MM-dd"
+                                        placeholderText={t('form.startDate')}
+                                        className="date-input"
+                                        calendarClassName="custom-calendar"
+                                    />
+                                </div>
+                                <div className="mb-3 modal-body-list">
+                                    <span className="material-icons">today</span>
+                                    <DatePicker
+                                        selected={endDate}
+                                        onChange={(date) => setEndDate(date)}
+                                        dateFormat="yyyy-MM-dd"
+                                        placeholderText={t('form.endDate')}
+                                        className="date-input"
+                                        calendarClassName="custom-calendar"
+                                    />
+                                </div>
+
+                                {/* 地區選擇 */}
+                                <div className="mb-3 modal-body-list">
+                                    <span className="material-icons">location_on</span>
+                                    <div className="form-control-dropdown">
+                                        {/* 選擇框 */}
+                                        <div className={`dropdown-selected ${selectedCity ? "selected" : ""}`}  onClick={toggleDropdownCity}>
+                                            {selectedCity || t("form.area")}
+                                        </div>
+                                        {/* 下拉選單 */}
+                                        {isCityDropdownOpen  && (
+                                            <ul className="dropdown-list">
+                                            {cities.map((city, index) => (
+                                                <li key={index} onClick={() => selectOptionCity(city)}>
+                                                {city}
+                                                </li>
+                                            ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* 類型選擇 */}
+                                <div className="mb-3 modal-body-list">
+                                    <span className="material-icons">directions_walk</span>
+                                    <div className="form-control-dropdown">
+                                        {/* 選擇框 */}
+                                        <div className={`dropdown-selected ${selectedCity ? "selected" : ""}`}  onClick={toggleDropdownType}>
+                                            {selectedType  || t("form.eventType")}
+                                        </div>
+                                        {/* 下拉選單 */}
+                                        {isTypeDropdownOpen && (
+                                            <ul className="dropdown-list">
+                                            {eventTypes.map((eventType, index) => (
+                                                <li key={index} onClick={() => selectOptionType(eventType)}>
+                                                {eventType}
+                                                </li>
+                                            ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                
+                                </div>
+
+                                {/* 價格輸入 */}
+                                <div className="mb-3 modal-body-list">
+                                    <span className="material-icons">paid</span>
+                                    <input type="text" className="form-control" value={price} placeholder={t('form.price')} onChange={(e) => setPrice(e.target.value)} />
+                                </div>
+
+                                {/* 搜尋關鍵字 */}
+                                <div className="mb-3 modal-body-list">
+                                    <span className="material-icons">search</span>
+                                    <input type="text" className="form-control" value={keyword} placeholder={t('form.keyword')} onChange={(e) => setKeyword(e.target.value)} />
+                                </div>
+                            </div>
+
+                            {/* 底部按鈕 */}
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={handleCloseModalSearch}>
+                                {t('common.cancel')}
+                                </button>
+                                <button type="button" className="btn btn-primary" onClick={handleSearch}>
+                                {t('common.search')}
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    )}
+                    
+                </div>
+            </section>
+
+            <section className="section popular-event-section">
+                <div className="container">
+                    <div className="main-text text-center">
+                        <h2 className="section-title">{t('activity.popularEventTitle')}</h2>
+                        <p className="section-subtitle">{t('activity.popularEventSubTitle')}</p>
+                    </div>
+                    <div className="row main-body">
+                    {loading ? (
+                        <div className="col-12">
+                            <p className="text-center">{t('common.loading')}</p>
+                        </div>
+                    ) : filteredData.length > 0 ? (
+                        filteredData.map((item) => (
+                            <div className="col-md-6 col-lg-4" key={item.id}>
+                                <ActivityCard
+                                    {...item}
+                                    onFavoriteToggle={(id) => {
+                                        setActivityData((prevData) =>
+                                            prevData.map((activity) =>
+                                                activity.id === id
+                                                    ? { ...activity, isFavorited: !activity.isFavorited }
+                                                    : activity
+                                            )
+                                        );
+                                    }}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="col-12">
+                            <p className="text-center">{t('common.noData')}</p> {/* 顯示目前沒資料 */}
+                        </div>
+                    )}
+                    </div>
+                    <button className="btn btn-primary" onClick={handleNavigate}>{t('activity.moreEvents')}</button>
+                </div>
+            </section>
+
+            <section className="section choosing-section">
+                <div className="container">
+                    <h2 className="section-title text-center py-4">{t('choosing.mainTitle')}</h2>
+                    <div className="main-body">
+                        <div className="main-body-section row">
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src={ beach } alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.culturalExperienceTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.culturalExperienceText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src={ communication } alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.reservationPlatformTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.reservationPlatformText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="main-body-section row">
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src={ fishing } alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.recommendationsTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.recommendationsText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-5 text-center choosing-section-content-wrap">
+                                <div className="choosing-section-content">
+                                    <img src={ travel } alt="..." />
+                                    <div className="main-card-content">
+                                        <h5 className="card-title">{t('choosing.content.DeepConnectionTitle')}</h5>
+                                        <p className="card-text">{t('choosing.content.DeepConnectionText')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="section journal-section">
+                <div className="container">
+                    <div className="main-text text-center">
+                        <h2 className="section-title">{t('journal.title')}</h2>
+                        <p className="section-subtitle">{t('journal.subTitle')}</p>
+                    </div>
+                    <div className="row main-body">
+                        {journalData.length > 5 ? (
+                            <Swiper
+                                modules={[Navigation]}
+                                spaceBetween={20}
+                                slidesPerView={5} // 每次輪播顯示 1 筆資料
+                                loop={true}
+                                navigation={{
+                                    prevEl: '.custom-prev',
+                                    nextEl: '.custom-next',
+                                }}
+                                pagination={{ clickable: true }}
+                                breakpoints={{
+                                    375: {
+                                        slidesPerView: 2, // 顯示五筆
+                                    },
+                                    768: {
+                                        slidesPerView: 3, // 顯示五筆
+                                    },
+                                    1024: {
+                                        slidesPerView: 4, // 顯示五筆
+                                    },
+                                    1400: {
+                                        slidesPerView: 5, // 顯示五筆
+                                    },
+                                }}
+                            >
+                                {journalData.map((item) => (
+                                    <SwiperSlide key={item.id}>
+                                        <BlogCard
+                                            image={item.images}
+                                            date={item.date}
+                                            title={item.title}
+                                            body={item.body}
+                                        />
+                                    </SwiperSlide>
+                                ))}
+                                {/* 自定義導航按鈕 */}
+                                <div className="swiper-button-wrap">
+                                    <div className="swiper-button-next custom-next">
+                                        <span className="material-icons">chevron_left</span>
+                                    </div>
+                                    <div className="swiper-button-prev custom-prev">
+                                        <span className="material-icons">chevron_right</span>
+                                    </div>
+                                </div>
+                            </Swiper>
+                        ) : (
+                            journalData.map((item) => (
+                                <BlogCard
+                                    key={item.id}
+                                    image={item.images}
+                                    date={item.date}
+                                    title={item.title}
+                                    body={item.body}
+                                />
+                            ))
+                        )}
+                    </div>
+                </div>
+            </section>
+
+            <section className="section reviews-section">
+                <div className="container">
+                    <h2 className="section-title text-center">{t('eventReviews')}</h2>
+                    <div className="row main-body">
+                        {reviews.length > 0 ? ( 
+                            reviews.map((review) => (
+                            <div className="col-md-6 col-lg-4" key={review.id}>
+                                <ReviewCard
+                                    key={review.id}
+                                    avatar={review.user.avatar}
+                                    name={review.user.name}
+                                    rating={review.rating}
+                                    activityTitle={review.activityTitle}
+                                    reviewContent={review.reviewContent}
+                                />
+                            </div>
+                            ))
+                        ) : (
+                            <p className='text-center'>{t('common.loading')}</p>
+                        )}
+                    </div>
+                </div>
+            </section>
+
+            <div className={`back-to-top ${showButton ? "show" : ""}`} onClick={scrollToTop}>
+                <span className="material-icons">arrow_upward</span>
+            </div>
+        </div>
+    );
 };
 
 export default Home;

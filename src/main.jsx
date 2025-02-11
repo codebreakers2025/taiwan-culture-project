@@ -1,11 +1,12 @@
-import { StrictMode } from 'react'
+import { HashRouter as Router } from 'react-router-dom';
 import { createRoot } from 'react-dom/client'
+import App from './App'
+import '@/i18n';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import App from './App'
+import '@/assets/css/main.scss';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
+const app = createRoot(document.getElementById('root'));
+app.render(
     <App />
-  </StrictMode>,
-)
+);

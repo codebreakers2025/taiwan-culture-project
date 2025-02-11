@@ -1,22 +1,59 @@
 // 全局樣式
 
-$primary-color: #007bff;
-$secondary-color: #6c757d;
+:root {
+  /* 字體設定 */
+  --font-primary: 'Noto Sans TC', sans-serif;
+  
+  /* 字重設定 */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
 
-button {
-  font-family: Arial, sans-serif;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  /* 字體大小 */
+  --font-size-base: 16px;
+  --font-size-small: 14px;
+  --font-size-large: 18px;
+
+  /* 色彩設定 */
+  --color-primary: #4DAAB0;
+  --color-secondary: #EC6800;
+  --color-background: #ffffff;
+  --color-text: #616161;
+
+  /* 間距設定 */
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 24px;
 }
 
-button.primary {
-  background-color: $primary-color;
-  color: white;
+body {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
 }
 
-button.secondary {
-  background-color: $secondary-color;
-  color: white;
+p {
+  margin-bottom: 0;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.content h1 {
+  font-size: 2rem;
+  color: #333;
 }
