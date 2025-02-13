@@ -112,6 +112,41 @@
       "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
       "date": "2025-01-25",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
+    },
+    {
+      "id": 6,
+      "title": "注入創新泉源的職人手做工作坊",
+      "body": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
+      "date": "2025-01-21",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-1.png"
+    },
+    {
+      "id": 7,
+      "title": "喚醒感官的茶道體驗之旅",
+      "body": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
+      "date": "2025-01-22",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-2.png"
+    },
+    {
+      "id": 8,
+      "title": "編織時光的草編藝術課程",
+      "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
+      "date": "2025-01-23",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
+    },
+    {
+      "id": 9,
+      "title": "尋找味覺記憶的手作醬料體驗",
+      "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
+      "date": "2025-01-24",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
+    },
+    {
+      "id": 10,
+      "title": "染上屬於你的藍：靛藍染布體驗",
+      "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
+      "date": "2025-01-25",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
     }
     
   ],
