@@ -1,0 +1,19 @@
+
+.page-container{
+    .content {
+        align-items: flex-start;
+        padding: 50px 0;
+    }
+    .row {
+        div {
+            div {
+                background-color: black;
+            }
+            &:last-child {
+                div {
+                    background-color: rgb(192, 122, 122);
+                }
+            }
+        }
+    }
+}
