@@ -43,9 +43,22 @@
       flex-direction: row;
       gap: 32px;
       margin-top: 0;
+      .nav-link{
+        padding: 0;
+        &:hover {
+          transition: all .3s;
+          opacity: 0.7;
+        }
+      }
     }
     .footer-menu {
       flex-direction: row;
+      .logo-img {
+        &:hover {
+          transition: all .3s;
+          opacity: 0.7;
+        }
+      }
     }
   }
 }

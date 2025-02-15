@@ -6,7 +6,7 @@ import { getActivity, getJournal, getReviews } from '@/utils/api';
 
 const About = () => {
     return (
-      <div className="page-container">
+      <div className="test-container">
         <div className="content">
           <div className="container">
             <div className="row">
