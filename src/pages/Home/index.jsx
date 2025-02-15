@@ -9,10 +9,10 @@ import React, { useEffect, useState } from 'react';
 import { getActivity, getJournal, getReviews } from '@/utils/api';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "@/components/DatePicker/DatePicker.scss"; // 自訂 CSS
+import "@/components/DatePicker/DatePicker.scss"; 
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -36,7 +36,7 @@ const Home = () => {
     // 轉址功能
     const navigate = useNavigate();
     const handleNavigate = () => {
-        navigate("/activityList");
+        navigate("/activity-list");
         window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
     };
     
@@ -96,21 +96,21 @@ const Home = () => {
         setLoading(true);
         setError(null);
         try {
-            const response  = await getActivity(); // 呼叫 API 函數
+            const response  = await getActivity(); 
             const result = response.slice(0, 3); // 只取前三筆
-            setActivityData(result); // 將取得的資料設置到 state
+            setActivityData(result); 
             setFilteredData(result); // 預設顯示全部資料
-        } catch (err) {
-            setError('Failed to fetch users');
+        } catch (error) {
+            setError('Error fetching activity:', error);
         } 
     };
     const fetchGetJournal = async () => {
         setLoading(true);
         try {
-            const response  = await getJournal(); // 呼叫 API 函數
-            setJournalData(response); // 將取得的資料設置到 state
-        } catch (err) {
-            setError('Failed to fetch users');
+            const response  = await getJournal(); 
+            setJournalData(response); 
+        } catch (error) {
+            setError('Error fetching journal:', error);
         } finally {
             setLoading(false);
         }
@@ -120,9 +120,9 @@ const Home = () => {
         try {
             const response = await getReviews();
             const result = response.slice(0, 6); // 只取前六筆
-            setReviews(result); // 將 API 資料存入 reviews
-        } catch (err) {
-            setError("Failed to fetch reviews");
+            setReviews(result); 
+        } catch (error) {
+            setError('Error fetching reviews:', error);
         }finally {
             setLoading(false);
         }
@@ -472,13 +472,14 @@ const Home = () => {
                             </Swiper>
                         ) : (
                             journalData.map((item) => (
-                                <BlogCard
-                                    key={item.id}
-                                    image={item.images}
-                                    date={item.date}
-                                    title={item.title}
-                                    body={item.body}
-                                />
+                            <div className="col-custom">
+                                <div className="blog-item">
+                                    <img src={item.images} alt={item.title} />
+                                    <p className="card-date">{item.date}</p>
+                                    <h5 className="card-title">{item.title}</h5>
+                                    <p className="card-text">{item.body}</p>
+                                </div>
+                            </div> 
                             ))
                         )}
                     </div>

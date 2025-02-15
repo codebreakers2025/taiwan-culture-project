@@ -1,4 +1,3 @@
-import { HashRouter as Router } from 'react-router-dom';
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import '@/i18n';
@@ -8,7 +7,5 @@ import '@/assets/css/main.scss';
 
 const app = createRoot(document.getElementById('root'));
 app.render(
-    <Router>
-      <App />
-    </Router>
+    <App />
 );
