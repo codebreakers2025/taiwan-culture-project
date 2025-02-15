@@ -2,10 +2,15 @@ import axios from 'axios';
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwancultureproject.onrender.com'
- : 'http://localhost:3001'
+ : 'http://localhost:3002'
 
-export const getActivity = async () => {
+export const getActivityAll = async () => {
     const response = await axios.get(`/api/activity`);
+    return response.data; 
+};
+
+export const getActivitys = async (id) => {
+    const response = await axios.get(`/api/activity/${id}`);
     return response.data; 
 };
 
@@ -60,6 +65,42 @@ export const updateAvatar = async (formData) => {
     return response.data;
 };
 
+export const getFavoriteAll = async () => {
+    const response = await axios.get(`/api/favorites`);
+    return response.data;
+};
+
+export const getFavorites = async (userId) => {
+    const response = await axios.get(`/api/favorites?userId=${userId}`);
+    return response.data;
+};
+
+export const addFavorites = async (data) => {
+    const response = await axios.post(`/api/favorites`, data);
+    return response.data;
+};
 
 
+export const deleteFavorites  = async (id) => {
+    const response = await axios.delete(`/api/favorites/${id}`);
+    return response.data;
+};
+
+
+
+
+export const addReviews = async (data) => {
+    const response = await axios.post(`/api/reviews`, data);
+    return response.data;
+};
+
+export const updateReviews = async (id) => {
+    const response = await axios.post(`/api/reviews${id}`);
+    return response.data;
+};
+
+export const deleteReviews = async (id) => {
+    const response = await axios.delete(`/api/reviews/${id}`);
+    return response.data;
+};
 

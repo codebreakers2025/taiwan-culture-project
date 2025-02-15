@@ -115,7 +115,10 @@ const Header = () => {
         updateUserData({});
 
         // 顯示登出成功訊息
-        alert("登出成功！");
+        Swal.fire({
+            title: "登出成功！",
+            icon: "success"
+        })
 
         // 關閉 modal
         handleCloseModal();

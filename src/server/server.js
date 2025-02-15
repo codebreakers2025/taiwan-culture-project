@@ -14,7 +14,7 @@ const JWT_SECRET_KEY = require("json-server-auth/dist/constants").JWT_SECRET_KEY
 // 創建一個 express 實體
 const app = express();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 
 const server = jsonServer.create();
 const router = jsonServer.router("src/json/db.json");
