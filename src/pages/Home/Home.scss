@@ -355,13 +355,14 @@
 
 .journal-section {
   .blog-item {
+    margin-bottom: 20px;
     img {
       width: 100%;
       max-height: 240px;
       object-fit: cover;
     }
     .card-title {
-      height: 48px;
+      height: auto;
       font-size: $text-font-header-5;
       font-weight: var(--font-weight-bold);
       margin: 8px 0;
@@ -452,6 +453,14 @@
 }
 
 /* 響應式設計 */
+@media (min-width: 576px) {
+  .journal-section {
+    .col-custom {
+      width: 50%;
+    }
+  }
+}
+
 
 @media (min-width: 768px) {
   .banner-section {
@@ -470,13 +479,18 @@
       }
   }
 
-
-
   .reviews-section {
     background: url('/img/layouts/footer.png') no-repeat;
     background-size: cover;
     h2 {
       padding-top: 120px;
+    }
+  }
+
+  
+  .journal-section {
+    .col-custom {
+      width: 33.3333%;
     }
   }
 }
@@ -505,11 +519,19 @@
       }
     }
   }
+  .journal-section {
+    .col-custom {
+      width: 20%;
+      .blog-item {
+        .card-title {
+          height: 48px;
+        }
+      }
+    }
+  }
 }
 
-@media (min-width: 992px) {
-  
-}
+
 
 @media (max-width: 1199px) {
   .choosing-section .choosing-section-content-wrap .choosing-section-content .main-card-content {
@@ -523,14 +545,36 @@
   }
 }
 
+@media (max-width: 991px) {
+  
+}
+
 @media (max-width: 577px){
   .home .back-to-top {
     display: none;
   }
+  .journal-section {
+    .col-custom {
+      width: 80%;
+      margin: auto;
+      .blog-item {
+        img {
+          border-radius: 40px;
+        }
+      }
+    }
+  }
+
 }
 
 @media (max-width: 375px) {
-  .journal-section .swiper-slide {
+    .journal-section {
+      .col-custom {
+        width: 100%;
+        margin: auto;
+      }
+      .swiper-slide {
         width: 100% !important;
+    }
     }
 }
