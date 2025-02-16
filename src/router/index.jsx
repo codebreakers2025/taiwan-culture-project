@@ -3,15 +3,15 @@ import Home from '@/pages/Home';
 import ActivityList from '@/pages/ActivityList';
 import Journal from '@/pages/Journal';
 
-import CollectionList from '@/pages/MemberCenter/CollectionList';
-import PersonalData from '@/pages/MemberCenter/PersonalData';
-import OrderManagement from '@/pages/MemberCenter/OrderManagement';
-import ActivityReview from '@/pages/MemberCenter/ActivityReview';
-import SignIn from '@/pages/MemberCenter/SignIn';
-import ActivityPoints from '@/pages/MemberCenter/ActivityPoints';
-import CustomerSupport from '@/pages/MemberCenter/CustomerSupport';
-import Center from '@/pages/MemberCenter/Center';
-import Settings from '@/pages/MemberCenter/Settings';
+import CollectionList from '@/pages/Member/CollectionList';
+import PersonalData from '@/pages/Member/PersonalData';
+import OrderManagement from '@/pages/Member/OrderManagement';
+import ActivityReview from '@/pages/Member/ActivityReview';
+import SignIn from '@/pages/Member/SignIn';
+import ActivityPoints from '@/pages/Member/ActivityPoints';
+import CustomerSupport from '@/pages/Member/CustomerSupport';
+import Center from '@/pages/Member/Center';
+import Preferences from '@/pages/Member/Preferences';
 
 import Header from '@/layouts/Header';
 import Footer from '@/layouts/Footer';
@@ -100,7 +100,7 @@ const router = createHashRouter(
             },
             {
               path: 'settings',
-              element: <Settings />,
+              element: <Preferences />,
             }
           ]
         }

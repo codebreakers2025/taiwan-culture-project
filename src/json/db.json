@@ -34,6 +34,11 @@
       "email": "abc@gmail.com",
       "password": "$2a$10$FZOV8DjnMrP6Is/LjTd3Cec8JVyZszBP04YNhIm0YTwjC8DP.jUA6",
       "id": 7
+    },
+    {
+      "email": "qqq@gmail.com",
+      "password": "$2a$10$dVkRZP/HgXHz8EfpVLMg9e5gdP4Amo8JU1ySdqYc5zU1P/l5gy3Kq",
+      "id": 8
     }
   ],
   "activity": [
@@ -341,6 +346,18 @@
       "countryCode": "+1",
       "phoneNumber": "99123456",
       "userId": 4
+    },
+    {
+      "id": 5,
+      "lastName": "Hong",
+      "firstName": "Emaily",
+      "nickName": "漠漠",
+      "gender": "女生",
+      "birthday": "2025-02-10",
+      "country": "台灣",
+      "countryCode": "+886",
+      "phoneNumber": "988123456",
+      "userId": 8
     }
   ]
 }
