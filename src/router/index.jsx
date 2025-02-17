@@ -1,11 +1,13 @@
 import { createHashRouter, Outlet } from "react-router-dom";
 import Home from '@/pages/Home';
-import ActivityList from '@/pages/ActivityList';
+import ActivityList from '@/pages/ActivityList/ActivityListPage';
+import ActivityDetailPage from '@/pages/ActivityList/ActivityDetailPage';
 import Journal from '@/pages/Journal';
 
 import CollectionList from '@/pages/Member/CollectionList';
 import PersonalData from '@/pages/Member/PersonalData';
-import OrderManagement from '@/pages/Member/OrderManagement';
+import OrderListPage from '@/pages/Member/OrderManagement/OrderListPage';
+import OrderDetailPage from '@/pages/Member/OrderManagement/OrderDetailPage';
 import ActivityReview from '@/pages/Member/ActivityReview';
 import SignIn from '@/pages/Member/SignIn';
 import ActivityPoints from '@/pages/Member/ActivityPoints';
@@ -55,11 +57,15 @@ const router = createHashRouter(
           element: <Home />,
         },
         {
-          path: 'activity-list',
+          path: '/activity-list',
           element: <ActivityList />,
         },
         {
-          path: 'journal',
+          path: '/activity-list/detail',
+          element: <ActivityDetailPage />,
+        },
+        {
+          path: '/journal',
           element: <Journal />,
         },
         {
@@ -71,8 +77,12 @@ const router = createHashRouter(
               element: <PersonalData />,
             },
             {
-              path: 'order-management',
-              element: <OrderManagement />,
+              path: 'order-management/list',
+              element: <OrderListPage />,
+            },
+            {
+              path: 'order-management/detail',
+              element: <OrderDetailPage />,
             },
             {
               path: 'activity-review',
