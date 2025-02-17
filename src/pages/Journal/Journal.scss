@@ -1,10 +1,12 @@
+
 .showContainer{
     width: 1296px;
 }
-
 .showContainer .row{
     margin: 0 !important;
 }
+
+/*電腦版大圖*/
 .mainImage-container{
     border: none;
     padding: 0 !important;
@@ -111,7 +113,8 @@ hr {
     margin-bottom: 12px;
 }
 .actPic{
-    border-radius: 24px !important;
+    overflow: hidden;
+    border-radius: 40px !important;
 }
 .site{
     margin-bottom: 16px;
@@ -193,6 +196,9 @@ margin-right: 32px;
 }
 .ratingerImg{
     margin-right: 16px;
+}
+.singleRating{
+    margin-right: 5px !important;
 }  
 .singleRating i {
     height: 100%; /* 填滿高度 */
@@ -262,24 +268,107 @@ margin-right: 32px;
     width: 528px !important;
     height: 121px !important;
 }
+
+/* CallToAction手機板*/
 .mobileView{
     display: none !important;
 } 
+
+/*預約日期*/
+.calendar-header p{
+    width: 100%;
+    font-family: "Noto Sans TC";
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 19.2px;
+}
+.calendar {
+    max-width: 500px;
+    margin: auto;
+    padding: 10px;
+}
+.calendar-header {
+    width: 100%;
+    padding: 12px 12px 4px 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+.week-days, .days {
+    display: grid;
+    grid-template-columns: repeat(7, 14%);
+    text-align: center;
+}
+.week-days {
+    font-weight: bold;
+}
+.day {
+    aspect-ratio: 1 / 1; /* 讓 day 保持正方形 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.day button {
+    color: #000000;
+    margin-top: 5px;
+    width: 100%;
+    height: 100%;
+    font-size: 0.8em;
+    background-color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+.day button:hover {
+    background-color: #4DAAB0;
+}
+.getActDateFooter{
+    width: 100%;
+    height: 20%;
+    border-top: 1px solid #eeeeee;
+    padding: 16px 12px ;
+}
+.getActDateFooter button{
+    width: 100%;
+    height: 51px;   
+    border-radius: 100px;
+    background-color: #4DAAB0;
+    color: #fff;
+    border: none;
+}
+.getActDateFooter button:hover{
+    border: 1px solid #4DAAB0;
+    background-color: #fff;
+    color: #4DAAB0;
+
+}
+
+.modalContent{
+    border-radius: 24px !important;
+}
   
 /* 中小螢幕 (寬度小於 960px) */
 @media (max-width: 1295px) {
     .showContainer{
         width: auto;
     }
+
+    /* 電腦版CallToAction 隱藏*/
     .col-lg-4{
         display: none !important;
     }
+
+    /*右邊小圖隱藏*/
     .rightSide{
         display: none;
     }
+
+    /*分類*/
     .classification{
         padding: 0 12px !important;
     }
+
+    /*左邊主圖*/
     .mainPic{
         padding: 0 12px !important;
     }
@@ -290,6 +379,8 @@ margin-right: 32px;
     .mainImage-container img{
         width: 100% !important;
     }
+
+    /*詳細活動介紹*/
     .mainContent{
         padding: 12px !important;
     }
@@ -327,6 +418,8 @@ margin-right: 32px;
         width: 80% !important;
         padding: 0px !important;
     }
+
+    /*用戶頭像*/
     .imageBox{
         width: 100% !important;
         height: 100%;
@@ -338,6 +431,11 @@ margin-right: 32px;
     .ratingStartDiv{
         width: 100% !important;
     }
+    .callbutton{
+        width: 30%;
+    }
+
+    /*手機板CallToAction*/
     .mobileView {
         position: fixed !important;
         display: block !important;
@@ -348,26 +446,26 @@ margin-right: 32px;
         background-color: white; /* 或其他背景顏色 */
         padding: 10px; /* 或其他內邊距 */
     }
-    .callbutton{
-        width: 30%;
-    }
     .actTitleMobile{
         padding: 12px !important;
         background-color: #fff;
-        font-size: 20px !important;
-        line-height: 24px !important;
-        font-weight: 700 !important;
         display: flex;
         height: 75px;
         justify-content: space-between;
         align-items: center;
     }
     .actTitleMobile h2{
+        font-size: 20px !important;
+        line-height: 24px !important;
+        font-weight: 700 !important;
         width: 28%;
         margin: 0 !important;
     }
     .callbutton{
         margin: 0 !important;
+    }
+    .contentText{
+        height: auto !important;
     }
 }
 @media (max-width: 410px) {
@@ -376,5 +474,21 @@ margin-right: 32px;
         width: 70% !important;
         padding: 0px !important;
     }
+    .contentDescribute{
+        font-size: 10px !important;
+    }
+    .actTitleMobile h2{
+        font-size: 16px !important;
+    }
+    .calendar {
+        max-width: 100%;
+    }
+    .day {
+        font-size: 0.8em;
+    }
+    .week-days, .days {
+        grid-template-columns: repeat(7, 14%); /* Adjust to 3 columns for small screens */
+    }    
+   
 }  
 

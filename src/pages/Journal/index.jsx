@@ -1,15 +1,30 @@
+import { ActivityCard, ReviewCard, BlogCard} from '@/components/Card';
 import "./Journal.scss";
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useState , useEffect , useRef } from 'react'; 
 import axios from 'axios';
+import * as bootstrap from "bootstrap"; 
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwancultureproject.onrender.com'
- : 'http://localhost:3001'
+ : 'http://localhost:3002'
 
 const About = () => {
 
+const myModal = useRef(null)
+  const modalRef = useRef(null)
+  
 
+  useEffect(()=>{
+    myModal.current = new bootstrap.Modal(modalRef.current);
+  },[])
+
+  const openModal = () => {
+    myModal.current.show()
+  }
+
+  const closeModal = () => {
+    myModal.current.hide()
+  }
   
 
 return (
@@ -47,6 +62,7 @@ return (
             </div>
         </div>
       </div>
+      {/* 詳細活動 */}
       <div className="mainContent">
       <div className="row g-0" >
               <div className="card col-lg-8 titleArea" >
@@ -80,7 +96,7 @@ return (
                   <hr/>
                     
                 </div>
-
+                {/* 地點 */}
                 <div className="card-body actTitleBody">
                   <div className='siteContent'>
                       <div className='actContentTitle site'>
@@ -95,6 +111,7 @@ return (
                       </div>
                   </div>
                   <hr/>
+                  {/* 活動介紹 */}
                   <div className='activityContent'>
                       <div className='actContentTitle site'>
                         <p>活動介紹</p>
@@ -129,8 +146,9 @@ return (
                              <p className="contentDescribute">傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！</p>
                           </div>
                   </div>
-
-                  <hr/>
+                  <div className="">
+                    <hr/>
+                  </div>
                 {/*活動評價*/}
                 <div className='actContent'>
                       {/*長條圖及星星*/ }
@@ -143,11 +161,11 @@ return (
                             lineHeight:"48px"
                           }}>4.5</span>
                           <div className="d-flex ratingStart">
-                            <i className="bi bi-star-fill text-warning"></i>
-                            <i className="bi bi-star-fill text-warning"></i>
-                            <i className="bi bi-star-fill text-warning"></i>
-                            <i className="bi bi-star-half text-warning"></i>
-                            <i className="bi bi-star"></i>
+                            <span class="material-icons">star</span>
+                            <span class="material-icons">star</span>
+                            <span class="material-icons">star</span>
+                            <span class="material-icons">star</span>
+                            <span class="material-icons">star_half</span>
                           </div>
                           <p className="card-text small"style={{ marginTop:'4.6px',color:"#9E9E9E" }}>2577 則評論</p>
                         </div>
@@ -208,25 +226,24 @@ return (
                        
                       </div>
                        {/*評論區塊 */}  
-                       <div >
+                        <div >
                             <div className="row g-0">
                               <div className="col-1 ratingerImg">
                                 <div className="roundedCircle">
-                                    <img src="https://s3-alpha-sig.figma.com/img/28ff/c488/a36c3a90ed375d62f520a3fb538cd06a?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=kzISCUDyLGt-j4Sh3wafK-nS1FOnmKl0VzWPgystVuw6c3SeyFmunVFLCPkRlCxcVEqy1qKpTCNIAIU5YD8Qx3dlA8g2MTjUadrc9OXbQvNwMZZi40WSRp5OnILdKPZ7fFDgmhvrfBu8l1Mna5SyD~4wjXBMAvdgT9Vn2safNSm260AEetwb9Be6rfxE7eKSjNHN0aDx2sDbPf5Tc5Rzv41Zo21ECYYTmqQ-SRUzJeGppbW2z1n7222e6nY5EXe9KCpgskWxG2bsrBDgtT6wxhCurCgGZa~oJmJ8lSFr7TTzZwZiAOj0ubmmARgeckwh59mmq0EfljOwClrKHgR4Qw__"
+                                    <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png"
                                     alt="..." 
                                     />
                                 </div>
                               </div>
                               {/*單一評論和星星 */}
-                              <div className="col-10 ratingContext">
+                              <div className="col-10">
                                 <div className="d-flex justify-content-between align-items-center">
                                   <span className='ratingName'>技安</span>
                                   <div className='singleRating'>
-                                  <i className="bi bi-star-fill text-warning"></i>
-                                  <i className="bi bi-star-fill text-warning"></i>
-                                  <i className="bi bi-star-fill text-warning"></i>
-                                  <i className="bi bi-star-half text-warning"></i>
-                                  <i className="bi bi-star"></i>
+                                  <span class="material-icons">★</span>
+                                  <span class="material-icons">★</span>
+                                  <span class="material-icons">★</span>
+                                  <span class="material-icons">★</span>
                                   </div>
                      
                                 </div>
@@ -253,7 +270,7 @@ return (
                 <div className="card-body priceAreatitle">
                   <h2 className="actTitle">NT$420起</h2>
                   <div className="callbutton">
-                  <button href="#" className="btn btn-primary">選擇日期</button>
+                  <button href="#" type="button" className="btn btn-primary" onClick={openModal}>選擇日期</button>
                 </div>
                 </div>
               </div>
@@ -265,13 +282,69 @@ return (
         <div className="card-body actTitleMobile">
           <h2 className="">NT$420起</h2>
           <div className="callbutton">
-          <button href="#" className="btn btn-primary">選擇日期</button>
+          <button href="#" type="button" className="btn btn-primary" onClick={openModal}>選擇日期</button>
         </div>
         </div>
       </div>
 
   </div>
-
+  
+  <div className="modal fade" ref={modalRef} tabIndex="-1">
+        <div className="modal-dialog">
+          <div className="modal-content modalContent">
+            <div className="modalBody">
+              <div className="getActDate" >
+                      <div className="calendar">
+                        <div className="calendar-header">
+                            <p>2025年1月</p>
+                        </div>
+                        <div className="week-days">
+                            <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+                        </div>
+                        <div className="days">
+                          <div class="day"><button>1</button></div>
+                          <div class="day"><button>2</button></div>
+                          <div class="day"><button>3</button></div>
+                          <div class="day"><button>4</button></div>
+                          <div class="day"><button>5</button></div>
+                          <div class="day"><button>6</button></div>
+                          <div class="day"><button>7</button></div>
+                          <div class="day"><button>8</button></div>
+                          <div class="day"><button>9</button></div>
+                          <div class="day"><button>10</button></div>
+                          <div class="day"><button>11</button></div>
+                          <div class="day"><button>12</button></div>
+                          <div class="day"><button>13</button></div>
+                          <div class="day"><button>14</button></div>
+                          <div class="day"><button>15</button></div>
+                          <div class="day"><button>16</button></div>
+                          <div class="day"><button>17</button></div>
+                          <div class="day"><button>18</button></div>
+                          <div class="day"><button>19</button></div>
+                          <div class="day"><button>20</button></div>
+                          <div class="day"><button>21</button></div>
+                          <div class="day"><button>22</button></div>
+                          <div class="day"><button>23</button></div>
+                          <div class="day"><button>24</button></div>
+                          <div class="day"><button>25</button></div>
+                          <div class="day"><button>26</button></div>
+                          <div class="day"><button>27</button></div>
+                          <div class="day"><button>28</button></div>
+                          <div class="day"><button>29</button></div>
+                          <div class="day"><button>30</button></div>
+                          <div class="day"><button>31</button></div>
+                        </div>
+                      </div>
+                        
+                          
+              </div>
+            </div>
+            <div className="getActDateFooter">
+              <button type="button" >預約行程</button>
+            </div>
+          </div>
+        </div>
+      </div>
                 
 </div>
 
