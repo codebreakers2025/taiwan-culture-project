@@ -2,6 +2,10 @@ import { createHashRouter, Outlet } from "react-router-dom";
 import Home from '@/pages/Home';
 import ActivityList from '@/pages/ActivityList/ActivityListPage';
 import ActivityDetailPage from '@/pages/ActivityList/ActivityDetailPage';
+import BookingPage1 from '@/pages/ActivityList/Booking/Step1.jsx';
+import BookingPage2 from '@/pages/ActivityList/Booking/Step2.jsx';
+import BookingPage3 from '@/pages/ActivityList/Booking/Step3.jsx';
+import BookingPage4 from '@/pages/ActivityList/Booking/Step4.jsx';
 import Journal from '@/pages/Journal';
 
 import CollectionList from '@/pages/Member/CollectionList';
@@ -63,6 +67,22 @@ const router = createHashRouter(
         {
           path: '/activity-list/detail',
           element: <ActivityDetailPage />,
+        },
+        {
+          path: '/activity-list/booking1',
+          element: <BookingPage1 />,
+        },
+        {
+          path: '/activity-list/booking2',
+          element: <BookingPage2 />,
+        },
+        {
+          path: '/activity-list/booking3',
+          element: <BookingPage3 />,
+        },
+        {
+          path: '/activity-list/booking4',
+          element: <BookingPage4 />,
         },
         {
           path: '/journal',
