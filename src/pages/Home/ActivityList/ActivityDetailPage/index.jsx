@@ -4,7 +4,7 @@ import { useState , useEffect , useRef } from 'react';
 const ActivityDetailPage = () => {
 
 return (
-<div className="container">
+<div className="activity-detail-page container">
 <div className="classification">
             <ul>
               <li>首頁</li>

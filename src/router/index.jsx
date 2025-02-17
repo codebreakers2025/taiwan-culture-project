@@ -1,23 +1,23 @@
 import { createHashRouter, Outlet } from "react-router-dom";
-import Home from '@/pages/Home';
-import ActivityList from '@/pages/ActivityList/ActivityListPage';
-import ActivityDetailPage from '@/pages/ActivityList/ActivityDetailPage';
-import BookingPage1 from '@/pages/ActivityList/Booking/Step1.jsx';
-import BookingPage2 from '@/pages/ActivityList/Booking/Step2.jsx';
-import BookingPage3 from '@/pages/ActivityList/Booking/Step3.jsx';
-import BookingPage4 from '@/pages/ActivityList/Booking/Step4.jsx';
-import Journal from '@/pages/Journal';
+import HomePage from '@/pages/Home/HomePage';
+import ActivityList from '@/pages/Home/ActivityList/ActivityListPage';
+import ActivityDetailPage from '@/pages/Home/ActivityList/ActivityDetailPage';
+import BookingPage1 from '@/pages/Home/ActivityList/Booking/Step1.jsx';
+import BookingPage2 from '@/pages/Home/ActivityList/Booking/Step2.jsx';
+import BookingPage3 from '@/pages/Home/ActivityList/Booking/Step3.jsx';
+import BookingPage4 from '@/pages/Home/ActivityList/Booking/Step4.jsx';
+import Journal from '@/pages/Home/Journal';
 
-import CollectionList from '@/pages/Member/CollectionList';
-import PersonalData from '@/pages/Member/PersonalData';
-import OrderListPage from '@/pages/Member/OrderManagement/OrderListPage';
-import OrderDetailPage from '@/pages/Member/OrderManagement/OrderDetailPage';
-import ActivityReview from '@/pages/Member/ActivityReview';
-import SignIn from '@/pages/Member/SignIn';
-import ActivityPoints from '@/pages/Member/ActivityPoints';
-import CustomerSupport from '@/pages/Member/CustomerSupport';
-import Center from '@/pages/Member/Center';
-import Preferences from '@/pages/Member/Preferences';
+import CollectionList from '@/pages/Home/Member/CollectionList';
+import PersonalData from '@/pages/Home/Member/PersonalData';
+import OrderListPage from '@/pages/Home/Member/OrderManagement/OrderListPage';
+import OrderDetailPage from '@/pages/Home/Member/OrderManagement/OrderDetailPage';
+import ActivityReview from '@/pages/Home/Member/ActivityReview';
+import SignIn from '@/pages/Home/Member/SignIn';
+import ActivityPoints from '@/pages/Home/Member/ActivityPoints';
+import CustomerSupport from '@/pages/Home/Member/CustomerSupport';
+import Center from '@/pages/Home/Member/Center';
+import Preferences from '@/pages/Home/Member/Preferences';
 
 import Login from '@/pages/Admin/Login';
 import Dashboard from '@/pages/Admin/Dashboard';
@@ -29,8 +29,8 @@ import EvaluationManage from '@/pages/Admin/EvaluationManage';
 
 import Header from '@/layouts/Header';
 import Footer from '@/layouts/Footer';
-import Menu from '@/layouts/MemberCenter/Menu';
-import AdminMenu from '@/layouts/Admin/Menu';
+import Menu from '@/layouts/MemberCenterMenu';
+import AdminMenu from '@/layouts/AdminMenu';
 
 const Layout = () => (
   <>
@@ -82,7 +82,7 @@ const router = createHashRouter(
       children: [
         {
           path: '', 
-          element: <Home />,
+          element: <HomePage />,
         },
         {
           path: '/activity-list',

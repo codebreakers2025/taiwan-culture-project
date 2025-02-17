@@ -1,6 +1,6 @@
 import { ReviewCard, BlogCard} from '@/components/Card';
 import { ActivityCard } from '@/components/Card/Activity';
-import './Home.scss';
+import './HomePage.scss';
 import { useTranslation } from 'react-i18next';
 import beach from '@/assets/images/choosing/beach.svg';
 import communication from '@/assets/images/choosing/communication.svg';
@@ -19,7 +19,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 
-const Home = () => {
+const HomePage = () => {
     const [activityData, setActivityData] = useState([]);
     const [journalData, setJournalData] = useState([]);
     const [reviews, setReviews] = useState([]);
@@ -524,4 +524,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default HomePage;
