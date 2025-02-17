@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getReviews, addReviews, updateReviews, deleteFavorites, getActivityAll } from '@/utils/api';
+import { getReviews, addReviews, updateReviews, getActivityAll } from '@/utils/api';
 
 const ActivityReview = () => {
     const [reviews, setReviews] = useState([]);
@@ -49,10 +49,6 @@ const ActivityReview = () => {
          });
     };
 
-    const deleteReview = async (id) => {
-        await deleteFavorites(id);
-        // getReview();
-    };
 
     const updateReview = async (id) => {
         const updatedReview = reviews.find((review) => review.id === id);

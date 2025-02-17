@@ -14,9 +14,11 @@ const CollectionList = () => {
         fetchFavorites(); 
   }, [userId]);
 
+
 // 獲取所有收藏的活動做篩選
 const fetchFavorites = async () => {
     setError(null);
+    setLoading(true);
     try {
         const favoriteResponse  = await getFavoriteAll();
         // 找出使用者的收藏清單
@@ -28,6 +30,8 @@ const fetchFavorites = async () => {
     } catch (error) {
         setError('Error 無法獲取收藏資料:', error);
 
+    } finally {
+        setLoading(false);
     }
 };
 
@@ -46,23 +50,30 @@ const fetchActivities = async (userFavorites) => {
       setActivitiesData(favoritedActivities);
     } catch (error) {
         setError('無法獲取活動資料:', error);
-
-    }
+    } 
 };
 
-
  // 處理收藏狀態改變
- const handleFavorite = async (activityId, newState) => {
-    // 如果取消收藏，從列表中移除該活動
-    if (!newState) {
-        await deleteFavorites(activityId);
-         Swal.fire({
-            title: "取消成功! 已移除我的收藏",
-            icon: "success"
-        })
-        fetchFavorites();
+  const handleFavorite = async (activityId, newState) => {
+    try {
+        console.log("handleFavorite 觸發", activityId, newState); // 檢查是否有執行
+        if (!newState) { 
+            await deleteFavorites(activityId); // 刪除收藏
+            Swal.fire({
+                title: "取消成功! 已移除我的收藏",
+                icon: "success"
+            });
+
+            await fetchFavorites(); // 重新取得收藏清單
+        }
+    } catch (error) {
+        console.error("取消收藏失敗:", error);
+        Swal.fire({
+            title: "取消收藏失敗",
+            icon: "error"
+        });
     }
-  };
+};
 
 
   if (error) {

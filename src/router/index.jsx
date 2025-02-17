@@ -19,9 +19,18 @@ import CustomerSupport from '@/pages/Member/CustomerSupport';
 import Center from '@/pages/Member/Center';
 import Preferences from '@/pages/Member/Preferences';
 
+import Login from '@/pages/Admin/Login';
+import Dashboard from '@/pages/Admin/Dashboard';
+import MemberManage from '@/pages/Admin/MemberManage';
+import OrderListManage from '@/pages/Admin/OrderListManage';
+import BlogManage from '@/pages/Admin/BlogManage';
+import ActivityManage from '@/pages/Admin/ActivityManage';
+import EvaluationManage from '@/pages/Admin/EvaluationManage';
+
 import Header from '@/layouts/Header';
 import Footer from '@/layouts/Footer';
 import Menu from '@/layouts/MemberCenter/Menu';
+import AdminMenu from '@/layouts/Admin/Menu';
 
 const Layout = () => (
   <>
@@ -45,6 +54,21 @@ const MemberLayout = () => (
               <Outlet />
           </div>
         </div>
+      </div>
+    </div>
+  </>
+);
+
+const AdminLayout = () => (
+  <>
+  <div className="admin-page-section">
+    <div className="container-fluid">
+      <div className="row">
+            <AdminMenu />
+            <main className="col-md-10 ms-sm-auto px-md-4">
+              <Outlet />
+            </main>
+          </div>
       </div>
     </div>
   </>
@@ -133,11 +157,43 @@ const router = createHashRouter(
               element: <Preferences />,
             }
           ]
-        }
-
+        },
       ],
-
-    }
+    },
+    {
+      path: '/admin',
+      element: <AdminLayout />,
+      children: [
+        {
+          path: 'login', 
+          element: <Login />,
+        },
+        {
+          path: 'dashboard', 
+          element: <Dashboard />,
+        },
+        {
+          path: 'member',
+          element: <MemberManage />,
+        },
+        {
+          path: 'order-list',
+          element: <OrderListManage />,
+        },
+        {
+          path: 'blog',
+          element: <BlogManage />,
+        },
+        {
+          path: 'activity-list',
+          element: <ActivityManage />,
+        },
+        {
+          path: 'evaluation',
+          element: <EvaluationManage />,
+        }
+      ]
+    },
   ],
 )
 

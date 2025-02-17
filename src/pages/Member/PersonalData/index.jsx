@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo  } from 'react';
+import { useState, useEffect } from 'react';
 import { userSettings, updateUsers, getUsers} from '@/utils/api';
 import './PersonalData.scss';
 import DatePicker from "react-datepicker";

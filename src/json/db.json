@@ -3,6 +3,7 @@
     {
       "email": "admin123@gmail.com",
       "password": "$2a$10$8MB.qmmUwep2EqNPFoLRqOkMPKq8OjVP8t8zeCdhLNIys1/najo.S",
+      "role": "admin",
       "id": 1
     },
     {
@@ -275,16 +276,22 @@
   ],
   "favorites": [
     {
-      "userId": 3,
       "activityId": 1,
+      "userId": 3,
       "isFavorited": true,
       "id": 1
     },
     {
-      "userId": 3,
       "activityId": 2,
+      "userId": 3,
       "isFavorited": true,
       "id": 2
+    },
+    {
+      "activityId": 3,
+      "userId": 3,
+      "isFavorited": true,
+      "id": 3
     }
   ],
   "settings": [

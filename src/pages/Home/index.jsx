@@ -18,6 +18,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+
 const Home = () => {
     const [activityData, setActivityData] = useState([]);
     const [journalData, setJournalData] = useState([]);
@@ -196,7 +197,7 @@ const Home = () => {
         setActivityData(prevData =>
             prevData.map((activity) =>
                 activity.id === id 
-                ? { ...activity, isFavorited: !activity.isFavorited } // 更新 isFavorited 狀態
+                ? { ...activity, isFavorited: newStatus } // 更新 isFavorited 狀態
                 : activity
             )
         );
