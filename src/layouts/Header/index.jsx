@@ -115,7 +115,10 @@ const Header = () => {
         updateUserData({});
 
         // 顯示登出成功訊息
-        alert("登出成功！");
+        Swal.fire({
+            title: "登出成功！",
+            icon: "success"
+        })
 
         // 關閉 modal
         handleCloseModal();
@@ -221,7 +224,7 @@ const Header = () => {
                         <Link className="nav-link" to="/member-center/personal-data" onClick={closeMenu}>{t('member.center')}</Link>
                     </li>
                     <li className="nav-item member-item">
-                        <Link className="nav-link" to="/member-center/order-management" onClick={closeMenu}>{t('member.orderList')}</Link>
+                        <Link className="nav-link" to="/member-center/order-management/list" onClick={closeMenu}>{t('member.orderList')}</Link>
                     </li>
                     <li className="nav-item member-item">
                         <Link className="nav-link" to="/member-center/collection-list" onClick={closeMenu}>{t('member.favoritesList')}</Link>
@@ -281,7 +284,7 @@ const Header = () => {
                                         <Link className="dropdown-item" to="/member-center/personal-data">{t('member.center')}</Link>
                                     </li>
                                     <li>
-                                        <Link className="dropdown-item" to="/member-center/order-management">{t('member.orderList')}</Link>
+                                        <Link className="dropdown-item" to="/member-center/order-management/list">{t('member.orderList')}</Link>
                                     </li>
                                     <li>
                                         <Link className="dropdown-item" to="/member-center/collection-list">{t('member.favoritesList')}</Link>

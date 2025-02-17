@@ -120,7 +120,7 @@ const Menu = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/member-center/order-management" className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="/member-center/order-management/list" className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}>
             <span className="material-icons">receipt_long</span>訂單資訊
           </NavLink>
         </li>

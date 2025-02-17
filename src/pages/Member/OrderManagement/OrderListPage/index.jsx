@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const OrderManagement = () => {
+const OrderListPage = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -25,6 +25,6 @@ const OrderManagement = () => {
   );
 };
 
-export default OrderManagement;
+export default OrderListPage;
 
 

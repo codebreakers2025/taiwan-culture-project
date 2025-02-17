@@ -34,6 +34,11 @@
       "email": "abc@gmail.com",
       "password": "$2a$10$FZOV8DjnMrP6Is/LjTd3Cec8JVyZszBP04YNhIm0YTwjC8DP.jUA6",
       "id": 7
+    },
+    {
+      "email": "qqq@gmail.com",
+      "password": "$2a$10$dVkRZP/HgXHz8EfpVLMg9e5gdP4Amo8JU1ySdqYc5zU1P/l5gy3Kq",
+      "id": 8
     }
   ],
   "activity": [
@@ -148,7 +153,6 @@
       "date": "2025-01-25",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
     }
-    
   ],
   "reviews": [
     {
@@ -210,6 +214,77 @@
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。"
+    },
+    {
+      "text": "test...",
+      "rating": 5,
+      "eventType": "特色體驗",
+      "activityId": "2",
+      "id": 7
+    },
+    {
+      "reviewContent": "",
+      "rating": 5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
+        "name": "訪客"
+      },
+      "eventType": "一日行程",
+      "activityId": "",
+      "text": "AAA",
+      "id": 8
+    },
+    {
+      "reviewContent": "",
+      "rating": 3,
+      "activityTitle": "沉浸式 DIY 調製香水",
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
+        "name": "訪客"
+      },
+      "eventType": "一日行程",
+      "activityId": "",
+      "text": "AAA",
+      "id": 9
+    },
+    {
+      "reviewContent": "ZZZZZZZZZZZZZ",
+      "rating": 5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
+        "name": "訪客"
+      },
+      "text": "ㄇ",
+      "eventType": "特色體驗",
+      "activityId": "",
+      "id": 10
+    },
+    {
+      "reviewContent": "CCC",
+      "rating": 5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
+        "name": "訪客"
+      },
+      "eventType": "一日行程",
+      "id": 11
+    }
+  ],
+  "favorites": [
+    {
+      "userId": 3,
+      "activityId": 1,
+      "isFavorited": true,
+      "id": 1
+    },
+    {
+      "userId": 3,
+      "activityId": 2,
+      "isFavorited": true,
+      "id": 2
     }
   ],
   "settings": [
@@ -271,6 +346,18 @@
       "countryCode": "+1",
       "phoneNumber": "99123456",
       "userId": 4
+    },
+    {
+      "id": 5,
+      "lastName": "Hong",
+      "firstName": "Emaily",
+      "nickName": "漠漠",
+      "gender": "女生",
+      "birthday": "2025-02-10",
+      "country": "台灣",
+      "countryCode": "+886",
+      "phoneNumber": "988123456",
+      "userId": 8
     }
   ]
 }

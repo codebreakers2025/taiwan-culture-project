@@ -1,12 +1,13 @@
-import { ActivityCard, ReviewCard, BlogCard} from '@/components/Card';
+import { ReviewCard, BlogCard} from '@/components/Card';
+import { ActivityCard } from '@/components/Card/Activity';
 import './Home.scss';
 import { useTranslation } from 'react-i18next';
 import beach from '@/assets/images/choosing/beach.svg';
 import communication from '@/assets/images/choosing/communication.svg';
 import fishing from '@/assets/images/choosing/fishing.svg';
 import travel from '@/assets/images/choosing/travel.svg';
-import React, { useEffect, useState } from 'react';
-import { getActivity, getJournal, getReviews } from '@/utils/api';
+import { useEffect, useState } from 'react';
+import { getActivityAll, getJournal, getReviews } from '@/utils/api';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss"; 
@@ -96,7 +97,7 @@ const Home = () => {
         setLoading(true);
         setError(null);
         try {
-            const response  = await getActivity(); 
+            const response  = await getActivityAll(); 
             const result = response.slice(0, 3); // 只取前三筆
             setActivityData(result); 
             setFilteredData(result); // 預設顯示全部資料
@@ -186,6 +187,19 @@ const Home = () => {
         setEndDate("");
         setPrice("");
         setKeyword("");
+    };
+
+
+    // **更新收藏狀態**
+    const handleFavoriteToggle = (id, newStatus) => {
+        console.log(`活動 ${id} 的收藏狀態更改為: ${newStatus}`);
+        setActivityData(prevData =>
+            prevData.map((activity) =>
+                activity.id === id 
+                ? { ...activity, isFavorited: !activity.isFavorited } // 更新 isFavorited 狀態
+                : activity
+            )
+        );
     };
 
 
@@ -343,19 +357,11 @@ const Home = () => {
                             <p className="text-center">{t('common.loading')}</p>
                         </div>
                     ) : filteredData.length > 0 ? (
-                        filteredData.map((item) => (
-                            <div className="col-md-6 col-lg-4" key={item.id}>
+                        filteredData.map((activity, index) => (
+                            <div className="col-md-6 col-lg-4" key={`${activity.id}-${index}`}>
                                 <ActivityCard
-                                    {...item}
-                                    onFavoriteToggle={(id) => {
-                                        setActivityData((prevData) =>
-                                            prevData.map((activity) =>
-                                                activity.id === id
-                                                    ? { ...activity, isFavorited: !activity.isFavorited }
-                                                    : activity
-                                            )
-                                        );
-                                    }}
+                                    {...activity}
+                                    onFavoriteToggle={handleFavoriteToggle}
                                 />
                             </div>
                         ))
