@@ -54,8 +54,7 @@
       "content": {
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
-      },
-      "detailsId": 1
+      }
     },
     {
       "id": 2,
@@ -68,8 +67,7 @@
       "content": {
         "title": "沉浸式 DIY 調製香水",
         "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
-      },
-      "detailsId": 2
+      }
     },
     {
       "id": 3,
@@ -82,8 +80,7 @@
       "content": {
         "title": "天送埤火車站 | 高空繩索體驗 ",
         "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
-      },
-      "detailsId": 3
+      }
     }
   ],
   "activityDetails": [
@@ -95,7 +92,7 @@
         "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
         "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
         "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-4.png"
-    ],
+      ],
       "features": [
         "彩虹眷村的繽紛色彩",
         "高美濕地的夕陽美景",
@@ -255,26 +252,13 @@
       "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
       "activityId": 1
     }
-
   ],
   "favorites": [
     {
       "activityId": 1,
       "userId": 3,
       "isFavorited": true,
-      "id": 1
-    },
-    {
-      "activityId": 2,
-      "userId": 3,
-      "isFavorited": true,
       "id": 2
-    },
-    {
-      "activityId": 3,
-      "userId": 3,
-      "isFavorited": true,
-      "id": 3
     }
   ],
   "settings": [

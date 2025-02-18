@@ -7,7 +7,7 @@ import communication from '@/assets/images/choosing/communication.svg';
 import fishing from '@/assets/images/choosing/fishing.svg';
 import travel from '@/assets/images/choosing/travel.svg';
 import { useEffect, useState } from 'react';
-import { getActivityAll, getJournal, getReviews } from '@/utils/api';
+import { getActivityAll, getJournal, getReviews, getFavorites } from '@/utils/api';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss"; 
@@ -24,6 +24,9 @@ const HomePage = () => {
     const [journalData, setJournalData] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [error, setError] = useState(null);
+
+    const userId = Number(localStorage.getItem("userId"));
+
 
     // input value
     const [isSearchVisible, setIsSearchVisible] = useState(true);
@@ -191,20 +194,6 @@ const HomePage = () => {
     };
 
 
-    // **更新收藏狀態**
-    const handleFavoriteToggle = (id, newStatus) => {
-        console.log(`活動 ${id} 的收藏狀態更改為: ${newStatus}`);
-        setActivityData(prevData =>
-            prevData.map((activity) =>
-                activity.id === id 
-                ? { ...activity, isFavorited: newStatus } // 更新 isFavorited 狀態
-                : activity
-            )
-        );
-    };
-
-
-
     const { t } = useTranslation();
 
     if (error) {
@@ -358,11 +347,13 @@ const HomePage = () => {
                             <p className="text-center">{t('common.loading')}</p>
                         </div>
                     ) : filteredData.length > 0 ? (
-                        filteredData.map((activity, index) => (
-                            <div className="col-md-6 col-lg-4" key={`${activity.id}-${index}`}>
+                        filteredData.map((activity) => (
+                            <div className="col-md-6 col-lg-4" key={activity.id}>
                                 <ActivityCard
-                                    {...activity}
-                                    onFavoriteToggle={handleFavoriteToggle}
+                                    activity={activity}
+                                    userId={userId}
+                                    isCollectedPage={false}
+                                    onToggleFavorite = {()=>{}}
                                 />
                             </div>
                         ))
