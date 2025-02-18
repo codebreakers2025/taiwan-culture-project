@@ -56,6 +56,38 @@
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
       },
       "detailsId": 1
+      ,
+      "activityDetails": [
+        {
+          "id": 1,
+          "activityId": 1,
+          "mainImage":"https://s3-alpha-sig.figma.com/img/665f/b1a8/2d0adf68f28e6c63ac31fc5bd0f59c44?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ap4XkAX~SNt5-M45VK-t57-sMPh3UEXSVIFzpELFXu4nQnBIbuKsaQwCo~dCnKBu2SAEcStJ9QZ8Hbbhk~d2AlHPnRt-QfVB0L9MI6Pz13m25ln1GS~w2tY95nSKqaOl4EiBCk3ggKHkr5YfumT61KuFxV7oImVM2EYSHJDHynaT50yZrYdTZjHHj1m8XEg~c~cVEj9FDCdqN-jWGfhytbr-87Y7X~1hZFGxcgkqajwnC5MPFg2Jd1-1a~WvtEkxbXFrdIqdIvaeNiYQSKAj6gMC~fUF1BG3cFGzVN-YnizjJodW9B0OHit2Y~BruaPVdZCb8VgC73-iIYgXtJk76w__",
+          "images": [
+            "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+            "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
+            "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
+            "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-4.png"
+        ],
+          "features": [
+            "彩虹眷村的繽紛色彩",
+            "高美濕地的夕陽美景",
+            "探索台中老兵的童心"
+          ],
+          "location": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sectionOne": {
+            "title": "經典行程",
+            "description": "介紹彩虹眷村，帶您進入五光十色的世界，並聆聽這些繽紛牆壁背後的故事。"
+          },
+          "sectionTwo": {
+            "title": "高美濕地夕陽",
+            "description": "在這裡，您可以漫步於大自然之間，感受與夕陽交織的美麗時光。"
+          }
+        }
+      ]
     },
     {
       "id": 2,
@@ -84,36 +116,6 @@
         "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
       },
       "detailsId": 3
-    }
-  ],
-  "activityDetails": [
-    {
-      "id": 1,
-      "activityId": 1,
-      "images": [
-        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
-        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
-        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
-        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-4.png"
-    ],
-      "features": [
-        "彩虹眷村的繽紛色彩",
-        "高美濕地的夕陽美景",
-        "探索台中老兵的童心"
-      ],
-      "location": {
-        "latitude": 24.1947,
-        "longitude": 120.6354,
-        "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
-      },
-      "sectionOne": {
-        "title": "經典行程",
-        "description": "介紹彩虹眷村，帶您進入五光十色的世界，並聆聽這些繽紛牆壁背後的故事。"
-      },
-      "sectionTwo": {
-        "title": "高美濕地夕陽",
-        "description": "在這裡，您可以漫步於大自然之間，感受與夕陽交織的美麗時光。"
-      }
     }
   ],
   "journal": [

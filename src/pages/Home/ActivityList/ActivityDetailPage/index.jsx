@@ -1,7 +1,49 @@
 import "./ActivityDetailPage.scss";
+import { getActivitys } from '@/utils/api';
 import { useState , useEffect , useRef } from 'react'; 
+import { useParams } from "react-router-dom";
 
 const ActivityDetailPage = () => {
+
+  const [activityData, setActivityData] = useState([]);
+  const [activityDetailData, setActivityDetailData] = useState({});
+
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const  param  = useParams();
+  const { id } = param
+
+  const myModal = useRef(null)
+  const modalRef = useRef(null)
+
+  useEffect(() => {
+    fetchGetActivity(id);
+  }, [id]); 
+
+
+  const fetchGetActivity = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+        const response  = await getActivitys(id); 
+        console.log("API response:", response);
+        setActivityData(response); 
+        setActivityDetailData(response.activityDetails)
+    } catch (error) {
+        console.error("Error fetching activity:", error);
+        setError('Error fetching activity:', error);
+    } 
+};
+
+
+
+
+console.log(activityDetailData);
+console.log(activityData);
+
+
+
 
 return (
 <div className="activity-detail-page container">
@@ -13,60 +55,49 @@ return (
           </div>
   <div className="showContainer">
       <div className="mainPic">
-        <div className="row no-gutter" >
+
+      {Array.isArray(activityDetailData) ? (
+          activityDetailData.map((item, index) => (
+          <div className="row no-gutter" key={index}>
             {/* 左邊大圖 */}
             <div className="col-12 col-lg-6 no-gutters mainImage-container">
-            <img src="https://s3-alpha-sig.figma.com/img/665f/b1a8/2d0adf68f28e6c63ac31fc5bd0f59c44?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ap4XkAX~SNt5-M45VK-t57-sMPh3UEXSVIFzpELFXu4nQnBIbuKsaQwCo~dCnKBu2SAEcStJ9QZ8Hbbhk~d2AlHPnRt-QfVB0L9MI6Pz13m25ln1GS~w2tY95nSKqaOl4EiBCk3ggKHkr5YfumT61KuFxV7oImVM2EYSHJDHynaT50yZrYdTZjHHj1m8XEg~c~cVEj9FDCdqN-jWGfhytbr-87Y7X~1hZFGxcgkqajwnC5MPFg2Jd1-1a~WvtEkxbXFrdIqdIvaeNiYQSKAj6gMC~fUF1BG3cFGzVN-YnizjJodW9B0OHit2Y~BruaPVdZCb8VgC73-iIYgXtJk76w__"/>
+              <img src={item.mainImage} alt={`Main ${index}`} />
             </div>
 
             {/* 右邊 2x2 小圖 */}
             <div className="col-12 col-lg-6 rightSide">
-                <div className="row no-gutters">
-                  <div className="col-6 no-gutters image-container">
-                    <img src="https://s3-alpha-sig.figma.com/img/6e7a/4ca8/249b7d739c498c36aea46edfb7374312?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Cr3lD7b~ONk7wHBtc66guxcvbgYn-SZfWW5VkxEAeGh4C87EMyOFMTDFrPfyNqEh24lI3m4Zjy9W4OoNrTbUEZA6nX7FlXqoRAf~-KUa46WO8MytW4h0k42ydT-7QX94wp21UDnGBuuXbxDm-HoQyzCsKtP4kUUsVkZvCBM2~8UyRLI7RLk1~Lieu-BzKjXU4dojzQzH18srlfGA-ZHyceVT9SfepD39uA3OSDczwvKtvOOe2PUgwTKlg6gCUr0vj2d9S3E7ODNPcg2IUvMQjLs003~AMnxINLfZvkVIA~tk921oyC~wt23KuCIptdgAfJPztefcwS9PPEjz4GbWIA__" /> {/* 添加 alt 属性 */}
+              <div className="row no-gutters">
+                {item.images?.map((image, imgIndex) => (
+                  <div className="col-6 no-gutters image-container" key={imgIndex}>
+                    <img src={image} alt={`Thumbnail ${index}-${imgIndex}`} />
                   </div>
-                  <div className="col-6 no-gutters image-container">
-                    <img src="https://s3-alpha-sig.figma.com/img/fa61/f654/75a71a516edd356bd7a19bfa84b3892c?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=McNTyd~L82EyUY~3zO-1HBAocly6JUuZUt6rJpep8cHshZa~ZTZM1rqnw6M886obOFGs8kj5ub5sKMvHQGCcmPwg9rfLSaJklQ5OPOnfmsD~YyNS2J7v65RmH8YqxV3vkR0~yZYR9pylVJTUonFRNpXSRfR3lcSXWg9AbRVPJJZ9lAvJ3cDN8pY~yqMamnKgRCvNBmJi3Ha1ZGnkvs8RuYWxoio0zDnyxzaiZ8f~kOVwHZ0cC8etYDFZ1fk4102w4p8bmvBNVAxdqDp4ACnmdfACrGKqt4pDPIbbQvzQnReL4fMX3YbeF8qEV9eIL93Odrr248pTLoJ8UD4EyCFolA__" /> {/* 添加 alt 属性 */}
-                  </div>
-                  <div className="col-6 no-gutters image-container">
-                    <img src="https://s3-alpha-sig.figma.com/img/36a1/37b7/b0e4b81b6a0434bd190934ab66a4b50b?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=b5orXYM-Y4o3iI1lPAYt-GX-jp4CcGtkMiaBveJtLg~L9pYg98cfgbx4iORDg1Y3zv~RqimmHjH6lE6o79htEcBNSMWICu6ucQQmsd6cMP8o60RHLvnRgpUMATEEDZU8bLyzpitIxhXzB-u4kh9bQMcGYom2E9wqgVXtL-FVyknDeFIwQyfutepxNtEL5LLSqZbjFbZAPRixqCj0f3X-qS2jXnIvcQgdErJ~Kaa4Ov4lt72iq0yGOPleB~hb3CrYK8k1mR3abAc1f1Sv1buT1prEYFi3tjeSCBAdDopQaVnP8AQkZcL2CJSazaoB4mx911E3fD0wLIl6iAw7~1270g__" /> {/* 添加 alt 属性 */}
-                  </div>
-                  <div className="col-6 no-gutters image-container">
-                    <img src="https://s3-alpha-sig.figma.com/img/00dd/5c61/5ab96211e580817298a18eb07f1f2247?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=qwG8bL618nwhpqWsVSmX3f5Isxn7QguaIwPMGKN-slj~-rW2Krs-uK9jkf1QPtFrXr-SwGYGHm6kTqr2PGaQ1r9JdqJSpdblNmfDCw7KhkiWcEGJByM-OYmZSx6ZVDeolFo8-rUUFedDOASg44dQkuRNl4ayHptSWd1mwS32vcQi1hyW5J5aVCDeuyWuF5vQjwubb8u2Ctt0rzPdSNgwLJwnczX9L~AwZej4fNl~~S6jpzfBBodjUequwjShaMHhiN-5SJP-fMoUnuZQ-w2sYPxECZe7qWGToKf~IRyfR1XEDHGFb4T4OkWPWLbqO958qpWXIkIWbKZm7jdTVPrxnw__" /> {/* 添加 alt 属性 */}
-                  </div>
-                </div>
+                ))}
+              </div>
             </div>
-        </div>
+          </div>
+          ))
+        ) : (
+          <p>Loading...</p>
+      )}
+
+
+
       </div>
       <div className="mainContent">
       <div className="row g-0" >
               <div className="card col-lg-8 titleArea" >
                 <div className="card-body actTitleBody">
                   <div className='actTitleDiv'>
-                    <h2 className="actTitle">經典行程＆高美濕地一日遊<span className='addFavorites'><i className="bi bi-heart" ></i>加入收藏</span></h2>
-                    <span className='rating'><i className="bi bi-star-fill"></i>4.5(2577) <span className='addFavorites'>3K 人參加過</span></span>
+                    <h2 className="actTitle">{activityData.content?.title}<span className='addFavorites'><i className="bi bi-heart" ></i>加入收藏</span></h2>
+                    <span className='rating'><span class="material-icons">star</span>{activityData.rating}(2577) <span className='addFavorites'>3K 人參加過</span></span>
                   </div>
                   <hr />
                   <div className='actContent'>
                       <div className='actContentTitle'>
                         <p>行程特色</p>
                       </div>
-                      <p className="card-text">即訂即出台北101觀景台門票，掃 QR-Code 快速入場！搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓，俯瞰大台北城市夜景，盡享全視野景觀！</p>
-                        <p>【限時特展活動】</p>
-                        <p>101 x 大谷翔平「50/50紀念球」</p>
-                        <p>夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點:</p>
-                        <li>
-                        1.大谷翔平「50/50紀念球」
-                      </li>
-                      <li>
-                        2.Team Taiwan全員簽名球
-                      </li>
-                      <li>
-                        3.冠軍隊簽名球衣
-                      </li>
-                      <li>
-                        4.比賽實戰壘包
-                      </li>
+                      <p className="card-text">{activityData.content?.description}</p>
+                        
                   </div>
                   <hr/>
                     
@@ -86,40 +117,48 @@ return (
                       </div>
                   </div>
                   <hr/>
-                  <div className='activityContent'>
-                      <div className='actContentTitle site'>
-                        <p>活動介紹</p>
-                      </div>
-                          <div className="actPic">
-                              <img src="https://s3-alpha-sig.figma.com/img/7966/a3f7/3513d7ca29ca28799852ad5e65964237?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=SvotFjXr89s5YMJt5W3MEufGzyMHknWaQdKOkwPl3CSquABl1pcFhD9qlA8CIlkJzbPyizGxeErtiA7NXvCgfPEKAnVmfKFvNf11g6iDA25BEeHBGredEr52BX~gPtNQiIZ4OjBS2vclMOjl4CbH1AvOuXPe5JJjyYTG8PFB-UPobfL7SRxcrb-3rLmgHoa5hlJvCZ6wPn2BXS6H8peo0xKvF~lc~INgTpBWQ6yZ5tMsgww3aStauEvmQ4YXpRgYoZkvSavyuyNF5uVGAxDVB6d5mtDCPVEY3X8e3k2oOqYogJabciuTEQXKmeU2q8gAUIQV9bX0akAxMHGVwTlq3w__" 
-                                alt="" 
-                                className="card-img w-100"
-                                style={{objectFit: "cover"}}
-                              />
-                          
-                          </div>
-                          <div className='contentText'>
-                            <div className='contentTextsmall'>
-                              <p><i className="bi bi-caret-up-fill"></i>高空咖啡廳與紀念品店</p>
-                            </div>
-                             <p className="contentDescribute">在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。</p>
+                  
+                  {Array.isArray(activityDetailData) ? (
+                      activityDetailData.map((item, index) => (
+                          <div className='activityContent'>
+                              <div className='actContentTitle site'>
+                                <p>活動介紹</p>
+                              </div>
+                                  <div className="actPic">
+                                      <img src={activityDetailData[0].images[0]} 
+                                        alt="" 
+                                        className="card-img w-100"
+                                        style={{objectFit: "cover"}}
+                                      />
+                                  
+                                  </div>
+                                  <div className='contentText'>
+                                    <div className='contentTextsmall'>
+                                      <p><i className="bi bi-caret-up-fill"></i>高空咖啡廳與紀念品店</p>
+                                    </div>
+                                    <p className="contentDescribute">{item.sectionOne.description}</p>
+                                  </div>
+
+                                  <div className="actPic">
+                                      <img src={activityDetailData[0].images[1]} 
+                                        alt="" 
+                                        className="card-img w-100"
+                                        style={{objectFit: "cover"}}
+                                      />
+                                  
+                                  </div>
+                                  <div className='contentText'>
+                                    <div className='contentTextsmall'>
+                                      <p><i className="bi bi-caret-up-fill"></i>夜景時光的浪漫與感動</p>
+                                    </div>
+                                    <p className="contentDescribute">{item.sectionTwo.description}</p>
+                                  </div>
                           </div>
 
-                          <div className="actPic">
-                              <img src="https://s3-alpha-sig.figma.com/img/7966/a3f7/3513d7ca29ca28799852ad5e65964237?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=SvotFjXr89s5YMJt5W3MEufGzyMHknWaQdKOkwPl3CSquABl1pcFhD9qlA8CIlkJzbPyizGxeErtiA7NXvCgfPEKAnVmfKFvNf11g6iDA25BEeHBGredEr52BX~gPtNQiIZ4OjBS2vclMOjl4CbH1AvOuXPe5JJjyYTG8PFB-UPobfL7SRxcrb-3rLmgHoa5hlJvCZ6wPn2BXS6H8peo0xKvF~lc~INgTpBWQ6yZ5tMsgww3aStauEvmQ4YXpRgYoZkvSavyuyNF5uVGAxDVB6d5mtDCPVEY3X8e3k2oOqYogJabciuTEQXKmeU2q8gAUIQV9bX0akAxMHGVwTlq3w__" 
-                                alt="" 
-                                className="card-img w-100"
-                                style={{objectFit: "cover"}}
-                              />
-                          
-                          </div>
-                          <div className='contentText'>
-                            <div className='contentTextsmall'>
-                              <p><i className="bi bi-caret-up-fill"></i>夜景時光的浪漫與感動</p>
-                            </div>
-                             <p className="contentDescribute">傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！</p>
-                          </div>
-                  </div>
+                        ))
+                      ) : (
+                        <p>Loading...</p>
+                    )}
 
                   <hr/>
                 {/*活動評價*/}
@@ -262,6 +301,7 @@ return (
       </div>
 
   </div>
+
 
                 
 </div>

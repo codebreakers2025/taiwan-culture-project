@@ -10,15 +10,21 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 const ActivityList = () => {
+  const [searchResultsData, setSearchResultsData] = useState([]);
   const [activityData, setActivityData] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchingValue , setSearchingValue] = useState([]);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // 轉址功能
   const navigate = useNavigate();
-  const handleNavigate = () => {
-      navigate("/activity-list/detail");
+  const handleNavigate = (e , activity) => {
+      navigate(`/activity-list/${activity.detailsId}`);
       window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
   };
 
@@ -35,8 +41,44 @@ const ActivityList = () => {
 
   useEffect(() => {
     fetchGetActivity();
-}, []); 
+}, []);
 
+  const getSearchInput = (value) => {
+    setSearchInput(value)
+
+  }
+  
+  const getSelectedDate = (e) => {
+    setSelectedDate(e.target.value);
+  };
+
+  const getSelectedType = (e) => {
+    setSelectedType(e.target.value);
+  };
+  console.log(selectedType);
+
+  const searchActivity = () => {
+    console.log('Searching for:', { searchInput, selectedDate, selectedType });
+    setSearchingValue([searchInput , selectedDate , selectedType])
+    const searchResults = activityData.filter((item) => {
+      const matchesTitle = searchInput ? item.content?.title?.match(new RegExp(searchInput, 'i')) : true;
+      const matchesDate = selectedDate ? new Date(item.date).toISOString().slice(0, 10) === selectedDate : true;
+      const matchesType = selectedType ? item.eventType === selectedType : true;
+      
+      return matchesTitle && matchesDate && matchesType;
+    });
+    console.log(searchResults);
+    
+    setSearchResultsData(searchResults); // Log the filtered results
+  };
+  
+  console.log(searchingValue);
+  
+  const searchBtn = () => {
+    searchActivity(searchInput)
+
+  }
+  
   return (
     <div className="test-container">
         <div className="container">
@@ -49,7 +91,7 @@ const ActivityList = () => {
                     <span className="title">關鍵字搜尋</span>
                     <div className="list-content">
                       <span className="material-icons">search</span>
-                      <input type="text" className="form-control" placeholder="搜尋關鍵字" value="" />
+                      <input type="text" className="form-control" placeholder="搜尋關鍵字" value={searchInput} onChange={(e) => getSearchInput(e.target.value)}   />
                     </div>
                   </div>
                   {/* 日期選擇 */}
@@ -59,7 +101,7 @@ const ActivityList = () => {
                       <span className="material-icons">today</span>
                       <div className="react-datepicker-wrapper">
                         <div className="react-datepicker__input-container">
-                          <input type="text" placeholder="請選擇開始日期" className="date-input" value="" />
+                          <input type="date" placeholder="請選擇開始日期" className="date-input" value={selectedDate} onChange={getSelectedDate}/>
                         </div>
                       </div>
                     </div>
@@ -82,11 +124,11 @@ const ActivityList = () => {
                       <span className="material-icons">directions_walk</span>
                       <div className="form-control-dropdown">
                         {/* <div className="dropdown-selected ">類型</div> */}
-                        <select name="" id="" className="dropdown-selected ">
+                        <select name="" id="" className="dropdown-selected " value={selectedType} onChange={getSelectedType}>
                           <option value="">請選擇活動類型</option>
-                          <option value="">一日行程</option>
-                          <option value="">特色體驗</option>
-                          <option value="">戶外探索</option>
+                          <option value="一日行程">一日行程</option>
+                          <option value="特色體驗">特色體驗</option>
+                          <option value="戶外探索">戶外探索</option>
                         </select>
                       </div>
                     </div>
@@ -117,106 +159,41 @@ const ActivityList = () => {
                   </div>
                 </div>
                 <div className="footer">
-                  <button type="button" className="btn btn-primary">搜尋</button>
+                  <button type="button" className="btn btn-primary" onClick={searchBtn}>搜尋</button>
                 </div>
               </div>
             </div>
             <div className="col-9">
               <div className="right-content">
-                <div className="row">
-                  <div className="col-md-6 col-lg-4">
-                    <div className="card mb-3">
-                      <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" />
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p className="card-text">2025-01-21·一日行程</p>
-                          <span className="rating">★ 4.5</span>
-                        </div>
-                        <h5 className="card-title">台中: 經典行程＆高美濕地一日遊</h5>
-                        <p className="card-text">探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。</p>
-                        <span className="material-icons favorite-icon favorite_border">favorite_border</span>
-                        <span className="paid mt-1">666</span>
-                        <button className="btn btn-primary activity-btn" onClick={handleNavigate}>查看更多</button>
-                      </div>
+              <div className="row">
+                  {/* Check if no search results and there are search criteria */}
+                  {(searchResultsData.length === 0 && searchingValue.length > 0) ? (
+                    <div className="col-12">
+                      <p>No activities found.</p>
                     </div>
-                  </div>
-                  <div className="col-md-6 col-lg-4">
-                    <div className="card mb-3">
-                        <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png" className="card-img-top" />
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p className="card-text">2025-01-25·特色體驗</p>
-                          <span className="rating">★ 4.8</span>
+                  ) : (
+                    // If there are search results, show them; otherwise, show all activities
+                    (searchResultsData.length > 0 ? searchResultsData : activityData).map((activity, index) => (
+                      <div className="col-md-6 col-lg-4" key={index}>
+                        <div className="card mb-3">
+                          <img src={activity.images} className="card-img-top" alt="activity" />
+                          <div className="card-body">
+                            <div className="d-flex justify-content-between align-items-center">
+                              <p className="card-text">{activity.date}·{activity.eventType}</p>
+                              <span className="rating">★ {activity.rating}</span>
+                            </div>
+                            <h5 className="card-title">{activity.content?.title}</h5>
+                            <p className="card-text">{activity.content?.description}</p>
+                            <span className="material-icons favorite-icon favorite_border">favorite_border</span>
+                            <span className="paid mt-1">666</span>
+                            <button className="btn btn-primary activity-btn" onClick={(e) => handleNavigate(e, activity)}>查看更多</button>
+                          </div>
                         </div>
-                        <h5 className="card-title">台北: 沉浸式 DIY 調製香水</h5>
-                        <p className="card-text">在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。</p>
-                        <span className="material-icons favorite-icon favorite_border">favorite_border</span>
-                        <span className="paid mt-1">980</span>
-                      <button className="btn btn-primary activity-btn" onClick={handleNavigate}>查看更多</button>
                       </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-4">
-                    <div className="card mb-3">
-                      <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png" className="card-img-top" />
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p className="card-text">2025-01-26·特色體驗</p>
-                          <span className="rating">★ 4.7</span>
-                        </div>
-                        <h5 className="card-title">宜蘭: 天送埤火車站 | 高空繩索體驗 </h5>
-                        <p className="card-text">來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。</p>
-                        <span className="material-icons favorite-icon favorite_border">favorite_border</span>
-                        <span className="paid mt-1">350</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-4">
-                    <div className="card mb-3">
-                      <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" />
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p className="card-text">2025-01-21·一日行程</p>
-                          <span className="rating">★ 4.5</span>
-                        </div>
-                        <h5 className="card-title">台中: 經典行程＆高美濕地一日遊</h5>
-                        <p className="card-text">探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。</p>
-                        <span className="material-icons favorite-icon favorite_border">favorite_border</span>
-                        <span className="paid mt-1">666</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-4">
-                    <div className="card mb-3">
-                      <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png" className="card-img-top" />
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p className="card-text">2025-01-25·特色體驗</p>
-                          <span className="rating">★ 4.8</span>
-                        </div>
-                        <h5 className="card-title">台北: 沉浸式 DIY 調製香水</h5>
-                        <p className="card-text">在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。</p>
-                        <span className="material-icons favorite-icon favorite_border">favorite_border</span>
-                        <span className="paid mt-1">980</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-4">
-                    <div className="card mb-3">
-                      <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png" className="card-img-top" />
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p className="card-text">2025-01-26·特色體驗</p>
-                          <span className="rating">★ 4.7</span>
-                        </div>
-                        <h5 className="card-title">宜蘭: 天送埤火車站 | 高空繩索體驗 </h5>
-                        <p className="card-text">來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。</p>
-                        <span className="material-icons favorite-icon favorite_border">favorite_border</span>
-                        <span className="paid mt-1">350</span>
-                      </div>
-                    </div>
-                  </div>
+                    ))
+                  )}
                 </div>
+
               </div>
             </div>
           </div>
