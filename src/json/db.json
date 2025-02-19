@@ -217,10 +217,8 @@
   "reviews": [
     {
       "id": 1,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
-        "name": "漩渦鳴人"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+      "name": "漩渦鳴人",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！",
@@ -228,10 +226,8 @@
     },
     {
       "id": 2,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
-        "name": "奇犽"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
+      "name": "奇犽",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。",
@@ -239,10 +235,8 @@
     },
     {
       "id": 3,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
-        "name": "酷拉皮卡"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
+      "name": "酷拉皮卡",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "自己動手調香水的過程非常有趣！每一步都很講究，最後帶回屬於自己的專屬香味，真的很滿足！",
@@ -250,10 +244,8 @@
     },
     {
       "id": 4,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
-        "name": "宇智波佐助"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
+      "name": "宇智波佐助",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "親手製作蛋黃酥真的超有趣！師傅很熱情，教得也很詳細，吃到自己做的酥香蛋黃酥更是有滿滿的成就感！",
@@ -261,10 +253,8 @@
     },
     {
       "id": 5,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
-        "name": "艾連·葉卡"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
+      "name": "艾連·葉卡",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "一早看到阿里山壯麗的日出景色，真的讓人震撼！森林鐵路的懷舊感也超棒，整個行程都令人陶醉~",
@@ -272,10 +262,8 @@
     },
     {
       "id": 6,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
-        "name": "米卡莎"
-      },
+      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
+      "name": "米卡莎",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",

@@ -494,8 +494,8 @@ const HomePage = () => {
                             <div className="col-md-6 col-lg-4" key={review.id}>
                                 <ReviewCard
                                     key={review.id}
-                                    avatar={review.user.avatar}
-                                    name={review.user.name}
+                                    avatar={review.avatar}
+                                    name={review.name}
                                     rating={review.rating}
                                     activityTitle={review.activityTitle}
                                     reviewContent={review.reviewContent}

@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Button, Table, Modal, Form } from "react-bootstrap";
 import { getActivityAll } from '@/utils/api';
 import './ActivityManage.scss';
+import ActivityModal from '@/components/Modal/Activity';
+
 
 const EventManagement = () => {
   const [events, setEvents] = useState([]);
@@ -19,10 +21,10 @@ const EventManagement = () => {
   
 
   const [showModal, setShowModal] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState({ id: null, name: "", date: "", status: "" });
+  const [currentEvent, setCurrentEvent] = useState({ id: null, status: "" });
 
-  const handleShow = (event = { id: null, name: "", date: "", status: "" }) => {
-    setCurrentEvent(event);
+  const handleShow = () => {
+    // setCurrentEvent(event);
     setShowModal(true);
   };
 
@@ -62,7 +64,6 @@ const EventManagement = () => {
             <th className="py-3 px-4">ID</th>
             <th className="py-3 px-4">名稱</th>
             <th className="py-3 px-4">日期</th>
-            {/* <th>狀態</th> */}
             <th className="py-3 px-4 text-center">操作</th>
           </tr>
         </thead>
@@ -86,47 +87,16 @@ const EventManagement = () => {
       </div>
       </div>
 
+      <ActivityModal 
+        showModal={showModal}
+        handleClose={handleClose}
+        handleSave={handleSave}
+        currentEvent={currentEvent}
+        setCurrentEvent={setCurrentEvent}
+      />
 
 
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{currentEvent.id ? "編輯活動" : "新增活動"}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>活動名稱</Form.Label>
-              <Form.Control
-                type="text"
-                value={currentEvent.name}
-                onChange={(e) => setCurrentEvent({ ...currentEvent, name: e.target.value })}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>活動日期</Form.Label>
-              <Form.Control
-                type="date"
-                value={currentEvent.date}
-                onChange={(e) => setCurrentEvent({ ...currentEvent, date: e.target.value })}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>活動狀態</Form.Label>
-              <Form.Select
-                value={currentEvent.status}
-                onChange={(e) => setCurrentEvent({ ...currentEvent, status: e.target.value })}
-              >
-                <option value="進行中">進行中</option>
-                <option value="已結束">已結束</option>
-              </Form.Select>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>取消</Button>
-          <Button variant="primary" onClick={handleSave}>儲存</Button>
-        </Modal.Footer>
-      </Modal>
+      
     </div>
   );
 };

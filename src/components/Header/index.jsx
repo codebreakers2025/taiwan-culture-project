@@ -70,8 +70,9 @@ const Header = () => {
             setIsLoggedIn(true);
             // 存入 localStorage
             localStorage.setItem("userId", response.user.id);
+            localStorage.setItem("userName", response.user.name);
             updateUserData({
-                name: localStorage.getItem("userName"),
+                name: response.user.name,
                 image: "https://mighty.tools/mockmind-api/content/human/119.jpg", // 使用者圖片的 URL
             });
             Swal.fire({
@@ -98,14 +99,6 @@ const Header = () => {
         setError(null);
         try {
             await register(registerData); // 替換為你的 API 函數
-            localStorage.setItem("userName", registerData.userName);
-            // const loginuserData = {
-            //     name: registerData.name,
-            //     role: "會員",
-            //     email: registerData.email,
-            //     password: registerData.password
-            // }
-            // setUserData(loginuserData);
             Swal.fire({
                 title: "註冊成功!",
                 icon: "success"

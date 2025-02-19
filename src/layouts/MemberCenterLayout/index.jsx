@@ -1,21 +1,26 @@
 import { Outlet } from 'react-router-dom';
 import MemberMenu from '@/layouts/MemberMenu';
-
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const MemberLayout = () => {
   return (
-      <div className="page-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-3">
-              <MemberMenu />
-            </div>
-            <div className="col-lg-9">
-                <Outlet />
+    <>
+      <Header />
+        <div className="page-section">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-3">
+                <MemberMenu />
+              </div>
+              <div className="col-lg-9">
+                  <Outlet />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <Footer />
+    </>
   );
 }
 export default MemberLayout;
