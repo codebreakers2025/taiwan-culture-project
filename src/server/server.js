@@ -19,6 +19,9 @@ const port = process.env.PORT || 3002;
 const server = jsonServer.create();
 const router = jsonServer.router("src/json/db.json");
 const middlewares = jsonServer.defaults();
+const routes = require("./routes.json");
+const customMiddleware = require("./middleware");
+
 
 
 
@@ -149,8 +152,15 @@ server.use(rules);
 // You must apply the auth middleware before the router
 server.use(auth);
 
+
+server.use(jsonServer.rewriter(routes));
+
+// api/admin 路徑的後端 API，需要驗證權限
+server.use("/api/admin", customMiddleware);
+
 // Use default router
 server.use("/api", router);
+
 
 server.listen(port, () => {
   console.log("JSON Server Listening on:" + port);

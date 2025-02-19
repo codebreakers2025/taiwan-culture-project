@@ -15,7 +15,14 @@ const Header = () => {
     const [userData, setUserData] = useState({}); // 存儲用戶資料
 
     // 登入註冊資料
-    const [loginData, setLoginData] = useState({ email: "", password: "" });
+    const [loginData, setLoginData] = useState(
+        { 
+            email: "", 
+            password: "",
+            name: userData.name,
+            role: "會員",
+        }
+    );
     const [registerData, setRegisterData] = useState({
         userName: "",
         email: "",
@@ -92,6 +99,13 @@ const Header = () => {
         try {
             await register(registerData); // 替換為你的 API 函數
             localStorage.setItem("userName", registerData.userName);
+            // const loginuserData = {
+            //     name: registerData.name,
+            //     role: "會員",
+            //     email: registerData.email,
+            //     password: registerData.password
+            // }
+            // setUserData(loginuserData);
             Swal.fire({
                 title: "註冊成功!",
                 icon: "success"

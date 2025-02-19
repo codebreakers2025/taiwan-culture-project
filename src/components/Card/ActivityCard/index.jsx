@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import './Activity.scss';
 import { addFavorites, getFavorites, deleteFavorites } from '@/utils/api';
 import Swal from 'sweetalert2';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 
 export const ActivityCard = ({ activity, isCollectedPage, onToggleFavorite, userId }) => {

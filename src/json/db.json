@@ -3,43 +3,72 @@
     {
       "email": "admin123@gmail.com",
       "password": "$2a$10$8MB.qmmUwep2EqNPFoLRqOkMPKq8OjVP8t8zeCdhLNIys1/najo.S",
-      "role": "admin",
+      "role": "管理員",
+      "name": "系統管理員",
       "id": 1
     },
     {
       "email": "sean@gmail.com",
       "password": "$2a$10$dINa1L84l2xa8/qHp/ZGN.KPfRcMJMGyXHfpZfJp8VLZuq/jjIS12",
+      "role": "會員",
+      "name": "頭文字D",
       "id": 2
     },
     {
       "email": "aaa123@gmail.com",
       "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
+      "role": "會員",
+      "name": "霍爾的移動城堡",
       "id": 3
     },
     {
       "email": "user123@gmail.com",
       "password": "$2a$10$0siyi9fEacpZgBpp6qT2MutY9c1zyXsm5Vpy1UtGT6J/1sfm3EYY6",
+      "role": "會員",
+      "name": "網球王子",
       "id": 4
     },
     {
       "email": "test@gmail.com",
       "password": "$2a$10$xG4CnGorWQF/Ujc8XGtRTeJtB15WrdzRJ6Hc9bLOu394twqEhbTUC",
+      "role": "會員",
+      "name": "原子小金剛",
       "id": 5
     },
     {
       "email": "test123@gmail.com",
       "password": "$2a$10$JouLWUzd55kHWimADe2Fp./1X/RnVuQ1mA30ybqPgrDB5p9C.TqUO",
+      "role": "會員",
+      "name": "酷狗寶貝",
       "id": 6
     },
     {
       "email": "abc@gmail.com",
       "password": "$2a$10$FZOV8DjnMrP6Is/LjTd3Cec8JVyZszBP04YNhIm0YTwjC8DP.jUA6",
+      "role": "會員",
+      "name": "忍者哈特利",
       "id": 7
     },
     {
       "email": "qqq@gmail.com",
       "password": "$2a$10$dVkRZP/HgXHz8EfpVLMg9e5gdP4Amo8JU1ySdqYc5zU1P/l5gy3Kq",
+      "role": "會員",
+      "name": "神奇小寶",
       "id": 8
+    },
+    {
+      "email": "aaa@gmail.com",
+      "password": "$2a$10$nQBgTWcEm4RGTeuAHDurg.XmxFSNqQ4INzNRyPf5WySI5omBXDWeW",
+      "role": "會員",
+      "name": "科學小飛俠",
+      "id": 9
+    },
+    {
+      "email": "bbb@gmail.com",
+      "password": "$2a$10$xqR/P4zN7yrxTGoctBWu.eiUhGFRdiVaigUUVuw3VnNZg50s.a1eK",
+      "role": "會員",
+      "name": "超人特攻隊",
+      "id": 10
     }
   ],
   "activity": [
@@ -261,7 +290,7 @@
       "id": 2
     }
   ],
-  "settings": [
+  "profiles": [
     {
       "id": 1,
       "lastName": "Emily",

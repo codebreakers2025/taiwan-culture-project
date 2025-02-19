@@ -1,6 +1,6 @@
 import { getActivityAll, getFavorites } from '@/utils/api';
 import { useState, useEffect } from "react";
-import { ActivityCard } from '@/components/Card/Activity';
+import { ActivityCard } from '@/components/Card/ActivityCard';
 import Swal from 'sweetalert2';
 
 const CollectionList = () => {

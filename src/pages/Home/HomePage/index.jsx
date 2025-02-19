@@ -1,22 +1,23 @@
-import { ReviewCard, BlogCard} from '@/components/Card';
-import { ActivityCard } from '@/components/Card/Activity';
-import './HomePage.scss';
+import { ReviewCard } from '@/components/Card/ReviewCard';
+import { BlogCard } from '@/components/Card/BlogCard';
+import { ActivityCard } from '@/components/Card/ActivityCard';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { getActivityAll, getJournal, getReviews } from '@/utils/api';
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import DatePicker from "react-datepicker";
 import beach from '@/assets/images/choosing/beach.svg';
 import communication from '@/assets/images/choosing/communication.svg';
 import fishing from '@/assets/images/choosing/fishing.svg';
 import travel from '@/assets/images/choosing/travel.svg';
-import { useEffect, useState } from 'react';
-import { getActivityAll, getJournal, getReviews, getFavorites } from '@/utils/api';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss"; 
-import { useNavigate } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import './HomePage.scss';
 
 
 const HomePage = () => {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { userSettings, updateUsers, getUsers} from '@/utils/api';
+import { userProfiles, updateUsers, getUsers} from '@/utils/api';
 import './PersonalData.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -117,7 +117,7 @@ const handleSubmit = async (e) => {
         }
     } else {
         try {
-            await userSettings(formData); 
+            await userProfiles(formData); 
             Swal.fire({
                 title: "設定新增成功",
                 icon: "success"
