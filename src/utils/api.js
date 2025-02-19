@@ -110,7 +110,7 @@ export const addReviews = async (data) => {
 };
 
 export const updateReviews = async (id) => {
-    const response = await axios.post(`/api/reviews${id}`);
+    const response = await axios.post(`/api/reviews/${id}`);
     return response.data;
 };
 
@@ -118,6 +118,37 @@ export const deleteReviews = async (id) => {
     const response = await axios.delete(`/api/reviews/${id}`);
     return response.data;
 };
+
+
+// 預約訂單
+export const getReservationAll = async () => {
+    const response = await axios.get(`/api/reservations`);
+    return response.data; 
+};
+
+export const getReservations = async (id) => {
+    const response = await axios.get(`/api/reservations/${id}`);
+    return response.data; 
+};
+
+export const addReservations = async (data) => {
+    const response = await axios.post(`/api/reservations`, data);
+    return response.data;
+};
+
+export const updateReservations = async (id) => {
+    const response = await axios.patch (`/api/reservations/${id}`);
+    return response.data;
+};
+
+export const deleteReservations = async (id) => {
+    const response = await axios.delete(`/api/reservations/${id}`);
+    return response.data;
+};
+
+
+
+
 
 
 
@@ -131,13 +162,6 @@ export const updateAvatar = async (formData) => {
     });
     return response.data;
 };
-
-
-
-
-
-
-
 
 
 

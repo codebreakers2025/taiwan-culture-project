@@ -362,5 +362,40 @@
       "phoneNumber": "988123456",
       "userId": 8
     }
+  ],
+  "reservations": [
+    {
+      "id": 1,
+      "date": "2025-02-20",
+      "location": {
+        "latitude": 25.03368,
+        "longitude": 121.5623082,
+        "title": "台北101觀景台"
+      },
+      "validOnDate": true,
+      "ticketType": "景點票券",
+      "groupSize": {
+        "adults": 2,
+        "children": 1,
+        "total": 3
+      },
+      "price": {
+        "adult": 600,
+        "child": 300,
+        "total": 1500
+      },
+      "image": "/uploads/taipei101.jpg",
+      "applicant": {
+        "name": "張小明",
+        "email": "xiaoming@example.com",
+        "phone": "0912345678"
+      },
+      "orderStatus": "待付款",
+      "payment": {
+        "status": "未付款",
+        "method": null,
+        "transactionId": null
+      }
+    }
   ]
 }
