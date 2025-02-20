@@ -40,6 +40,11 @@
       "email": "qqq@gmail.com",
       "password": "$2a$10$dVkRZP/HgXHz8EfpVLMg9e5gdP4Amo8JU1ySdqYc5zU1P/l5gy3Kq",
       "id": 8
+    },
+    {
+      "email": "siangjyun0926@gmail.com",
+      "password": "$2a$10$laUh3bHiAOTDemE2IlqoaO0KvbfueZOjRSls0.2BSghQOHoCP9a0y",
+      "id": 9
     }
   ],
   "activity": [
@@ -95,7 +100,7 @@
         "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
         "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
         "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-4.png"
-    ],
+      ],
       "features": [
         "彩虹眷村的繽紛色彩",
         "高美濕地的夕陽美景",
@@ -255,7 +260,6 @@
       "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
       "activityId": 1
     }
-
   ],
   "favorites": [
     {
