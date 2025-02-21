@@ -5,14 +5,24 @@ const auth = require("json-server-auth");
 const express = require('express');
 const multer = require('multer');
 const jwt_decode = require("jwt-decode");
+const cors = require("cors");
+const cloudinary = require('cloudinary').v2;
+
 
 // require('dotenv').config(); // 引入 dotenv 庫來讀取 .env 檔案
 const JWT_SECRET_KEY = require("json-server-auth/dist/constants").JWT_SECRET_KEY;
 
+// Cloudinary 設定
+cloudinary.config({
+  cloud_name: '',
+  api_key: '',
+  api_secret: ''
+});
 
 
 // 創建一個 express 實體
 const app = express();
+app.use(cors()); // 允許跨域請求
 
 const port = process.env.PORT || 3002;
 
@@ -22,18 +32,13 @@ const middlewares = jsonServer.defaults();
 const routes = require("./routes.json");
 const customMiddleware = require("./middleware");
 
-
-
-
-// 設定檔案儲存方式，儲存圖片檔案到 uploads 資料夾
-
+// 設定multer 檔案儲存方式，儲存圖片檔案到 uploads 資料夾
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir)
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
   },
-  filename: function (req, file, cb) {
-    // 生成檔案名稱：時間戳 + 原始檔名
-    cb(null, Date.now() + '-' + file.originalname)
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
   }
 });
 
@@ -51,48 +56,76 @@ app.use(middlewares);
 // 允許 json 解析
 app.use(express.json());
 
+// 設定上傳資料夾
+const uploadDir = path.join(__dirname, '../../public/uploads');
+
 // 設定靜態檔案路徑
-app.use('/uploads', express.static(path.join(__dirname, '../../public/uploads')));
+app.use('/uploads', express.static(uploadDir));
 
 // 上傳 API
 app.post('/api/upload', upload.single('image'), (req, res) => {
 
-  const { image } = req.body; // Base64 字串
+  // const { image } = req.body; // Base64 字串
   
-  if (!image) {
-    return res.status(400).json({ error: '沒有上傳檔案' });
+  // if (!image) {
+  //   return res.status(400).json({ error: '沒有上傳檔案' });
+  // }
+
+  if (!req.file) {
+    return res.status(400).json({ error: "未選擇文件" });
   }
-
-  // 解析 Base64 格式
-  const matches = image.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);
-  if (!matches || matches.length !== 3) {
-    return res.status(400).json({ error: '無效的 Base64 圖片格式' });
-  }
-
-  const extension = matches[1];  // 取得副檔名 (png, jpg, etc.)
-  const base64Data = matches[2]; // 取得 Base64 純數據
-  const buffer = Buffer.from(base64Data, 'base64');
-
-  // 設定上傳資料夾
-  const uploadDir = path.join(__dirname, '../../public/uploads');
-
-  // 確保上傳資料夾存在
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-
-  // 儲存圖片
-  const fileName = `image_${Date.now()}.${extension}`;
-  const filePath = path.join(uploadDir, fileName);
-
-  // 回傳圖片 URL
-  fs.writeFile(filePath, buffer, (err) => {
-    if (err) {
-      return res.status(500).json({ error: '無法儲存圖片' });
-    }
-    res.json({ imageUrl: `/uploads/${fileName}` });
+  res.json({ 
+    message: "圖片上傳成功",
+    imageUrl: `/uploads/${req.file.filename}`,
   });
 
+  // 解析 Base64 格式
+  // const matches = image.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);
+  // if (!matches || matches.length !== 3) {
+  //   return res.status(400).json({ error: '無效的 Base64 圖片格式' });
+  // }
+
+  // const extension = matches[1];  // 取得副檔名 (png, jpg, etc.)
+  // const base64Data = matches[2]; // 取得 Base64 純數據
+  // const buffer = Buffer.from(base64Data, 'base64');
+
+  
+
+  // 確保上傳資料夾存在
+  // if (!fs.existsSync(uploadDir)) {
+  //   fs.mkdirSync(uploadDir, { recursive: true });
+  // }
+
+  // 儲存圖片
+  // const fileName = `image_${Date.now()}.${extension}`;
+  // const filePath = path.join(uploadDir, fileName);
+
+  // 回傳圖片 URL
+  // fs.writeFile(filePath, buffer, (err) => {
+  //   if (err) {
+  //     return res.status(500).json({ error: '無法儲存圖片' });
+  //   }
+  //   res.json({ imageUrl: `/uploads/${fileName}` });
+  // });
+
+});
+
+
+// 獲取上傳簽名的端點
+server.get('/get-signature', (req, res) => {
+  const timestamp = Math.round(new Date().getTime() / 1000);
+  const signature = cloudinary.utils.api_sign_request(
+    {
+      timestamp: timestamp
+    },
+    cloudinary.config().api_secret
+  );
+
+  res.json({
+    signature,
+    timestamp,
+    apiKey: cloudinary.config().api_key
+  });
 });
 
 

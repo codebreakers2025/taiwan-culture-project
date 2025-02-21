@@ -15,8 +15,8 @@ export const getActivitys = async (id) => {
     return response.data; 
 };
 
-export const addActivitys = async (id, data) => {
-    const response = await axios.post(`/api/activity/${id}`, data);
+export const addActivitys = async (data) => {
+    const response = await axios.post(`/api/activity`, data);
     return response.data; 
 };
 
@@ -41,8 +41,9 @@ export const register = async (data) => {
         const response = await axios.post(`/api/register`, {
             email: data.email,
             password: data.password,
+            name: data.name,
             role: "會員",
-            name: data.userName
+            avatar: ""
         });
         return response.data; 
     
@@ -70,6 +71,11 @@ export const userProfiles = async (data) => {
 
 export const updateUsers = async (id, data) => {
     const response = await axios.put(`/api/profiles/${id}`, data);
+    return response.data; 
+};
+
+export const modifyUsers = async (id, data) => {
+    const response = await axios.patch(`/api/profiles/${id}`, data);
     return response.data; 
 };
 
@@ -150,9 +156,6 @@ export const deleteReservations = async (id) => {
 
 
 
-
-
-
 // 圖片/文件上傳
 export const updateAvatar = async (formData) => {
     const response = await axios.post(`/api/upload`, formData, {
@@ -168,10 +171,25 @@ export const updateAvatar = async (formData) => {
 
 
 
-
-
 //後台
-export const getAdminUsers = async () => {
+export const getMemberAll = async () => {
     const response = await axios.get(`/api/users`);
     return response.data; 
 };
+
+export const getMembers = async (id) => {
+    const response = await axios.get(`/api/users/${id}`);
+    return response.data; 
+};
+
+export const updatedMembers = async (id, data) => {
+    const response = await axios.patch(`/api/users/${id}`, data);
+    return response.data; 
+};
+
+
+
+// export const updatedUsers = async (id) => {
+//     const response = await axios.patch(`/api/users/${id}`);
+//     return response.data; 
+// };

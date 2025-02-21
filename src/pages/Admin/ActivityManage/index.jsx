@@ -1,49 +1,62 @@
 // 活動管理組件
 import { useState, useEffect } from "react";
-import { Button, Table, Modal, Form } from "react-bootstrap";
-import { getActivityAll } from '@/utils/api';
+import { getActivityAll, addActivitys, updatedActivitys, deleteActivitys } from '@/utils/api';
 import './ActivityManage.scss';
 import ActivityModal from '@/components/Modal/Activity';
 
 
 const EventManagement = () => {
+
   const [events, setEvents] = useState([]);
-
-    const AdminEventManagement = async() => {
-        try{
-            const getEvent = await getActivityAll();
-            setEvents(getEvent);
-        } catch(error){
-            console.log(error);
-        }
-    }
-
-  
-
   const [showModal, setShowModal] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState({ id: null, status: "" });
+  const [currentEvent, setCurrentEvent] = useState(null);
 
-  const handleShow = () => {
-    // setCurrentEvent(event);
+  const handleShow = (event = null) => {
+    setCurrentEvent(event);
     setShowModal(true);
   };
 
   const handleClose = () => {
     setShowModal(false);
+    setCurrentEvent(null);
   };
 
-  const handleSave = () => {
-    if (currentEvent.id) {
-      setEvents(events.map(e => (e.id === currentEvent.id ? currentEvent : e)));
-    } else {
-      setEvents([...events, { ...currentEvent, id: Date.now() }]);
+  const handleSave = async(currentEvent) => {
+    try {
+      if (currentEvent.id) {
+        await updatedActivitys(currentEvent.id, currentEvent);
+        setEvents(
+          events.map((event) =>
+            event.id === currentEvent.id ? currentEvent : event
+          )
+        );
+      } else {
+        const newEvent  = await addActivitys(currentEvent);
+        setEvents((prevEvents) => [...prevEvents, newEvent ]);
+      }
+    } catch(error) {
+      console.log("Error adding event", error);
     }
     handleClose();
   };
 
-  const handleDelete = (id) => {
-    setEvents(events.filter(event => event.id !== id));
+  const handleDelete = async(id) => {
+    try {
+      await deleteActivitys(id);
+      setEvents(events.filter(event => event.id !== id));
+    } catch (error) {
+      console.log("Error deleting event", error)
+    }
   };
+
+  const AdminEventManagement = async() => {
+    try{
+        const getEvent = await getActivityAll();
+        setEvents(getEvent);
+    } catch(error){
+        console.log(error);
+    }
+}
 
   useEffect(() => {
     AdminEventManagement();
@@ -63,7 +76,9 @@ const EventManagement = () => {
           <tr className="bg-light border-bottom">
             <th className="py-3 px-4">ID</th>
             <th className="py-3 px-4">名稱</th>
-            <th className="py-3 px-4">日期</th>
+            <th className="py-3 px-4">開始日期</th>
+            <th className="py-3 px-4">結束日期</th>
+            <th className="py-3 px-4">城市</th>
             <th className="py-3 px-4 text-center">操作</th>
           </tr>
         </thead>
@@ -71,9 +86,10 @@ const EventManagement = () => {
           {events.map(event => (
             <tr key={event.id}>
               <td className="py-3 px-4">{event.id}</td>
-              <td className="py-3 px-4">{event.content.title}</td>
-              <td className="py-3 px-4">{event.date}</td>
-              {/* <td>{event.status}</td> */}
+              <td className="py-3 px-4">{event.content?.title}</td>
+              <td className="py-3 px-4">{event.startDate}</td>
+              <td className="py-3 px-4">{event.endDate}</td>
+              <td className="py-3 px-4">{event.city}</td>
               <td className="py-3 px-4">
               <div className="d-flex justify-content-center gap-2">
                 <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(event)}>編輯</button>{' '}

@@ -21,10 +21,11 @@ const Header = () => {
             password: "",
             name: userData.name,
             role: "會員",
+            avatar: "",
         }
     );
     const [registerData, setRegisterData] = useState({
-        userName: "",
+        name: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -67,6 +68,13 @@ const Header = () => {
         setError(null);
         try {
             const response = await login(loginData); // 替換為你的 API 函數
+            // if(response.status === "停用"){
+            //     Swal.fire({
+            //         title: "此帳號已停用，無法登錄",
+            //         icon: "warning"
+            //     })
+            //     return;
+            // }
             setIsLoggedIn(true);
             // 存入 localStorage
             localStorage.setItem("userId", response.user.id);
@@ -373,12 +381,12 @@ const Header = () => {
                             ) : (
                             <form onSubmit={handleRegister}>
                                 <div className="mb-3">
-                                    <label htmlFor="userName" className="form-label">使用者名稱</label>
+                                    <label htmlFor="name" className="form-label">使用者名稱</label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        id="userName"
-                                        value={registerData.userName}
+                                        id="name"
+                                        value={registerData.name}
                                         onChange={(e) => handleInputChange(e, false)}
                                         placeholder="請輸入使用者名稱"
                                         required />

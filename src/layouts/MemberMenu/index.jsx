@@ -1,115 +1,138 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef  } from 'react'
 import { NavLink } from 'react-router-dom';
 import './Menu.scss';
-import { updateAvatar, updateUsers } from '@/utils/api';
+import { getMembers, updatedMembers } from '@/utils/api';
+// import { useUser } from "@/components/UserContext";
 
 const Menu = () => {
       const userId = Number(localStorage.getItem("userId")); // 取得 userId
-      const userName = localStorage.getItem("userName"); // 取得 userName
+      // const { userData, setUserData } = useUser();
+      const [ userData, setUserData ] = useState({});
 
-      const [userData, setUserData] = useState({
-        id: userId, // 用戶ID
-        name: userName,
-        image: "https://mighty.tools/mockmind-api/content/human/119.jpg",
-      }); 
+      const [error, setError] = useState("");
+      const fileInputRef = useRef(null); // 引用 input
 
-      const [selectedFile, setSelectedFile] = useState(null);
-      const [previewImage, setPreviewImage] = useState(userData.image);
-
-      // 處理本地圖片 select
-      const handleFileChange  = (event) => {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-        if (file) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setPreviewImage(reader.result);
-          };
-          reader.readAsDataURL(file);
+      // 點擊圖片時觸發 input 
+      const handleFileChange  = () => {
+        if (fileInputRef.current) {
+          fileInputRef.current.click(); 
         }
       };
 
       //上傳圖片
-    const handleUpload = async (reader) => {
-      console.log("選擇的檔案:", selectedFile); 
-      if (!selectedFile) return alert("請選擇圖片！");
+    const handleUpload = async (event) => {
+      const file = event.target.files[0];
+        if (!file) return alert("請選擇圖片！");
+        
+        const reader = new FileReader();
+        reader.onloadend = () => setUserData({image: reader.result}); // 預覽圖片
+        reader.readAsDataURL(file);
 
       // 檢查文件類型
-      if (!selectedFile.type.match(/^image\/(jpeg|png|gif)$/)) {
+      if (!file.type.match(/^image\/(jpeg|png|gif)$/)) {
         setError('請上傳 JPG、PNG 或 GIF 格式的圖片');
         return;
       }
 
       // 檢查文件大小 (5MB)
-      if (selectedFile.size > 5 * 1024 * 1024) {
+      if (file.size > 5 * 1024 * 1024) {
         setError('圖片大小不能超過 5MB');
         return;
       }
 
-      const formData = new FormData();
-      formData.append('image', selectedFile);
-      
       try {
-        setUploading(true);
-        setError('');
-        const response = await updateAvatar(formData);
+        // 1. 獲取 Cloudinary 簽名
+        const signResponse = await fetch('api/get-signature', {
+          method: 'GET'
+        });
+        const { signature, timestamp, apiKey } = await signResponse.json();
+    
+        // 2. 準備 FormData
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('signature', signature);
+        formData.append('timestamp', timestamp);
+        formData.append('api_key', apiKey);
+        // formData.append('upload_preset', 'Bennyhong');
+        // formData.append('folder', 'avatars');  
+    
+        // 3. 上傳到 Cloudinary
+        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/dwjbzadev/image/upload`,
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
+        const imageData = await cloudinaryResponse.json();
+        const imageUrl = imageData.secure_url;
 
-        // 取得圖片 URL
-        const imageUrl = response.data.imageUrl;
-        
-        console.log("上傳成功:", response); // 確保這裡有輸出回應
-
+        if (!imageUrl) setError('無法取得圖片 URL');
+    
         // 更新用戶資料
-        const updatedUser = {
-          // ...userData,
-          image: imageUrl, // 獲取上傳後的圖片 URL
-        };
+        // const updatedUser = { ...userData, image: imageUrl };
+        // console.log(updatedUser);
+        
+        await updatedMembers(userId, {avatar: imageUrl});
 
-        await updateUsers(userId, updatedUser);
-        // if (response.data.success) {
-        //   // setUserData(updatedUser);
-        //   alert('更新成功！');
-        // } else {
-        //   alert('更新失败！');
-        // }
+        // 設定新的 userData，確保畫面更新
+        // setUserData(updatedUser);
+        setUserData((prev) => ({
+          ...prev,
+          avatar: imageUrl, // 更新的圖片
+        }));
+        // setPreviewImage({image: imageUrl}); // 也更新預覽圖片
+        await getUsersAvatar();
       } catch (error) {
-        console.error('上傳失敗：', error);
-        alert('上傳失敗');
+        setError('Upload failed:', error);
       }
+      
     };
 
-      useEffect(() => {
-        setUserData({
-          id: userId, // 用戶ID
-          name: userName,
-          image: "https://mighty.tools/mockmind-api/content/human/119.jpg",
-        });
-        setPreviewImage(userData.image);
+    const getUsersAvatar = async () => {
+      // console.log(userData?.user);
+        try{
+          const getMember = await getMembers(userId);
+            setUserData({...getMember});
 
+        //   if (!userData) {
+        //     const getMember = await getMembers(userId);
+        //     setUserData({...getMember});
+        // } 
+      } catch(error){
+          console.log(error);
+      }
+    }
+
+      useEffect(() => {
+        getUsersAvatar();
       }, []);
+
 
   return (
     <div className="custom-menu">
       <div className="user-image-wrap text-center">
             <label className="d-inline-block position-relative" style={{ cursor: "pointer" }}>
+              <div className="avatar-img-wrap">
               <input
                 type="file"
                 accept="image/*"
-                onChange={handleFileChange}
+                ref={fileInputRef}
+                onChange={handleUpload}
                 className="d-none"
               />
-              <div className="avatar-img-wrap">
                 <img
-                  src={previewImage || image}
+                  // src={userData?.user?.avatar}
+                  src={userData.avatar}
                   alt="User Avatar"
                   className="rounded-circle img-hover"
                   width="100"
                   height="100"
-                  // onClick={handleUpload}
+                  onClick={handleFileChange}
                 />
                 <span className="material-icons camera-icon">photo_camera</span>
               </div>
             </label>
+            {/* <p className="mt-2">{userData?.user?.name}</p> */}
             <p className="mt-2">{userData.name}</p>
         </div>
 

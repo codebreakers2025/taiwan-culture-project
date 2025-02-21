@@ -1,35 +1,67 @@
 import { useEffect, useState } from 'react';
-import { getAdminUsers } from '@/utils/api';
+import { getMemberAll, updatedMembers, register } from '@/utils/api';
 import './MemberManage.scss';
+import MemberModal from '@/components/Modal/Member';
 
 const UserManagement = () => {
-    const [users, setUsers] = useState([]);
+    const [members, setMembers] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [editingUser, setEditingUser] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    const AdminUsers = async() => {
-        try{
-            const getUsers = await getAdminUsers();
-            setUsers(getUsers);
-        } catch(error){
-            console.log(error);
+ // 開啟 Modal
+ const handleShow = (user = null) => {
+    setEditingUser(user);
+    setShowModal(true);
+  };
+
+// 關閉 Modal
+const handleClose = () => {
+    setEditingUser(null);
+    setShowModal(false);
+};
+
+const handleSave = async(userData) => {
+    setLoading(true);
+    try {
+        if (editingUser) {
+            await updatedMembers(editingUser.id, userData);
+            alert("編輯成功");
+            AdminUsers();
+        } else {
+            await register(userData);
+            alert("新增成功");
+            AdminUsers();
         }
+
+
+    } catch(error) {
+        console.error('儲存失敗:', error);
+    } finally {
+        setLoading(false);
     }
 
-    useEffect(() => {
-        AdminUsers();
-    }, []); 
+handleClose();
+};
+
+const AdminUsers = async() => {
+    try{
+        const getUsers = await getMemberAll();
+        setMembers(getUsers);
+    } catch(error){
+        console.log(error);
+    }
+}
+
+useEffect(() => {
+    AdminUsers();
+}, []); 
 
 return (
     <div className="container py-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="d-flex align-items-center gap-2 fw-bold fs-4 mb-0">
-            
-            用戶管理
-            </h2>
-            
-            <button className="btn btn-primary d-flex align-items-center shadow-sm">
-            
-            新增用戶
-            </button>
+            <h2 className="d-flex align-items-center gap-2 fw-bold fs-4 mb-0">會員管理</h2>
+            <button className="btn btn-primary d-flex align-items-center shadow-sm" onClick={() => handleShow()}>新增會員</button>
         </div>
 
         <div className="card shadow-sm border-0">
@@ -41,11 +73,11 @@ return (
                         <th className="py-3 px-4">姓名</th>
                         <th className="py-3 px-4">Email</th>
                         <th className="py-3 px-4">角色</th>
-                        <th className="py-3 px-4 text-center">操作</th>
+                        {/* <th className="py-3 px-4 text-center">操作</th> */}
                     </tr>
                     </thead>
                     <tbody>
-                    {users.map(user => (
+                    {members.map(user => (
                     <tr key={user.id}>
                         <td className="py-3 px-4">{user.id}</td>
                         <td className="py-3 px-4">{user.name}</td>
@@ -55,16 +87,11 @@ return (
                             {user.role}
                         </span>
                         </td>
+                        {/* <td>{user.status ? "啟用" : "停用"}</td> */}
                         <td className="py-3 px-4">
                         <div className="d-flex justify-content-center gap-2">
-                            <button className="btn btn-outline-primary btn-sm">
-                            
-                            編輯
-                            </button>
-                            <button className="btn btn-outline-danger btn-sm">
-                            
-                            刪除
-                            </button>
+                            {/* <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(user)}>編輯</button>{' '} */}
+                            {/* <button className={`btn btn-outline-danger btn-sm ${user.status ? "default" : "destructive"}`} onClick={() => handleToggleStatus(user)}>{user.status ? '啟用' : '停用'}</button> */}
                         </div>
                         </td>
                     </tr>
@@ -73,6 +100,14 @@ return (
                 </table>
             </div>
         </div>
+
+        <MemberModal 
+        showModal={showModal}
+        handleClose={handleClose}
+        handleSave={handleSave}
+        editingUser={editingUser}
+        loading={loading}
+      />
     </div>
     
 );

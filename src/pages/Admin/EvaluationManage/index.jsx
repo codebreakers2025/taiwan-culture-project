@@ -20,16 +20,15 @@ const EvaluationManage = () => {
   const [newReview, setNewReview] = useState(initialReviewState);
 
 
-    const AdminReviewManagement = async() => {
-        try{
-            const getReview = await getReviews();
-            setReviews(getReview);
-        } catch(error){
-            console.log(error);
-        }
-    }
+  const AdminReviewManagement = async() => {
+      try{
+          const getReview = await getReviews();
+          setReviews(getReview);
+      } catch(error){
+          console.log(error);
+      }
+  }
   
-
   const [showModal, setShowModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({
     status: "進行中",
