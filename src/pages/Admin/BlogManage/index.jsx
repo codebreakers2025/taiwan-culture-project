@@ -1,8 +1,9 @@
 // 部落格管理組件
 import  { useState, useEffect } from "react";
 import { Button, Table, Modal, Form } from "react-bootstrap";
-import { getJournal } from '@/utils/api';
+import { getJournal ,createdJournal,updatedJournal, deletedJournal } from '@/utils/api';
 import './BlogManage.scss';
+import BlogModal from '@/components/Modal/Blog';
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
@@ -17,7 +18,7 @@ const BlogManagement = () => {
     }
 
   const [showModal, setShowModal] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", date: "", status: "" });
+  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", date: "", status: "草稿" });
 
   const handleShow = (blog = { id: null, title: "", date: "", status: "" }) => {
     setCurrentBlog(blog);
@@ -28,17 +29,31 @@ const BlogManagement = () => {
     setShowModal(false);
   };
 
-  const handleSave = () => {
-    if (currentBlog.id) {
-      setBlogs(blogs.map(b => (b.id === currentBlog.id ? currentBlog : b)));
+  const handleSave = async(e) => {
+    console.log(currentBlog);
+    const { id, title, date, status } = currentBlog;
+    if (id) {
+      // Update the blog
+      await updatedJournal(id, { title, date, status });
+      alert("更新成功");
     } else {
-      setBlogs([...blogs, { ...currentBlog, id: Date.now() }]);
+      // Create a new blog
+      await createdJournal({ title, date, status });
+      alert("新增成功");
     }
-    handleClose();
+     // Refresh the list of blogs
+     AdminBlogManagement();
+
+     // Close the modal
+     handleClose();
   };
 
-  const handleDelete = (id) => {
-    setBlogs(blogs.filter(blog => blog.id !== id));
+  const handleDelete = async(id) => {
+    await deletedJournal(id);
+    alert("刪除成功");
+
+    // Refresh the list of blogs
+    AdminBlogManagement();
   };
 
   useEffect(() => {
@@ -83,46 +98,14 @@ const BlogManagement = () => {
       </div>
       </div>
 
+      <BlogModal 
+        showModal={showModal}
+        handleClose={handleClose}
+        handleSave={handleSave}
+        
+      />
 
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{currentBlog.id ? "編輯文章" : "新增文章"}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>標題</Form.Label>
-              <Form.Control
-                type="text"
-                value={currentBlog.title}
-                onChange={(e) => setCurrentBlog({ ...currentBlog, title: e.target.value })}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>日期</Form.Label>
-              <Form.Control
-                type="date"
-                value={currentBlog.date}
-                onChange={(e) => setCurrentBlog({ ...currentBlog, date: e.target.value })}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>狀態</Form.Label>
-              <Form.Select
-                value={currentBlog.status}
-                onChange={(e) => setCurrentBlog({ ...currentBlog, status: e.target.value })}
-              >
-                <option value="發佈">發佈</option>
-                <option value="草稿">草稿</option>
-              </Form.Select>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>取消</Button>
-          <Button variant="primary" onClick={handleSave}>儲存</Button>
-        </Modal.Footer>
-      </Modal>
+    
     </div>
   );
 };

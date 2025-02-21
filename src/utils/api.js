@@ -4,6 +4,29 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwancultureproject.onrender.com'
  : 'http://localhost:3002'
 
+
+ // 註冊
+export const register = async (data) => {
+    const response = await axios.post(`/api/register`, {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        role: "會員",
+        avatar: ""
+    });
+    return response.data; 
+};
+
+// 登入
+export const login = async (data) => {
+const response = await axios.post(`/api/signin`, data);
+if (response.data.accessToken) {
+    localStorage.setItem('token', response.data.accessToken);
+}
+return response.data; 
+};
+
+
 // 活動管理
 export const getActivityAll = async () => {
     const response = await axios.get(`/api/activity`);
@@ -30,33 +53,30 @@ export const deleteActivitys = async (id) => {
     return response.data; 
 };
 
+
 // 部落格管理
 export const getJournal = async () => {
     const response = await axios.get(`/api/journal`);
     return response.data; 
 };
 
-// 註冊
-export const register = async (data) => {
-        const response = await axios.post(`/api/register`, {
-            email: data.email,
-            password: data.password,
-            name: data.name,
-            role: "會員",
-            avatar: ""
-        });
-        return response.data; 
-    
-};
-
-// 登入
-export const login = async (data) => {
-    const response = await axios.post(`/api/signin`, data);
-    if (response.data.accessToken) {
-        localStorage.setItem('token', response.data.accessToken);
-    }
+export const createdJournal = async () => {
+    const response = await axios.post(`/api/journal`, data);
     return response.data; 
 };
+
+export const updatedJournal = async (id, data) => {
+    const response = await axios.put(`/api/journal/${id}`, data);
+    return response.data; 
+};
+
+export const deletedJournal = async (ida) => {
+    const response = await axios.put(`/api/journal/${id}`);
+    return response.data; 
+};
+
+
+
 
 // 個人資料管理
 export const getUsers = async (userId) => {
@@ -115,8 +135,8 @@ export const addReviews = async (data) => {
     return response.data;
 };
 
-export const updateReviews = async (id) => {
-    const response = await axios.post(`/api/reviews/${id}`);
+export const updateReviews = async (id, data) => {
+    const response = await axios.put(`/api/reviews/${id}`, data);
     return response.data;
 };
 

@@ -1,18 +1,21 @@
 import PropTypes from "prop-types";
 import { Button, Table, Modal, Form } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 
 const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurrentEvent, newReview, setNewReview, activities }) => {
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   return (
     <Modal show={showModal} onHide={handleClose}>
+          <Form onSubmit={handleSubmit(handleSave)}>
         <Modal.Header closeButton>
           <Modal.Title>新增評價</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
             <Form.Group className="mb-3">
               <Form.Label>活動名稱</Form.Label>
               <Form.Select
+                {...register("activityTitle", { required: "請選擇活動" })}
                 value={newReview.activityTitle}
                 onChange={(e) => setNewReview({ ...newReview, activityTitle: e.target.value })}
               >
@@ -23,23 +26,27 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
                         </option>
                     ))}
               </Form.Select>
+              {errors.activityTitle && <p className="text-danger">{errors.activityTitle.message}</p>}
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>評價內容</Form.Label>
               <Form.Control 
                 as="textarea" rows={3}
+                {...register("reviewContent", { required: "請輸入評價內容" })}
                 value={newReview.reviewContent}
                 onChange={(e) => setNewReview({ ...newReview, reviewContent: e.target.value })}
                 // disabled={newReview.reviewContent}
               >
                 
               </Form.Control>
+              {errors.reviewContent && <p className="text-danger">{errors.reviewContent.message}</p>}
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>評分</Form.Label>
               <Form.Select
+                {...register("rating", { required: "請選擇評分" })}
                 value={newReview.rating}
                 onChange={(e) => setNewReview({ ...newReview, rating: parseInt(e.target.value) })}
                 // disabled={newReview.rating}
@@ -48,6 +55,7 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
                   <option key={star} value={star}>{"⭐".repeat(star)}</option>
                 ))}
               </Form.Select>
+              {errors.rating && <p className="text-danger">{errors.rating.message}</p>}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>活動狀態</Form.Label>
@@ -59,25 +67,14 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
                 <option value="已結束">已結束</option>
               </Form.Select>
             </Form.Group>
-          </Form>
         </Modal.Body>
 
         <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>取消</Button>
-            <Button variant="primary" onClick={handleSave}>儲存</Button>
+            <Button variant="primary" type="submit">儲存</Button>
         </Modal.Footer>
-      </Modal>
-
-        
-            
-
-                
-           
-            
-
-
-         
-        
+          </Form>
+    </Modal>
   );
 };
 
