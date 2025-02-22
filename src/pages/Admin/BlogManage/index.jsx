@@ -1,6 +1,5 @@
 // 部落格管理組件
 import  { useState, useEffect } from "react";
-import { Button, Table, Modal, Form } from "react-bootstrap";
 import { getJournal ,createdJournal,updatedJournal, deletedJournal } from '@/utils/api';
 import './BlogManage.scss';
 import BlogModal from '@/components/Modal/Blog';
@@ -18,27 +17,33 @@ const BlogManagement = () => {
     }
 
   const [showModal, setShowModal] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", date: "", status: "草稿" });
 
-  const handleShow = (blog = { id: null, title: "", date: "", status: "" }) => {
+  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", date: "", content: "", status: "草稿" });
+
+  const handleShow = (blog = { id: null, title: "", date: "", content: "", status: "" }) => {
     setCurrentBlog(blog);
     setShowModal(true);
   };
 
   const handleClose = () => {
+    if(!currentBlog.id) {
+      currentBlog.title = "",
+      currentBlog.date = "",
+      currentBlog.content = ""
+    }
     setShowModal(false);
   };
 
-  const handleSave = async(e) => {
-    console.log(currentBlog);
-    const { id, title, date, status } = currentBlog;
+
+  const handleSave = async(currentBlog) => {
+    const { id, title, date, content, status } = currentBlog;
     if (id) {
       // Update the blog
-      await updatedJournal(id, { title, date, status });
+      await updatedJournal(id, { title, date, content, status });
       alert("更新成功");
     } else {
       // Create a new blog
-      await createdJournal({ title, date, status });
+      await createdJournal({ title, date, content, status });
       alert("新增成功");
     }
      // Refresh the list of blogs
@@ -102,7 +107,9 @@ const BlogManagement = () => {
         showModal={showModal}
         handleClose={handleClose}
         handleSave={handleSave}
-        
+        currentBlog={currentBlog}
+        setCurrentBlog={setCurrentBlog}
+ 
       />
 
     

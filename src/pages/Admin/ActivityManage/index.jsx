@@ -12,6 +12,7 @@ const EventManagement = () => {
   const [currentEvent, setCurrentEvent] = useState(null);
 
   const handleShow = (event = null) => {
+    // console.log(event);
     setCurrentEvent(event);
     setShowModal(true);
   };

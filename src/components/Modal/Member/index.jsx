@@ -52,7 +52,7 @@ const MemberModal = ({ showModal, handleClose, handleSave, editingUser = null, l
   <Modal show={showModal} onHide={handleClose}>
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Header closeButton>
-        <Modal.Title>新增會員</Modal.Title>
+        <Modal.Title>{editingUser ? "編輯會員" : "新增會員"}</Modal.Title>
       </Modal.Header>
       
       <Modal.Body>

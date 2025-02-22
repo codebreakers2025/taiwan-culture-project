@@ -9,7 +9,7 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
     <Modal show={showModal} onHide={handleClose}>
           <Form onSubmit={handleSubmit(handleSave)}>
         <Modal.Header closeButton>
-          <Modal.Title>新增評價</Modal.Title>
+          <Modal.Title>{newReview.id ? "查看評價" : "新增評價"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <Form.Group className="mb-3">

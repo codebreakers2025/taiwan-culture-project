@@ -60,7 +60,7 @@ export const getJournal = async () => {
     return response.data; 
 };
 
-export const createdJournal = async () => {
+export const createdJournal = async (data) => {
     const response = await axios.post(`/api/journal`, data);
     return response.data; 
 };
@@ -70,8 +70,8 @@ export const updatedJournal = async (id, data) => {
     return response.data; 
 };
 
-export const deletedJournal = async (ida) => {
-    const response = await axios.put(`/api/journal/${id}`);
+export const deletedJournal = async (id) => {
+    const response = await axios.delete(`/api/journal/${id}`);
     return response.data; 
 };
 
@@ -162,8 +162,8 @@ export const addReservations = async (data) => {
     return response.data;
 };
 
-export const updateReservations = async (id) => {
-    const response = await axios.patch (`/api/reservations/${id}`);
+export const updateReservations = async (id, order) => {
+    const response = await axios.patch (`/api/reservations/${id}`, order);
     return response.data;
 };
 
@@ -172,6 +172,88 @@ export const deleteReservations = async (id) => {
     return response.data;
 };
 
+
+// 獲取所有訂單
+export const getOrderAll = async () => {
+    const response = await axios.get(`/api/orders`);
+    return response.data; 
+};
+
+// 獲取單筆訂單
+export const getOrders = async (orderId) => {
+    const response = await axios.get(`/api/orders/${orderId}`);
+    return response.data; 
+};
+
+// 創建新訂單
+export const createOrder = async (orderData) => {
+    try {
+        const now = new Date();
+        // 生成訂單編號
+        const response = await axios.get(`/api/orders?_sort=id&_order=desc&_limit=1`);
+        const lastOrder = response.data[0];
+        const lastSequence = lastOrder ? parseInt(lastOrder.id.slice(-4)) : 0;
+        const newSequence = (lastSequence + 1).toString().padStart(4, '0');
+        const dateString = now.getFullYear().toString().slice(-4) +
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0');
+        
+        const orderId = `ORD${dateString}${newSequence}`;
+
+        const newOrder = {
+        id: orderId,
+        createdAt: now.toISOString().replace('T', ' ').substring(0, 19),
+        timeSlot: [
+            '09:00-12:00',
+            '14:00-17:00',
+            '09:00-17:00',
+            '18:00-21:00'
+        ],
+        ...orderData
+        };
+
+        const createResponse = await axios.post(`/api/orders`, newOrder);
+        return createResponse.data;
+    } catch (error) {
+        console.error('Error creating order:', error);
+        throw error;
+    }
+};
+
+export const updateOrder = async (id, order) => {
+    const response = await axios.patch(`/api/orders/${id}`, order);
+    return response.data;
+};
+
+
+// 刪除新訂單
+export const deleteOrder = async (orderId) => {
+    const response = await axios.delete(`/api/orders/${orderId}`);
+    return response.data;
+};
+
+
+// 獲取訂單相關票券
+export const getTickets = async (id) => {
+    const response = await axios.get(`/api/orders/${id}/tickets`);
+    return response.data; 
+};
+
+// 獲取訂單相關付款記錄
+export const getPayments = async (id) => {
+    const response = await axios.get(`/api/orders/${id}/payments`);
+    return response.data; 
+};
+
+
+// # 分頁
+// GET http://localhost:3000/orders?_page=1&_limit=10
+
+// # 排序
+// GET http://localhost:3000/orders?_sort=createdAt&_order=desc
+
+// # 篩選
+// GET http://localhost:3000/orders?paymentStatus=PAID
 
 
 

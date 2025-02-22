@@ -34,8 +34,6 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
     console.log('imagePreview updated:', imagePreview);
   }, [imagePreview]);
 
-
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log('handleImageChange triggered');
@@ -51,7 +49,6 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
       // setValue('images', file);
     }
   };
-
 
   const onSubmit = async(data) => {
     try {
@@ -70,12 +67,11 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
   };
 
 
-
   return (
     <Modal size="lg" show={showModal} onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header closeButton>
-          <Modal.Title>新增活動</Modal.Title>
+          <Modal.Title>{currentEvent ? "編輯活動" : "新增活動"}</Modal.Title>
         </Modal.Header>
         
         <Modal.Body>
