@@ -55,19 +55,48 @@
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
       },
-      "detailsId": 1
-      ,
+      "detailsId": 1,
       "activityDetails": [
         {
           "id": 1,
           "activityId": 1,
-          "mainImage":"https://s3-alpha-sig.figma.com/img/665f/b1a8/2d0adf68f28e6c63ac31fc5bd0f59c44?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ap4XkAX~SNt5-M45VK-t57-sMPh3UEXSVIFzpELFXu4nQnBIbuKsaQwCo~dCnKBu2SAEcStJ9QZ8Hbbhk~d2AlHPnRt-QfVB0L9MI6Pz13m25ln1GS~w2tY95nSKqaOl4EiBCk3ggKHkr5YfumT61KuFxV7oImVM2EYSHJDHynaT50yZrYdTZjHHj1m8XEg~c~cVEj9FDCdqN-jWGfhytbr-87Y7X~1hZFGxcgkqajwnC5MPFg2Jd1-1a~WvtEkxbXFrdIqdIvaeNiYQSKAj6gMC~fUF1BG3cFGzVN-YnizjJodW9B0OHit2Y~BruaPVdZCb8VgC73-iIYgXtJk76w__",
           "images": [
-            "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
-            "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
-            "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
-            "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-4.png"
-        ],
+            {
+              "description": {
+                "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+                "descriptionOne": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情",
+                "context": "「一生必遊」的美景，當夕陽西下，天空和濕地都被染成金黃色，景色如詩如畫"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "近距離觀察濕地生態，親身感受大自然的魅力。",
+                "context": "夕陽觀賞區、木棧道體驗、潮間帶探索"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "夕陽觀賞區、木棧道體驗、潮間帶探索",
+                "context": "高美濕地夕陽絕美，木棧道漫步，生態豐富，風車映照水面，如詩如畫"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "風車成排，倒映在水面，宛如畫中的詩意景色",
+                "context": "高美濕地融合生態與美景，是台中必訪的觀光勝地。"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "親子旅遊首選，寓教於樂，探索大自然的奧秘。",
+                "context": "來高美濕地，看最美日落，感受大自然的壯麗魅力"
+              }
+            }
+          ],
           "features": [
             "彩虹眷村的繽紛色彩",
             "高美濕地的夕陽美景",
@@ -195,6 +224,17 @@
       "id": 1,
       "user": {
         "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+        "name": "123"
+      },
+      "rating": 4,
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！",
+      "activityId": 2
+    },
+    {
+      "id": 1,
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
         "name": "漩渦鳴人"
       },
       "rating": 4.5,
@@ -257,7 +297,6 @@
       "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
       "activityId": 1
     }
-
   ],
   "favorites": [
     {
@@ -277,6 +316,12 @@
       "userId": 3,
       "isFavorited": true,
       "id": 3
+    },
+    {
+      "activityId": 1,
+      "userId": 7,
+      "isFavorited": true,
+      "id": 4
     }
   ],
   "settings": [
@@ -350,6 +395,59 @@
       "countryCode": "+886",
       "phoneNumber": "988123456",
       "userId": 8
+    },
+    {
+      "id": 6,
+      "lastName": "",
+      "firstName": "",
+      "nickName": "",
+      "gender": "",
+      "birthday": null,
+      "country": "",
+      "countryCode": "+886",
+      "phoneNumber": "",
+      "userId": 7
+    }
+  ],
+  "reservationData": [
+    {
+      "id": 1,
+      "2025-01-01": {
+        "price": 500,
+        "remaining": 10
+      },
+      "2025-01-02": {
+        "price": 450,
+        "remaining": 8
+      }
+    }
+  ],
+  "reserve": [
+    {
+      "reservation_id": "RES123456",
+      "userId": "67890",
+      "event_id": "45678",
+      "event_name": "台灣文化節",
+      "image" : "",
+      "user_name": "王小明",
+      "user_phone": "+886912345678",
+      "user_email": "xiaoming@example.com",
+      "sex": "male",
+      "reservation_date": "2025-03-10T10:00:00Z",
+      "reservation_time": "2025-03-15T14:00:00Z",
+      "location": "台北市花博公園",
+      "quantity": 2,
+      "status": "confirmed",
+      "non_bookable_dates": [
+        "2025-03-01",
+        "2025-03-02",
+        "2025-03-10"
+      ],
+      "last_bookable_date": "2025-03-14",
+      "booked_slots": [
+        "2025-03-15T14:00:00Z",
+        "2025-03-15T15:00:00Z"
+      ]
     }
   ]
 }

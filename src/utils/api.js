@@ -86,9 +86,6 @@ export const deleteFavorites  = async (id) => {
     return response.data;
 };
 
-
-
-
 export const addReviews = async (data) => {
     const response = await axios.post(`/api/reviews`, data);
     return response.data;
@@ -103,4 +100,6 @@ export const deleteReviews = async (id) => {
     const response = await axios.delete(`/api/reviews/${id}`);
     return response.data;
 };
+
+
 

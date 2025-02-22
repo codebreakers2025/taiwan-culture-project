@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss";
-import { getActivityAll } from '@/utils/api';
+import { getActivityAll , getReviews } from '@/utils/api';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
@@ -14,8 +14,13 @@ const ActivityList = () => {
   const [activityData, setActivityData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchingValue , setSearchingValue] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedStartDate, SelectedStartDate] = useState('');
+  const [selectedEndDate, SelectedEndDate] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const [selectedSite, setSelectedSite] = useState('');
+  const [selectedPrice, setSelectedPrice] = useState('');
+  const [reviewData, setReviewData] = useState([]);
+  const [Ratingstar , setRatingStar] = useState(0)
 
 
   const [error, setError] = useState(null);
@@ -41,6 +46,7 @@ const ActivityList = () => {
 
   useEffect(() => {
     fetchGetActivity();
+    fetchGetReview();
 }, []);
 
   const getSearchInput = (value) => {
@@ -48,35 +54,64 @@ const ActivityList = () => {
 
   }
   
-  const getSelectedDate = (e) => {
-    setSelectedDate(e.target.value);
+  const getSelectedStartDate = (e) => {
+    SelectedStartDate(e.target.value);
+  };
+
+  const getSelectedEndDate = (e) => {
+    SelectedEndDate(e.target.value);
   };
 
   const getSelectedType = (e) => {
     setSelectedType(e.target.value);
   };
-  console.log(selectedType);
+
+  const getSelectedSite = (e) => {
+    setSelectedSite(e.target.value);
+  };
+
+  const getSelectedPrice = (e) => {
+    setSelectedPrice(e.target.value);
+  };
+
 
   const searchActivity = () => {
-    console.log('Searching for:', { searchInput, selectedDate, selectedType });
-    setSearchingValue([searchInput , selectedDate , selectedType])
+    //console.log('Searching for:', { searchInput, selectedStartDate, selectedEndDate, selectedType, selectedSite, selectedPrice });
+    setSearchingValue([searchInput , selectedStartDate , selectedType, selectedEndDate, selectedSite, selectedPrice])
     const searchResults = activityData.filter((item) => {
       const matchesTitle = searchInput ? item.content?.title?.match(new RegExp(searchInput, 'i')) : true;
-      const matchesDate = selectedDate ? new Date(item.date).toISOString().slice(0, 10) === selectedDate : true;
+      const matchesDate =
+      selectedStartDate || selectedEndDate
+                ? new Date(item.date) >= new Date(selectedStartDate || "1970-01-01") &&
+                new Date(item.date) <= new Date(selectedEndDate || "2099-12-31")
+                : true;
       const matchesType = selectedType ? item.eventType === selectedType : true;
+      const matchesSite = selectedSite ? item.city === selectedSite : true;
+      const matchesPrice = selectedPrice ? item.price <= selectedSite : true;
       
-      return matchesTitle && matchesDate && matchesType;
+      return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;
     });
-    console.log(searchResults);
+
     
     setSearchResultsData(searchResults); // Log the filtered results
   };
   
-  console.log(searchingValue);
   
   const searchBtn = () => {
     searchActivity(searchInput)
 
+  }
+
+  const fetchGetReview = async () => {
+    setLoading(true);
+    setError(null);
+    try{
+      const response  = await getReviews();
+      setReviewData(response)
+    }catch(error){
+      console.log(error);
+      
+    }
   }
   
   return (
@@ -101,7 +136,7 @@ const ActivityList = () => {
                       <span className="material-icons">today</span>
                       <div className="react-datepicker-wrapper">
                         <div className="react-datepicker__input-container">
-                          <input type="date" placeholder="請選擇開始日期" className="date-input" value={selectedDate} onChange={getSelectedDate}/>
+                          <input type="date" placeholder="請選擇開始日期" className="date-input" value={selectedStartDate} onChange={getSelectedStartDate}/>
                         </div>
                       </div>
                     </div>
@@ -112,7 +147,7 @@ const ActivityList = () => {
                       <span className="material-icons">today</span>
                       <div className="react-datepicker-wrapper">
                         <div className="react-datepicker__input-container">
-                          <input type="text" placeholder="請選擇結束日期" className="date-input" value="" />
+                          <input type="date" placeholder="請選擇結束日期" className="date-input" value={selectedEndDate} onChange={getSelectedEndDate} />
                         </div>
                       </div>
                     </div>
@@ -138,7 +173,7 @@ const ActivityList = () => {
                     <span className="title">價格</span>
                     <div className="list-content">
                       <span className="material-icons">paid</span>
-                      <input type="text" className="form-control" placeholder="請選擇價格區間" value="" />
+                      <input type="text" className="form-control" placeholder="請選擇價格區間" value={selectedPrice} onChange={getSelectedPrice}/>
                     </div>
                   </div>
                   {/* 地區選擇 */}
@@ -148,11 +183,11 @@ const ActivityList = () => {
                       <span className="material-icons">location_on</span>
                       <div className="form-control-dropdown">
                         {/* <div className="dropdown-selected ">地區</div> */}
-                        <select name="" id="" className="dropdown-selected ">
+                        <select name="" id="" className="dropdown-selected " value={selectedSite} onChange={getSelectedSite}>
                           <option value="">請選擇地區</option>
-                          <option value="">台北</option>
-                          <option value="">台中</option>
-                          <option value="">高雄</option>
+                          <option value="台北">台北</option>
+                          <option value="台中">台中</option>
+                          <option value="高雄">高雄</option>
                         </select>
                       </div>
                     </div>
@@ -180,7 +215,12 @@ const ActivityList = () => {
                           <div className="card-body">
                             <div className="d-flex justify-content-between align-items-center">
                               <p className="card-text">{activity.date}·{activity.eventType}</p>
-                              <span className="rating">★ {activity.rating}</span>
+                              <span className="rating">★ {(() => {
+                                const filteredReviews = reviewData.filter(item => item.activityId === activity.id);
+                                if (filteredReviews.length === 0) return 0;
+                                const totalRating = filteredReviews.reduce((sum, item) => sum + item.rating, 0);
+                                return (totalRating / filteredReviews.length).toFixed(1);
+                              })()}</span>
                             </div>
                             <h5 className="card-title">{activity.content?.title}</h5>
                             <p className="card-text">{activity.content?.description}</p>

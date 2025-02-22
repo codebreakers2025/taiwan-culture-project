@@ -6,6 +6,7 @@
   .showContainer .row{
     margin: 0 !important;
   }
+
   .mainImage-container{
     border: none;
     padding: 0 !important;
@@ -78,11 +79,16 @@
     margin-left: 24px;
   }
   .addFavorites{
+    border: none;
+    background-color: #fff;
     font-size: 16px;
     line-height: 24px;
     font-weight: 400;
     margin-left: 10px; /* 與標題文字間隔一些距離 */
     color: #9E9E9E;
+  }
+  .favoriteHeart{
+    font-size: 16px;
   }
   .actTitleBody{
     padding: 0 24px !important;
@@ -112,8 +118,11 @@
     margin-bottom: 12px;
   }
   .actPic{
+    margin-bottom: 10px;
     border-top: 24px;
     border-radius: 24px !important;
+    width: 100%; /* 或者具體的寬度 */
+    overflow: hidden !important;
   }
   .site{
     margin-bottom: 16px;
@@ -132,6 +141,8 @@
     border-radius: 40px !important;
   }
   .contentTextsmall{
+    display: flex;
+    justify-content: center;
     text-align: center;
     font-size: 14px;
     color: #9E9E9E;
@@ -160,6 +171,7 @@
     line-height: 28.8px;
   }
   .ratingStart{
+    color: #F08430;
     width: 176px;
     height: 32px;
     display: flex; /* 啟用 Flexbox */
@@ -195,7 +207,8 @@
   .ratingerImg{
     margin-right: 16px;
   }  
-  .singleRating i {
+  .singleRating span {
+    color: #F08430;
     height: 100%; /* 填滿高度 */
     font-size: 20px;
     align-items: center;
@@ -209,7 +222,9 @@
   .ratingImage{
     width: 216px !important;
     padding: 0px !important;
+    margin-bottom: 24px;
     display: flex ;
+    margin-left: 10px;
   
   }
   .imageBox{
@@ -262,6 +277,7 @@
   .ratingStartDiv{
     width: 528px !important;
     height: 121px !important;
+    margin-bottom: 24px;
   }
   .mobileView{
     display: none !important;
@@ -338,6 +354,36 @@
   .modalContent{
     border-radius: 24px !important;
   } 
+  .pagenation{
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+  .pagenation button{
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    margin-left: 12px;
+
+  }
+
+  .pagenation .currentPage button:disabled {
+    background-color: #4DAAB0; /* 灰色背景 */
+    color: #ffffff; /* 灰色文字 */
+    cursor: not-allowed; /* 改變滑鼠游標 */
+  }
+
+
+
+  .pagenation .material-icons{
+    line-height: 1.5;
+  }
+  .pagenation span{
+    font-size: 24px;
+    color: #616161;
+  }
 }
 
 
@@ -349,9 +395,9 @@
     .showContainer{
       width: auto;
   }
-  .col-lg-4{
+  //.col-lg-4{
       // display: none !important;
-  }
+  //}
   .rightSide{
       display: none;
   }
@@ -362,8 +408,9 @@
       padding: 0 12px !important;
   }
   .mainImage-container{
+      margin-right: 0;
       width: 100% !important;
-      border-radius: 24px;
+      border-radius: 40px;
   }
   .mainImage-container img{
       width: 100% !important;
@@ -449,6 +496,12 @@
   .callbutton{
       margin: 0 !important;
   }
+  .priceArea {
+      display: none;
+  }
+  .ratingImage{
+    margin-right: 0px !important;
+  }
   }
  
 }
@@ -457,6 +510,15 @@
       margin-left: 30px !important;
       width: 70% !important;
       padding: 0px !important;
+  }
+  .calendar {
+    max-width: 100%;
+  }
+  .day {
+      font-size: 0.8em;
+  }
+  .week-days, .days {
+      grid-template-columns: repeat(7, 14%); /* Adjust to 3 columns for small screens */
   }
 }  
 
