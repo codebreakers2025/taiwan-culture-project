@@ -3,6 +3,7 @@
     {
       "email": "admin123@gmail.com",
       "password": "$2a$10$8MB.qmmUwep2EqNPFoLRqOkMPKq8OjVP8t8zeCdhLNIys1/najo.S",
+      "role": "admin",
       "id": 1
     },
     {
@@ -34,6 +35,16 @@
       "email": "abc@gmail.com",
       "password": "$2a$10$FZOV8DjnMrP6Is/LjTd3Cec8JVyZszBP04YNhIm0YTwjC8DP.jUA6",
       "id": 7
+    },
+    {
+      "email": "qqq@gmail.com",
+      "password": "$2a$10$dVkRZP/HgXHz8EfpVLMg9e5gdP4Amo8JU1ySdqYc5zU1P/l5gy3Kq",
+      "id": 8
+    },
+    {
+      "email": "siangjyun0926@gmail.com",
+      "password": "$2a$10$laUh3bHiAOTDemE2IlqoaO0KvbfueZOjRSls0.2BSghQOHoCP9a0y",
+      "id": 9
     }
   ],
   "activity": [
@@ -48,7 +59,8 @@
       "content": {
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
-      }
+      },
+      "detailsId": 1
     },
     {
       "id": 2,
@@ -61,7 +73,8 @@
       "content": {
         "title": "沉浸式 DIY 調製香水",
         "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
-      }
+      },
+      "detailsId": 2
     },
     {
       "id": 3,
@@ -74,6 +87,37 @@
       "content": {
         "title": "天送埤火車站 | 高空繩索體驗 ",
         "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
+      },
+      "detailsId": 3
+    }
+  ],
+  "activityDetails": [
+    {
+      "id": 1,
+      "activityId": 1,
+      "images": [
+        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
+        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
+        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-4.png"
+      ],
+      "features": [
+        "彩虹眷村的繽紛色彩",
+        "高美濕地的夕陽美景",
+        "探索台中老兵的童心"
+      ],
+      "location": {
+        "latitude": 24.1947,
+        "longitude": 120.6354,
+        "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+      },
+      "sectionOne": {
+        "title": "經典行程",
+        "description": "介紹彩虹眷村，帶您進入五光十色的世界，並聆聽這些繽紛牆壁背後的故事。"
+      },
+      "sectionTwo": {
+        "title": "高美濕地夕陽",
+        "description": "在這裡，您可以漫步於大自然之間，感受與夕陽交織的美麗時光。"
       }
     }
   ],
@@ -148,7 +192,6 @@
       "date": "2025-01-25",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
     }
-    
   ],
   "reviews": [
     {
@@ -159,7 +202,8 @@
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！"
+      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！",
+      "activityId": 1
     },
     {
       "id": 2,
@@ -169,7 +213,8 @@
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。"
+      "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。",
+      "activityId": 1
     },
     {
       "id": 3,
@@ -179,7 +224,8 @@
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "自己動手調香水的過程非常有趣！每一步都很講究，最後帶回屬於自己的專屬香味，真的很滿足！"
+      "reviewContent": "自己動手調香水的過程非常有趣！每一步都很講究，最後帶回屬於自己的專屬香味，真的很滿足！",
+      "activityId": 1
     },
     {
       "id": 4,
@@ -189,7 +235,8 @@
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "親手製作蛋黃酥真的超有趣！師傅很熱情，教得也很詳細，吃到自己做的酥香蛋黃酥更是有滿滿的成就感！"
+      "reviewContent": "親手製作蛋黃酥真的超有趣！師傅很熱情，教得也很詳細，吃到自己做的酥香蛋黃酥更是有滿滿的成就感！",
+      "activityId": 1
     },
     {
       "id": 5,
@@ -199,7 +246,8 @@
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "一早看到阿里山壯麗的日出景色，真的讓人震撼！森林鐵路的懷舊感也超棒，整個行程都令人陶醉~"
+      "reviewContent": "一早看到阿里山壯麗的日出景色，真的讓人震撼！森林鐵路的懷舊感也超棒，整個行程都令人陶醉~",
+      "activityId": 1
     },
     {
       "id": 6,
@@ -209,7 +257,28 @@
       },
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
-      "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。"
+      "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
+      "activityId": 1
+    }
+  ],
+  "favorites": [
+    {
+      "activityId": 1,
+      "userId": 3,
+      "isFavorited": true,
+      "id": 1
+    },
+    {
+      "activityId": 2,
+      "userId": 3,
+      "isFavorited": true,
+      "id": 2
+    },
+    {
+      "activityId": 3,
+      "userId": 3,
+      "isFavorited": true,
+      "id": 3
     }
   ],
   "settings": [
@@ -271,6 +340,18 @@
       "countryCode": "+1",
       "phoneNumber": "99123456",
       "userId": 4
+    },
+    {
+      "id": 5,
+      "lastName": "Hong",
+      "firstName": "Emaily",
+      "nickName": "漠漠",
+      "gender": "女生",
+      "birthday": "2025-02-10",
+      "country": "台灣",
+      "countryCode": "+886",
+      "phoneNumber": "988123456",
+      "userId": 8
     }
   ]
 }

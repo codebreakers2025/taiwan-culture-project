@@ -4,10 +4,20 @@
         padding: 50px 0;
     }
 
+    // .row {
+    //     > div {
+    //         &:last-child {
+    //             div {
+    //                 background-color: rgb(192, 122, 122);
+    //             }
+    //         }
+    //     }
+    // }
+
     .left-searchBar {
-        background-color: var(--color-background);
+        background-color: white;
         border-radius: 40px;
-        border: 1px solid $text-color-4;
+        border: 1px solid #eeeeee;
         padding: 24px;
 
         .body {
@@ -96,6 +106,8 @@
         }
         .card-body {
             text-align: left;
+            // padding-left: 0;
+            // padding-right: 0;
 
             span.rating {
                 color: $secondary-color-4;
@@ -138,7 +150,7 @@
 
             .paid {
                 font-size: $text-font-header-5;
-                font-weight: var( --font-weight-bold);
+                font-weight: bold;
                 display: block;
 
                 &::before {
@@ -161,3 +173,14 @@
         }
     }
 }
+
+
+.activity-link {
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+
+  .test-container .right-content .btn:hover {
+    color: #fff;
+  }
