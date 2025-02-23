@@ -1,4 +1,5 @@
-import { createHashRouter, Outlet } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
+
 import HomePage from '@/pages/Home/HomePage';
 import ActivityList from '@/pages/Home/ActivityList/ActivityListPage';
 import ActivityDetailPage from '@/pages/Home/ActivityList/ActivityDetailPage';
@@ -6,7 +7,7 @@ import BookingPage1 from '@/pages/Home/ActivityList/Booking/Step1.jsx';
 import BookingPage2 from '@/pages/Home/ActivityList/Booking/Step2.jsx';
 import BookingPage3 from '@/pages/Home/ActivityList/Booking/Step3.jsx';
 import BookingPage4 from '@/pages/Home/ActivityList/Booking/Step4.jsx';
-import Journal from '@/pages/Home/Journal';
+import JournalList from '@/pages/Home/Journal/JournalListPage';
 
 import CollectionList from '@/pages/Home/Member/CollectionList';
 import PersonalData from '@/pages/Home/Member/PersonalData';
@@ -27,58 +28,15 @@ import BlogManage from '@/pages/Admin/BlogManage';
 import ActivityManage from '@/pages/Admin/ActivityManage';
 import EvaluationManage from '@/pages/Admin/EvaluationManage';
 
-import Header from '@/layouts/Header';
-import Footer from '@/layouts/Footer';
-import Menu from '@/layouts/MemberCenterMenu';
-import AdminMenu from '@/layouts/AdminMenu';
-
-const Layout = () => (
-  <>
-    <Header />
-    <main className="container-fluid gx-0">
-      <Outlet />
-    </main>
-    <Footer />
-  </>
-);
-
-const MemberLayout = () => (
-  <>
-    <div className="page-section">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-3">
-            <Menu />
-          </div>
-          <div className="col-lg-9">
-              <Outlet />
-          </div>
-        </div>
-      </div>
-    </div>
-  </>
-);
-
-const AdminLayout = () => (
-  <>
-  <div className="admin-page-section">
-    <div className="container-fluid">
-      <div className="row">
-            <AdminMenu />
-            <main className="col-md-10 ms-sm-auto px-md-4">
-              <Outlet />
-            </main>
-          </div>
-      </div>
-    </div>
-  </>
-);
+import AdminLayout from '@/layouts/AdminLayout';
+import FrontendLayout from '@/layouts/FrontendLayout';
+import MemberCenterLayout from '@/layouts/MemberCenterLayout';
 
 const router = createHashRouter(
   [
     {
       path: '/',
-      element: <Layout />,
+      element: <FrontendLayout />,
       children: [
         {
           path: '', 
@@ -109,56 +67,56 @@ const router = createHashRouter(
           element: <BookingPage4 />,
         },
         {
-          path: '/journal',
-          element: <Journal />,
+          path: '/journal-list',
+          element: <JournalList />,
+        }
+      ],
+    },
+    {
+      path: '/member-center',
+      element: <MemberCenterLayout />,
+      children:[
+        {
+          path: 'personal-data',
+          element: <PersonalData />,
         },
         {
-          path: '/member-center',
-          element: <MemberLayout />,
-          children:[
-            {
-              path: 'personal-data',
-              element: <PersonalData />,
-            },
-            {
-              path: 'order-management/list',
-              element: <OrderListPage />,
-            },
-            {
-              path: 'order-management/detail',
-              element: <OrderDetailPage />,
-            },
-            {
-              path: 'activity-review',
-              element: <ActivityReview />,
-            },
-            {
-              path: 'collection-list',
-              element: <CollectionList />,
-            },
-            {
-              path: 'sign-in',
-              element: <SignIn />,
-            },
-            {
-              path: 'activity-points',
-              element: <ActivityPoints />,
-            },
-            {
-              path: 'customer-support',
-              element: <CustomerSupport />,
-            },
-            {
-              path: 'center',
-              element: <Center />,
-            },
-            {
-              path: 'settings',
-              element: <Preferences />,
-            }
-          ]
+          path: 'order-management/list',
+          element: <OrderListPage />,
         },
-      ],
+        {
+          path: 'order-management/detail',
+          element: <OrderDetailPage />,
+        },
+        {
+          path: 'activity-review',
+          element: <ActivityReview />,
+        },
+        {
+          path: 'collection-list',
+          element: <CollectionList />,
+        },
+        {
+          path: 'sign-in',
+          element: <SignIn />,
+        },
+        {
+          path: 'activity-points',
+          element: <ActivityPoints />,
+        },
+        {
+          path: 'customer-support',
+          element: <CustomerSupport />,
+        },
+        {
+          path: 'center',
+          element: <Center />,
+        },
+        {
+          path: 'settings',
+          element: <Preferences />,
+        }
+      ]
     },
     {
       path: '/admin',

@@ -1,22 +1,23 @@
-import { ReviewCard, BlogCard} from '@/components/Card';
-import { ActivityCard } from '@/components/Card/Activity';
-import './HomePage.scss';
+import { ReviewCard } from '@/components/Card/ReviewCard';
+import { BlogCard } from '@/components/Card/BlogCard';
+import { ActivityCard } from '@/components/Card/ActivityCard';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { getActivityAll, getJournal, getReviews } from '@/utils/api';
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import DatePicker from "react-datepicker";
 import beach from '@/assets/images/choosing/beach.svg';
 import communication from '@/assets/images/choosing/communication.svg';
 import fishing from '@/assets/images/choosing/fishing.svg';
 import travel from '@/assets/images/choosing/travel.svg';
-import { useEffect, useState } from 'react';
-import { getActivityAll, getJournal, getReviews } from '@/utils/api';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss"; 
-import { useNavigate } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import './HomePage.scss';
 
 
 const HomePage = () => {
@@ -24,6 +25,9 @@ const HomePage = () => {
     const [journalData, setJournalData] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [error, setError] = useState(null);
+
+    const userId = Number(localStorage.getItem("userId"));
+
 
     // input value
     const [isSearchVisible, setIsSearchVisible] = useState(true);
@@ -191,20 +195,6 @@ const HomePage = () => {
     };
 
 
-    // **更新收藏狀態**
-    const handleFavoriteToggle = (id, newStatus) => {
-        console.log(`活動 ${id} 的收藏狀態更改為: ${newStatus}`);
-        setActivityData(prevData =>
-            prevData.map((activity) =>
-                activity.id === id 
-                ? { ...activity, isFavorited: newStatus } // 更新 isFavorited 狀態
-                : activity
-            )
-        );
-    };
-
-
-
     const { t } = useTranslation();
 
     if (error) {
@@ -358,11 +348,13 @@ const HomePage = () => {
                             <p className="text-center">{t('common.loading')}</p>
                         </div>
                     ) : filteredData.length > 0 ? (
-                        filteredData.map((activity, index) => (
-                            <div className="col-md-6 col-lg-4" key={`${activity.id}-${index}`}>
+                        filteredData.map((activity) => (
+                            <div className="col-md-6 col-lg-4" key={activity.id}>
                                 <ActivityCard
-                                    {...activity}
-                                    onFavoriteToggle={handleFavoriteToggle}
+                                    activity={activity}
+                                    userId={userId}
+                                    isCollectedPage={false}
+                                    onToggleFavorite = {()=>{}}
                                 />
                             </div>
                         ))
@@ -502,8 +494,8 @@ const HomePage = () => {
                             <div className="col-md-6 col-lg-4" key={review.id}>
                                 <ReviewCard
                                     key={review.id}
-                                    avatar={review.user.avatar}
-                                    name={review.user.name}
+                                    avatar={review.avatar}
+                                    name={review.name}
                                     rating={review.rating}
                                     activityTitle={review.activityTitle}
                                     reviewContent={review.reviewContent}

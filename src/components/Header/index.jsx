@@ -15,9 +15,17 @@ const Header = () => {
     const [userData, setUserData] = useState({}); // 存儲用戶資料
 
     // 登入註冊資料
-    const [loginData, setLoginData] = useState({ email: "", password: "" });
+    const [loginData, setLoginData] = useState(
+        { 
+            email: "", 
+            password: "",
+            name: userData.name,
+            role: "會員",
+            avatar: "",
+        }
+    );
     const [registerData, setRegisterData] = useState({
-        userName: "",
+        name: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -60,11 +68,19 @@ const Header = () => {
         setError(null);
         try {
             const response = await login(loginData); // 替換為你的 API 函數
+            // if(response.status === "停用"){
+            //     Swal.fire({
+            //         title: "此帳號已停用，無法登錄",
+            //         icon: "warning"
+            //     })
+            //     return;
+            // }
             setIsLoggedIn(true);
             // 存入 localStorage
             localStorage.setItem("userId", response.user.id);
+            localStorage.setItem("userName", response.user.name);
             updateUserData({
-                name: localStorage.getItem("userName"),
+                name: response.user.name,
                 image: "https://mighty.tools/mockmind-api/content/human/119.jpg", // 使用者圖片的 URL
             });
             Swal.fire({
@@ -91,7 +107,6 @@ const Header = () => {
         setError(null);
         try {
             await register(registerData); // 替換為你的 API 函數
-            localStorage.setItem("userName", registerData.userName);
             Swal.fire({
                 title: "註冊成功!",
                 icon: "success"
@@ -233,7 +248,7 @@ const Header = () => {
                         <Link className="nav-link" to="/activity-list" onClick={closeMenu}>{t('menu.activityList')}</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/journal" onClick={closeMenu}>{t('menu.journal')}</Link>
+                        <Link className="nav-link" to="/journal-list" onClick={closeMenu}>{t('menu.journal')}</Link>
                     </li>
                     {/* 多國語系切換 */}
                     <li className="nav-item dropdown">
@@ -366,12 +381,12 @@ const Header = () => {
                             ) : (
                             <form onSubmit={handleRegister}>
                                 <div className="mb-3">
-                                    <label htmlFor="userName" className="form-label">使用者名稱</label>
+                                    <label htmlFor="name" className="form-label">使用者名稱</label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        id="userName"
-                                        value={registerData.userName}
+                                        id="name"
+                                        value={registerData.name}
                                         onChange={(e) => handleInputChange(e, false)}
                                         placeholder="請輸入使用者名稱"
                                         required />

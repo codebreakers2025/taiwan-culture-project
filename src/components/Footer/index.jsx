@@ -25,7 +25,7 @@ const Footer = () => {
                         <Link className="nav-link" to="/activity-list">{t('menu.activityList')}</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/journal">{t('menu.journal')}</Link>
+                        <Link className="nav-link" to="/journal-list">{t('menu.journal')}</Link>
                     </li>
                 </ul>
                 
