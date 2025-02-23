@@ -39,9 +39,17 @@ const ActivityList = () => {
 
   return (
     <div className="test-container">
+      <div className="content">
         <div className="container">
+          {/* 麵包屑 */}
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">首頁</a></li>
+              <li class="breadcrumb-item active" aria-current="page">所有活動</li>
+            </ol>
+          </nav>
           <div className="row">
-            <div className="col-3">
+            <div className="col-lg-3 col-12">
               <div className="left-searchBar">
                 <div className="body">
                   {/* 搜尋關鍵字 */}
@@ -120,8 +128,14 @@ const ActivityList = () => {
                   <button type="button" className="btn btn-primary">搜尋</button>
                 </div>
               </div>
+              <div className="mobile-bar">
+                <button>
+                  篩選
+                  <span className="material-icons">keyboard_arrow_down</span>
+                </button>
+              </div>
             </div>
-            <div className="col-9">
+            <div className="col-lg-9 col-12">
               <div className="right-content">
                 <div className="row">
                   <div className="col-md-6 col-lg-4">
@@ -217,11 +231,29 @@ const ActivityList = () => {
                     </div>
                   </div>
                 </div>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item previous disabled">
+                      <a class="page-link">
+                        <span class="material-icons">chevron_left</span>
+                      </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item next">
+                      <a class="page-link" href="#">
+                        <span class="material-icons">chevron_right</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 
