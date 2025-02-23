@@ -455,7 +455,7 @@ const HomePage = () => {
                                             image={item.images}
                                             date={item.date}
                                             title={item.title}
-                                            body={item.body}
+                                            content={item.content}
                                         />
                                     </SwiperSlide>
                                 ))}
