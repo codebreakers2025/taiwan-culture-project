@@ -210,7 +210,7 @@ const HomePage = () => {
     if (error) {
         return <div className="alert alert-danger">{error}</div>;
     }
-
+    
     return (
         <div className="home">
             <section className="banner-section">

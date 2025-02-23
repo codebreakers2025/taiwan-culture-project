@@ -1,15 +1,18 @@
-import { ActivityCard} from '@/components/Card/Activity';
+import { ActivityCard } from '@/components/Card/Activity';
 import './ActivityList.scss';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
+import { addFavorites, getFavorites } from '@/utils/api';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss";
 import { getActivityAll , getReviews } from '@/utils/api';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const ActivityList = () => {
+  const userId = Number(localStorage.getItem("userId"));
   const [searchResultsData, setSearchResultsData] = useState([]);
   const [activityData, setActivityData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
@@ -21,6 +24,7 @@ const ActivityList = () => {
   const [selectedPrice, setSelectedPrice] = useState('');
   const [reviewData, setReviewData] = useState([]);
   const [Ratingstar , setRatingStar] = useState(0)
+  const [favorite, setFavorite] = useState(false);
 
 
   const [error, setError] = useState(null);
@@ -29,6 +33,7 @@ const ActivityList = () => {
   // 轉址功能
   const navigate = useNavigate();
   const handleNavigate = (e , activity) => {
+      e.preventDefault();
       navigate(`/activity-list/${activity.detailsId}`);
       window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
   };
@@ -47,6 +52,7 @@ const ActivityList = () => {
   useEffect(() => {
     fetchGetActivity();
     fetchGetReview();
+    checkExistingFavorite()
 }, []);
 
   const getSearchInput = (value) => {
@@ -113,6 +119,77 @@ const ActivityList = () => {
       
     }
   }
+
+  const checkExistingFavorite = async () => {
+    try {
+        const res = await getFavorites(userId);
+        console.log("收藏列表:", res);
+        return res.some(item => item.isFavorited);
+    } catch (error) {
+        console.error("檢查收藏狀態出錯:", error);
+        return false; // 預設為未收藏
+    }
+  };
+
+  const handerAddFavorites = async () => {
+    try {
+        setLoading(true);
+
+        // 執行新增收藏
+        const favoriteData = {
+            activityId: id,
+            userId: userId,
+            isFavorited: true
+        };
+        await addFavorites(favoriteData);
+        setFavorite(true);
+
+        Swal.fire({
+            title: "新增成功! 已加入我的收藏",
+            icon: "success"
+        });
+
+    } catch (error) {
+        console.error("收藏操作出錯:", error);
+        Swal.fire({
+            title: "收藏操作失敗",
+            icon: "error"
+        });
+    } finally {
+        setLoading(false);
+    }
+}
+
+const handleFavoriteClick =  async(id) => {
+      console.log(id);
+
+      const isAlreadyFavorited = await checkExistingFavorite();
+
+      console.log(isAlreadyFavorited);
+
+      if(isAlreadyFavorited) {
+        // 檢查是否已收藏
+        console.log("是否已收藏:", isAlreadyFavorited);
+        Swal.fire({
+            title: "已加入過收藏!",
+            text: "請勿重複收藏",
+            icon: "warning"
+        });
+    } else {
+        await handerAddFavorites();
+    }
+  };
+
+  const handleFavoriteToggle = (id, newStatus) => {
+    console.log(`活動 ${id} 的收藏狀態更改為: ${newStatus}`);
+    setActivityData(prevData =>
+        prevData.map((activity) =>
+            activity.id === id 
+            ? { ...activity, isFavorited: newStatus } // 更新 isFavorited 狀態
+            : activity
+        )
+    );
+};
   
   return (
     <div className="test-container">
@@ -224,7 +301,9 @@ const ActivityList = () => {
                             </div>
                             <h5 className="card-title">{activity.content?.title}</h5>
                             <p className="card-text">{activity.content?.description}</p>
-                            <span className="material-icons favorite-icon favorite_border">favorite_border</span>
+                            <span className={`material-icons favorite-icon ${favorite ? "favorite" : "favorite_border"} ${loading ? 'disabled' : ''}`}
+                            onClick={(e)=>handleFavoriteClick(activity.id)}
+                            style={{ cursor: loading ? 'default' : 'pointer' }}>{favorite ? "favorite" : "favorite_border"}</span>
                             <span className="paid mt-1">666</span>
                             <button className="btn btn-primary activity-btn" onClick={(e) => handleNavigate(e, activity)}>查看更多</button>
                           </div>

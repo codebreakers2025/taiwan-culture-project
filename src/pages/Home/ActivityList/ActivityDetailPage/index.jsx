@@ -146,7 +146,7 @@ const ActivityDetailPage = () => {
   const getReverseData = async() => {
     try{
       const response = await axios.get(`/api/reservationData/${id}`)
-      setGetReservationData(response.data)
+      setGetReservationData(response.data) 
     }catch(error){
     }
   }
@@ -173,20 +173,20 @@ const renderPaginationButtons = () => {
     pageNumbers.push(i);
   }
 
-  return pageNumbers.map((pageNumber) => (
-    <button
-      key={pageNumber}
-      onClick={() => handlePageChange(pageNumber)}
-      disabled={page === pageNumber}
-    >
-      {pageNumber}
-    </button>
-  ));
+return pageNumbers.map((pageNumber) => (
+  <button
+    key={pageNumber}
+    onClick={() => handlePageChange(pageNumber)}
+    disabled={page === pageNumber}
+  >
+    {pageNumber}
+  </button>
+));
 };
-  const getReviews = async (id , page = 1, limit = 2) => {
-    console.log(id);
-    const response = await axios.get(`/api/reviews?activityId=${id}&_page=${page}&_limit=${limit}`);
-    return response.data;
+const getReviews = async (id , page = 1, limit = 2) => {
+  console.log(id);
+  const response = await axios.get(`/api/reviews?activityId=${id}&_page=${page}&_limit=${limit}`);
+  return response.data;
 
 };
   
@@ -272,6 +272,7 @@ const renderStars = (rating) => {
 };
 
 const handleDateClick = (date) => {
+  
   setSelectedDate(date);
   const dateData = getReservationData[date];
   setSelectedData(dateData);
@@ -283,7 +284,7 @@ const handleDateClick = (date) => {
     image: activityData.images,
     location: activityData.city,
     quantity: 1,
-    last_bookable_date: selectedDate, // 更新最後可預約日期
+    last_bookable_date: date, // 更新最後可預約日期
   }));
 };
 
@@ -298,27 +299,31 @@ const submitDateClick = () => {
     }, 300); // 帶著資料跳轉到預約頁面
 };
 const renderDay = (day) => {
+
   const date = `2025-01-${day < 10 ? `0${day}` : day}`;
+  if (!getReservationData) return null; // 確保有資料
   const reservation = getReservationData[date];
+  const isAvailable = !!reservation; 
   return (
     <div className="day" key={day} >
       <button 
-        onClick={() => handleDateClick(date)}
+        onClick={isAvailable ? () => handleDateClick(date) : null }
+        disabled={!isAvailable}
         style={{
           backgroundColor: selectedDate === date ? '#4DAAB0' : 'transparent', // 當前選中的日期顯示背景顏色
           color: selectedDate === date ? 'white' : 'black', // 當前選中的日期顯示文字顏色
           borderRadius: '8px', // 圓角
           fontSize: '14px',
           display: 'inline-block',
-          cursor: getReservationData ? 'pointer' : 'not-allowed', // 如果有資料，游標為指針，否則為禁止符號
-          opacity: getReservationData ? 1 : 0.5
+          cursor: isAvailable ? 'pointer' : 'not-allowed', // 如果有資料，游標為指針，否則為禁止符號
+          opacity: isAvailable ? 1 : 0.5
         }}
       >
         {day}
         {reservation && (
           <div style={{color:selectedDate === date ? 'white' : '#616161'}}>
             <small>價格 :666</small>
-            <small>剩餘 :{getReservationData.remaining}</small>
+            <small>剩餘 :{reservation.remaining}</small>
           </div>
         )}
       </button>
