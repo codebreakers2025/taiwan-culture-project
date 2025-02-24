@@ -40,7 +40,7 @@ const OrderManagement = () => {
       adultPrice: 200,
       childPrice: 150,
       paymentStatus: "",
-      status: "",
+      reservedStatus: "",
       totalAmount: 0 
     });
     setShowModal(false);
@@ -106,7 +106,7 @@ const OrderManagement = () => {
               <td>{order.activityPeriod.startDate} - {order.activityPeriod.endDate}</td>
               <td>{order.timeSlot}</td>
               <td>成人: {order.adultCount}, 兒童: {order.childCount}</td>
-              <td>{order.status === "reserved" ? "預約中" : order.status === "in_progress" ? "進行中" : order.status === "cancel" ? "已取消" : "未知的狀態"}</td>
+              <td>{order.reservedStatus === "reserved" ? "預約中" : order.reservedStatus === "in_progress" ? "進行中" : order.reservedStatus === "cancel" ? "已取消" : "未知的狀態"}</td>
               <td>{order.totalAmount}</td>
               <td>{order.paymentStatus === "PAID" ? "已付款" : order.paymentStatus === "PENDING" ? "尚未付款" : "未知的狀態"}</td>
               <td>

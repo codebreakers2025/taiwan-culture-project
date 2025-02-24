@@ -15,6 +15,22 @@
       "role": "ACTIVITY_MANAGER",
       "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740111558/abqxa84kdmokplslyrov.jpg",
       "id": 2
+    },
+    {
+      "email": "test@gmail.com",
+      "password": "$2a$10$WXnPLhTNYh5ds.cAGZ.vo.08rt1Xy1ZrG3E6VrGtwehwQ0/pXCi4u",
+      "name": "測試",
+      "role": "會員",
+      "avatar": "",
+      "id": 3
+    },
+    {
+      "email": "test123@gmail.com",
+      "password": "$2a$10$xhJ/IgkgRuv1aJpsxA5gLeH7hAKSQgmqXFYJceN8z2kof80KgYSBy",
+      "name": "測試123",
+      "role": "會員",
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "id": 4
     }
   ],
   "activity": [
@@ -31,7 +47,69 @@
       "content": {
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
-      }
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "id": 1,
+          "activityId": 1,
+          "images": [
+            {
+              "description": {
+                "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+                "descriptionOne": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情",
+                "context": "「一生必遊」的美景，當夕陽西下，天空和濕地都被染成金黃色，景色如詩如畫"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "近距離觀察濕地生態，親身感受大自然的魅力。",
+                "context": "夕陽觀賞區、木棧道體驗、潮間帶探索"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "夕陽觀賞區、木棧道體驗、潮間帶探索",
+                "context": "高美濕地夕陽絕美，木棧道漫步，生態豐富，風車映照水面，如詩如畫"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "風車成排，倒映在水面，宛如畫中的詩意景色",
+                "context": "高美濕地融合生態與美景，是台中必訪的觀光勝地。"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "親子旅遊首選，寓教於樂，探索大自然的奧秘。",
+                "context": "來高美濕地，看最美日落，感受大自然的壯麗魅力"
+              }
+            }
+          ],
+          "features": [
+            "彩虹眷村的繽紛色彩",
+            "高美濕地的夕陽美景",
+            "探索台中老兵的童心"
+          ],
+          "location": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sectionOne": {
+            "title": "經典行程",
+            "description": "介紹彩虹眷村，帶您進入五光十色的世界，並聆聽這些繽紛牆壁背後的故事。"
+          },
+          "sectionTwo": {
+            "title": "高美濕地夕陽",
+            "description": "在這裡，您可以漫步於大自然之間，感受與夕陽交織的美麗時光。"
+          }
+        }
+      ]
     },
     {
       "id": 2,
@@ -61,7 +139,83 @@
       "content": {
         "title": "天送埤火車站 | 高空繩索體驗 ",
         "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
-      }
+      },
+      "detailsId": 3
+    },
+    {
+      "id": 1,
+      "city": "台中",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+      "isFavorited": false,
+      "rating": 4.5,
+      "date": "2025-01-21",
+      "eventType": "一日行程",
+      "content": {
+        "title": "經典行程＆高美濕地一日遊",
+        "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "id": 1,
+          "activityId": 1,
+          "images": [
+            {
+              "description": {
+                "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+                "descriptionOne": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情",
+                "context": "「一生必遊」的美景，當夕陽西下，天空和濕地都被染成金黃色，景色如詩如畫"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "近距離觀察濕地生態，親身感受大自然的魅力。",
+                "context": "夕陽觀賞區、木棧道體驗、潮間帶探索"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "夕陽觀賞區、木棧道體驗、潮間帶探索",
+                "context": "高美濕地夕陽絕美，木棧道漫步，生態豐富，風車映照水面，如詩如畫"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "風車成排，倒映在水面，宛如畫中的詩意景色",
+                "context": "高美濕地融合生態與美景，是台中必訪的觀光勝地。"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "親子旅遊首選，寓教於樂，探索大自然的奧秘。",
+                "context": "來高美濕地，看最美日落，感受大自然的壯麗魅力"
+              }
+            }
+          ],
+          "features": [
+            "彩虹眷村的繽紛色彩",
+            "高美濕地的夕陽美景",
+            "探索台中老兵的童心"
+          ],
+          "location": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sectionOne": {
+            "title": "經典行程",
+            "description": "介紹彩虹眷村，帶您進入五光十色的世界，並聆聽這些繽紛牆壁背後的故事。"
+          },
+          "sectionTwo": {
+            "title": "高美濕地夕陽",
+            "description": "在這裡，您可以漫步於大自然之間，感受與夕陽交織的美麗時光。"
+          }
+        }
+      ]
     }
   ],
   "activityDetails": [
@@ -78,20 +232,7 @@
         "彩虹眷村的繽紛色彩",
         "高美濕地的夕陽美景",
         "探索台中老兵的童心"
-      ],
-      "location": {
-        "latitude": 24.1947,
-        "longitude": 120.6354,
-        "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
-      },
-      "sectionOne": {
-        "title": "經典行程",
-        "description": "介紹彩虹眷村，帶您進入五光十色的世界，並聆聽這些繽紛牆壁背後的故事。"
-      },
-      "sectionTwo": {
-        "title": "高美濕地夕陽",
-        "description": "在這裡，您可以漫步於大自然之間，感受與夕陽交織的美麗時光。"
-      }
+      ]
     }
   ],
   "journal": [
@@ -230,53 +371,7 @@
       "userId": 2
     }
   ],
-  "reservations": [
-
-  ],
-  "orders": [
-    {
-      "id": "ORD202402220001",
-      "createdAt": "2024-02-22 15:30:25",
-      "contactName": "王小明",
-      "activityName": "台北一日遊",
-      "activityLocation": "台北市信義區信義路五段7號",
-      "activityPeriod": {
-        "startDate": "2024-03-15",
-        "endDate": "2024-03-23"
-      },
-      "activityId": 1,
-      "userId": 2,
-      "adultCount": 4,
-      "childCount": 3,
-      "adultPrice": 150,
-      "childPrice": 120,
-      "timeSlot": "09:00-17:00",
-      "totalAmount": 960,
-      "paymentStatus": "PAID",
-      "status": "reserved"
-    },
-    {
-      "id": "ORD202402220002",
-      "createdAt": "2024-02-22 15:30:25",
-      "contactName": "李小華",
-      "activityName": "宜蘭農場體驗",
-      "activityLocation": "宜蘭縣冬山鄉小村路123號",
-      "activityPeriod": {
-        "startDate": "2024-03-15",
-        "endDate": "2024-03-23"
-      },
-      "activityId": 1,
-      "userId": 2,
-      "adultCount": 2,
-      "childCount": 2,
-      "adultPrice": 200,
-      "childPrice": 150,
-      "timeSlot": "09:00-12:00",
-      "totalAmount": 700,
-      "paymentStatus": "PENDING",
-      "status": "in_progress"
-    }
-  ],
+  "reservations": [],
   "tickets": [
     {
       "id": "TKT202402220001",
@@ -291,12 +386,47 @@
       "type": "ADULT",
       "status": "VALID",
       "qrCode": "https://example.com/qr/TKT202402220002"
-    },
+    }
+
+  ],
+  "reservationData": [
     {
-      "id": "TKT202402220003",
+      "id": 1,
+      "2025-01-01": {
+        "price": 500,
+        "remaining": 10
+      },
+      "2025-01-02": {
+        "price": 450,
+        "remaining": 8
+      }
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD202402220001",
+      "userId": "",
+      "activityId": "1",
+      "createdAt": "2024-02-22 15:30:25",
+      "contactName": "王小明",
+      "activityName": "台北一日遊",
+      "last_bookable_date": "",
+      "activityLocation": "台北市信義區信義路五段7號",
+      "activityPeriod": {
+        "startDate": "2024-03-15",
+        "endDate": "2024-03-23"
+      },
+      "adultCount": 4,
+      "childCount": 3,
+      "adultPrice": 150,
+      "childPrice": 120,
+      "timeSlot": "09:00-17:00",
+      "totalAmount": 960,
+      "paymentStatus": "PAID",
       "orderId": "ORD202402220001",
       "type": "CHILD",
       "status": "VALID",
+      "reservedStatus": "reserved",
       "qrCode": "https://example.com/qr/TKT202402220003"
     }
   ],

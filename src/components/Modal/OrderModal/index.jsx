@@ -23,7 +23,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
       adultPrice: 200,
       childPrice: 150,
       paymentStatus: "",
-      status: "",
+      reservedStatus: "",
       totalAmount: 0 
     });
 
@@ -44,7 +44,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
             '18:00-21:00'
           ],
           paymentStatus: currentOrder.paymentStatus || '',
-          status: currentOrder.status || '',
+          reservedStatus: currentOrder.reservedStatus || '',
           adultCount: currentOrder.adultCount || 0,
           childCount: currentOrder.childCount || 0,
           adultPrice: currentOrder.adultPrice || 200,
@@ -155,7 +155,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
 
           <Form.Group>
             <Form.Label>預約狀態</Form.Label>
-            <Form.Control type="text" name="status" value={formData.status === "reserved" ? "預約中" : formData.status === "in_progress" ? "進行中" : formData.status === "cancel" ? "已取消" : "未知的狀態"} onChange={handleChange} />
+            <Form.Control type="text" name="status" value={formData.reservedStatus === "reserved" ? "預約中" : formData.reservedStatus === "in_progress" ? "進行中" : formData.reservedStatus === "cancel" ? "已取消" : "未知的狀態"} onChange={handleChange} />
           </Form.Group>
 
 
@@ -194,6 +194,7 @@ OrderModal.propTypes = {
       'activityPeriod.startDate': PropTypes.string,
       'activityPeriod.endDate': PropTypes.string,
       paymentStatus: PropTypes.string,
+      reservedStatus: PropTypes.string,
       adultCount: PropTypes.number,
       childCount: PropTypes.number,
       adultPrice: PropTypes.number,

@@ -47,7 +47,7 @@ const router = createHashRouter(
           element: <ActivityList />,
         },
         {
-          path: '/activity-list/detail',
+          path: '/activity-list/:id',
           element: <ActivityDetailPage />,
         },
         {

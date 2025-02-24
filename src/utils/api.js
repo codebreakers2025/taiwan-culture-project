@@ -12,7 +12,7 @@ export const register = async (data) => {
         password: data.password,
         name: data.name,
         role: "會員",
-        avatar: ""
+        avatar: "https://mighty.tools/mockmind-api/content/human/119.jpg"
     });
     return response.data; 
 };
@@ -86,10 +86,6 @@ export const getUserDetail = async (userId) => {
     return response.data.length ? response.data[0] : null; // 取第一筆資料
 };
 
-// export const getUsers = async (userId) => {
-//     const response = await axios.get(`/api/profiles?userId=${userId}&_expand=user`);
-//     return response.data.length ? response.data[0] : null; // 取第一筆資料
-// };
 
 export const userProfiles = async (data) => {
     const response = await axios.post(`/api/profiles`, data);

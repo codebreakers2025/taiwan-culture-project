@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Header.scss';
 import { register, login } from '@/utils/api';
@@ -11,6 +11,7 @@ const Header = () => {
     const { t } = useTranslation();
     const { i18n } = useTranslation();
     const changeLanguage = (lng) => { i18n.changeLanguage(lng); };
+    const navigate = useNavigate();
 
     // 用戶
     const [userData, setUserData] = useState({}); 
@@ -29,6 +30,24 @@ const Header = () => {
     //     console.log("Google Sign-In triggered");
     // };
 
+    // 登入註冊資料
+    const [loginData, setLoginData] = useState(
+        { 
+            email: "", 
+            password: "",
+            name: "",
+            role: "",
+            avatar: "https://mighty.tools/mockmind-api/content/human/119.jpg",
+        }
+    );
+
+    const [registerData, setRegisterData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
     // 登入邏輯
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -40,11 +59,15 @@ const Header = () => {
             localStorage.setItem("userId", response.user.id);
             localStorage.setItem("userName", response.user.name);
             localStorage.setItem("userRole", response.user.role);
-            localStorage.setItem("userAvator", response.user.avatar);
-            console.log(response.user);
+            if(!response.user.avatar){
+                localStorage.setItem("userAvator", "https://mighty.tools/mockmind-api/content/human/119.jpg");
+            } else {
+                localStorage.setItem("userAvator", response.user.avatar);
+            }
+            // console.log(response.user);
             updateUserData({
                 name: response.user.name,
-                image: "https://mighty.tools/mockmind-api/content/human/119.jpg", 
+                image: response.user.avatar, 
             });
             Swal.fire({
                 title: "登入成功!",
@@ -97,6 +120,8 @@ const Header = () => {
             title: "登出成功！",
             icon: "success"
         })
+
+        navigate("/");
 
         // 關閉 modal
         handleCloseModal();
@@ -292,6 +317,10 @@ const Header = () => {
                 setIsLogin={setIsLogin}
                 handleLogin={handleLogin}
                 handleRegister={handleRegister}
+                loginData={loginData}
+                setLoginData={setLoginData}
+                registerData={registerData}
+                setRegisterData={setRegisterData}
                 t={(key) => key} // Replace this with your translation function
                 error={error}
                 loading={loading}

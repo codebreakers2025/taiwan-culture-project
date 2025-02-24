@@ -18,11 +18,11 @@ const OrderListPage = () => {
   const filterOrdersByTab = (orders) => {
     switch (activeTab) {
       case '已預約':
-        return orders.filter(order => order.status === 'reserved');
+        return orders.filter(order => order.reservedStatus === 'reserved');
       case '進行中':
-        return orders.filter(order => order.status === 'in_progress');
+        return orders.filter(order => order.reservedStatus === 'in_progress');
       case '已取消':
-        return orders.filter(order => order.status === 'cancel');
+        return orders.filter(order => order.reservedStatus === 'cancel');
       default:
         return orders;
     }

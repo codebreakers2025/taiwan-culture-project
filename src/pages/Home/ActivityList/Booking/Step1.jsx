@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Card, Button, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step1.scss";
+import { useLocation } from "react-router-dom";
 
 const renderTooltip = (props) => (
   <Tooltip id="button-tooltip" {...props}>
@@ -13,6 +14,11 @@ const Step1 = () => {
   const navigate = useNavigate();
   const [adultCount, setAdultCount] = useState(2);
   const [childCount, setChildCount] = useState(1);
+
+  const location = useLocation();
+  const submitData = location.state || {}; // 確保有資料
+
+  console.log("收到的預約資料:", submitData);
 
   return (
     <Container className="booking-step1 py-4">

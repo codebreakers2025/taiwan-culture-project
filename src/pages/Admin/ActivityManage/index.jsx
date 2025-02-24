@@ -19,7 +19,6 @@ const EventManagement = () => {
   };
 
   const handleClose = () => {
-
     setShowModal(false);
     setCurrentEvent(null);
   };

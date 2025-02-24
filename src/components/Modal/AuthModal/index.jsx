@@ -1,24 +1,10 @@
 import { useState } from 'react';
 import PropTypes from "prop-types";
+import { useTranslation } from 'react-i18next';
 
-const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLogin, handleRegister, t, error, loading }) => {
 
-     // 登入註冊資料
-     const [loginData, setLoginData] = useState(
-        { 
-            email: "", 
-            password: "",
-            name: "",
-            role: "",
-            avatar: "https://mighty.tools/mockmind-api/content/human/119.jpg",
-        }
-    );
-    const [registerData, setRegisterData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    });
+const AuthModal = ({ showModal, handleCloseModal, isLogin, setIsLogin, handleLogin, handleRegister, error, loading, loginData, setLoginData, registerData, setRegisterData }) => {
+    const { t } = useTranslation();
 
     // 表單輸入處理
     const handleInputChange = (e, isLoginForm) => {
@@ -156,9 +142,13 @@ AuthModal.propTypes = {
     setIsLogin: PropTypes.func.isRequired,
     handleLogin: PropTypes.func.isRequired,
     handleRegister: PropTypes.func.isRequired,
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     error: PropTypes.string,
     loading: PropTypes.bool.isRequired,
+    loginData: PropTypes.object.isRequired,
+    setLoginData: PropTypes.func.isRequired,
+    registerData: PropTypes.object.isRequired,
+    setRegisterData: PropTypes.func.isRequired,
   };
 
 export default AuthModal;
