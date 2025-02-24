@@ -10,11 +10,57 @@ import { getActivityAll , getReviews } from '@/utils/api';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+import axios from 'axios';
+
+axios.defaults.baseURL = process.env.NODE_ENV === 'production'
+ ? 'https://taiwancultureproject.onrender.com'
+ : 'http://localhost:3002'
+
+const PageNation = ({totalPage, setTotalPage, page, setPage}) => {
+    const handlePageChange = (page) => {
+      setPage(page);
+    };
+
+    const renderPaginationButtons = () => {
+      const pageNumbers = [];
+      for (let i = 1; i <= totalPage; i++) {
+        pageNumbers.push(i);
+      }
+      
+      return pageNumbers.map((pageNumber) => (
+        <button
+          key={pageNumber}
+          onClick={() => handlePageChange(pageNumber)}
+          disabled={page === pageNumber}
+        >
+          {pageNumber}
+        </button>
+));
+};
+
+
+    return(
+      <div className="pagenation" >
+          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
+          <span className="material-icons">
+          chevron_left
+          </span>
+          </button>
+          <div className="currentPage">{renderPaginationButtons()}</div>
+          <button onClick={() => setPage((prev) => prev + 1)}>
+            <span class="material-icons">
+            navigate_next
+            </span>
+          </button> 
+        </div>
+    )
+}
 
 const ActivityList = () => {
   const userId = Number(localStorage.getItem("userId"));
   const [searchResultsData, setSearchResultsData] = useState([]);
   const [activityData, setActivityData] = useState([]);
+  const [searchData, setSearchData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchingValue , setSearchingValue] = useState([]);
   const [selectedStartDate, SelectedStartDate] = useState('');
@@ -23,9 +69,10 @@ const ActivityList = () => {
   const [selectedSite, setSelectedSite] = useState('');
   const [selectedPrice, setSelectedPrice] = useState('');
   const [reviewData, setReviewData] = useState([]);
-  const [Ratingstar , setRatingStar] = useState(0)
   const [favorite, setFavorite] = useState(false);
-
+  const [totalPage , setTotalPage] = useState(0)
+  const [page, setPage] = useState(1); // 頁數狀態
+  const limit = 2;
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -38,19 +85,36 @@ const ActivityList = () => {
       window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
   };
 
-  const fetchGetActivity = async () => {
+  const fetchGetActivityAll = async () => {
     setLoading(true);
     setError(null);
     try {
-        const response  = await getActivityAll(); 
-        setActivityData(response); 
+        const response  = await getActivityAll();
+        
+        setSearchData(response)
+        setTotalPage(Math.ceil(response.length/limit))
     } catch (error) {
         setError('Error fetching activity:', error);
     } 
 };
 
+
+  const fetchGetActivity = async (page = 1 , limit) => {
+    setLoading(true);
+    setError(null);
+    try {
+        const response  = await axios.get(`/api/activity?_page=${page}&_limit=${limit}`);
+        setActivityData(response.data); 
+    } catch (error) {
+        setError('Error fetching activity:', error);
+    } 
+};
+  useEffect(()=>{
+    fetchGetActivity(page, limit)
+  },[page , limit])
+  
   useEffect(() => {
-    fetchGetActivity();
+    fetchGetActivityAll()
     fetchGetReview();
     checkExistingFavorite()
 }, []);
@@ -61,10 +125,10 @@ const ActivityList = () => {
   }
   
   const getSelectedStartDate = (e) => {
-    SelectedStartDate(e.target.value);
+    SelectedStartDate(e.target.value)
   };
 
-  const getSelectedEndDate = (e) => {
+  const getSelectedEndDate = (e) => { 
     SelectedEndDate(e.target.value);
   };
 
@@ -79,12 +143,20 @@ const ActivityList = () => {
   const getSelectedPrice = (e) => {
     setSelectedPrice(e.target.value);
   };
-
-
+  useEffect(()=>{
+    searchActivity()
+  },[page])
   const searchActivity = () => {
-    //console.log('Searching for:', { searchInput, selectedStartDate, selectedEndDate, selectedType, selectedSite, selectedPrice });
+    if (!searchInput && !selectedStartDate && !selectedEndDate && !selectedType && !selectedSite && !selectedPrice) {
+      setSearchResultsData([])
+      setSearchingValue([])
+      fetchGetActivityAll()
+      console.log("a");
+      return;
+    }
     setSearchingValue([searchInput , selectedStartDate , selectedType, selectedEndDate, selectedSite, selectedPrice])
-    const searchResults = activityData.filter((item) => {
+    
+    const searchResults = searchData.filter((item) => {
       const matchesTitle = searchInput ? item.content?.title?.match(new RegExp(searchInput, 'i')) : true;
       const matchesDate =
       selectedStartDate || selectedEndDate
@@ -97,14 +169,24 @@ const ActivityList = () => {
       
       return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;
     });
-
+    setTotalPage(Math.ceil(searchResults.length/limit))
+    console.log(Math.ceil(searchResults.length/limit));
     
-    setSearchResultsData(searchResults); // Log the filtered results
+    
+    const startIdx = (page - 1) * limit;
+    const endIdx = startIdx + limit;
+    console.log(startIdx , endIdx , page);
+    
+    const paginatedResults = searchResults.slice(startIdx, endIdx);
+
+    console.log(paginatedResults);
+    setSearchResultsData(paginatedResults); // Log the filtered results
   };
-  
-  
+
   const searchBtn = () => {
-    searchActivity(searchInput)
+    console.log(page);
+    setPage(1)
+    searchActivity()
 
   }
 
@@ -123,7 +205,7 @@ const ActivityList = () => {
   const checkExistingFavorite = async () => {
     try {
         const res = await getFavorites(userId);
-        console.log("收藏列表:", res);
+        // console.log("收藏列表:", res);
         return res.some(item => item.isFavorited);
     } catch (error) {
         console.error("檢查收藏狀態出錯:", error);
@@ -283,7 +365,7 @@ const handleFavoriteClick =  async(id) => {
                 </div>
               </div>
               <div className="mobile-bar">
-                <button>
+                <button data-bs-toggle="modal" data-bs-target="#exampleModal">
                   篩選
                   <span className="material-icons">keyboard_arrow_down</span>
                 </button>
@@ -326,25 +408,93 @@ const handleFavoriteClick =  async(id) => {
                     ))
                   )}
                 </div>
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item previous disabled">
-                      <a class="page-link">
-                        <span class="material-icons">chevron_left</span>
-                      </a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item next">
-                      <a class="page-link" href="#">
-                        <span class="material-icons">chevron_right</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+                <PageNation totalPage={totalPage} setTotalPage={setTotalPage} page={page} setPage={setPage} limit={limit}/>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+          <div className="left-searchBar">
+                <div className="body">
+                  {/* 搜尋關鍵字 */}
+                  <div className="mb-4 modal-body-list">
+                    <span className="title">關鍵字搜尋</span>
+                    <div className="list-content">
+                      <span className="material-icons">search</span>
+                      <input type="text" className="form-control" placeholder="搜尋關鍵字" value={searchInput} onChange={(e) => getSearchInput(e.target.value)}   />
+                    </div>
+                  </div>
+                  {/* 日期選擇 */}
+                  <div className="mb-4 modal-body-list">
+                    <span className="title">起始日期</span>
+                    <div className="list-content">
+                      <span className="material-icons">today</span>
+                      <div className="react-datepicker-wrapper">
+                        <div className="react-datepicker__input-container">
+                          <input type="date" placeholder="請選擇開始日期" className="date-input" value={selectedStartDate} onChange={getSelectedStartDate}/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-4 modal-body-list">
+                    <span className="title">結束日期</span>
+                    <div className="list-content">
+                      <span className="material-icons">today</span>
+                      <div className="react-datepicker-wrapper">
+                        <div className="react-datepicker__input-container">
+                          <input type="date" placeholder="請選擇結束日期" className="date-input" value={selectedEndDate} onChange={getSelectedEndDate} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* 類型選擇 */}
+                  <div className="mb-4 modal-body-list">
+                    <span className="title">活動類型</span>
+                    <div className="list-content">
+                      <span className="material-icons">directions_walk</span>
+                      <div className="form-control-dropdown">
+                        {/* <div className="dropdown-selected ">類型</div> */}
+                        <select name="" id="" className="dropdown-selected " value={selectedType} onChange={getSelectedType}>
+                          <option value="">請選擇活動類型</option>
+                          <option value="一日行程">一日行程</option>
+                          <option value="特色體驗">特色體驗</option>
+                          <option value="戶外探索">戶外探索</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  {/* 價格輸入 */}
+                  <div className="mb-4 modal-body-list">
+                    <span className="title">價格</span>
+                    <div className="list-content">
+                      <span className="material-icons">paid</span>
+                      <input type="text" className="form-control" placeholder="請選擇價格區間" value={selectedPrice} onChange={getSelectedPrice}/>
+                    </div>
+                  </div>
+                  {/* 地區選擇 */}
+                  <div className="mb-4 modal-body-list">
+                    <span className="title">地區</span>
+                    <div className="list-content">
+                      <span className="material-icons">location_on</span>
+                      <div className="form-control-dropdown">
+                        {/* <div className="dropdown-selected ">地區</div> */}
+                        <select name="" id="" className="dropdown-selected " value={selectedSite} onChange={getSelectedSite}>
+                          <option value="">請選擇地區</option>
+                          <option value="台北">台北</option>
+                          <option value="台中">台中</option>
+                          <option value="高雄">高雄</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="footer">
+                  <button type="button" className="btn btn-primary" onClick={searchBtn}>搜尋</button>
+                </div>
+              </div>
           </div>
         </div>
       </div>

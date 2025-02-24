@@ -198,3 +198,33 @@
 .test-container .right-content .btn:hover {
     color: #fff;
 }
+.pagenation{
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+  .pagenation button{
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    margin-left: 12px;
+
+  }
+
+  .pagenation .currentPage button:disabled {
+    background-color: #4DAAB0; /* 灰色背景 */
+    color: #ffffff; /* 灰色文字 */
+    cursor: not-allowed; /* 改變滑鼠游標 */
+  }
+
+
+
+  .pagenation .material-icons{
+    line-height: 1.5;
+  }
+  .pagenation span{
+    font-size: 24px;
+    color: #616161;
+  }

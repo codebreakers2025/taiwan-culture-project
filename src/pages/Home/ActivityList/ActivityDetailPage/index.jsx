@@ -102,38 +102,37 @@ const ActivityDetailPage = () => {
   const [activityDetailDataImages, setActivityDetailDataImages] = useState([]);
   const [activityDetailData, setActivityDetailData] = useState({});
   const [showMainImage, setShowMainImage] = useState("");
-  const [Ratingstar , setRatingStar] = useState(0)
-  const [totalPage , setTotalPage] = useState(0)
   const [getReservationData , setGetReservationData] = useState({})
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedData, setSelectedData] = useState(null);
+  const [RatingstarAll , setRatingStarAll] = useState([])
+  const [Ratingstar , setRatingStar] = useState(0)
+  const [avgRatingstar , setAvgRatingStar] = useState(0)
+  const [totalPage , setTotalPage] = useState(0)
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 2;
   const [submitdData, setSubmitData] = useState({
-    "reservation_id": "RES123456",
-    "userId": "67890",
-    "event_id": "45678",
-    "event_name": "台灣文化節",
-    "image" : "",
-    "user_name": "王小明",
-    "user_phone": "+886912345678",
-    "user_email": "xiaoming@example.com",
-    "sex": "male",
-    "reservation_date": "2025-03-10T10:00:00Z",
-    "reservation_time": "2025-03-15T14:00:00Z",
-    "location": "台北市花博公園",
-    "quantity": 2,
-    "status": "confirmed",
-    "non_bookable_dates": [
-      "2025-03-01",
-      "2025-03-02",
-      "2025-03-10"
-    ],
-    "last_bookable_date": "2025-03-14",
-    "booked_slots": [
-      "2025-03-15T14:00:00Z",
-      "2025-03-15T15:00:00Z"
-    ]
+    "id": "ORD202402220001",
+    "userId":"",
+    "event_id": "",
+    "createdAt": "2024-02-22 15:30:25",
+    "contactName": "王小明",
+    "activityName": "台北一日遊",
+    "location": "",
+    "image":"image",
+    "last_bookable_date":"",
+    "activityLocation": "台北市信義區信義路五段7號",
+    "activityPeriod": {
+      "startDate": "2024-03-15",
+      "endDate": "2024-03-23"
+    },
+    "adultCount": 4,
+    "childCount": 3,
+    "adultPrice": 150,
+    "childPrice": 120,
+    "timeSlot": "09:00-17:00",
+    "totalAmount": 960,
+    "paymentStatus": "PAID"
   });
 
   const [error, setError] = useState(null);
@@ -160,7 +159,9 @@ const ActivityDetailPage = () => {
 
   const getReviewsAll = async (id) => {
     const response = await axios.get(`/api/reviews?activityId=${id}`);
-    setTotalPage(response.data.length/limit)
+    setTotalPage(Math.ceil(response.data.length/limit))
+    setRatingStarAll(response.data)
+    
 };
 
 const handlePageChange = (page) => {
@@ -183,6 +184,12 @@ return pageNumbers.map((pageNumber) => (
   </button>
 ));
 };
+
+useEffect(() => {
+  fetchGetReview(id , page, limit); // 這裡傳遞 page 和 limit
+}, [page]); // 監聽 page 變數，變更時重新獲取數據
+
+
 const getReviews = async (id , page = 1, limit = 2) => {
   console.log(id);
   const response = await axios.get(`/api/reviews?activityId=${id}&_page=${page}&_limit=${limit}`);
@@ -190,9 +197,6 @@ const getReviews = async (id , page = 1, limit = 2) => {
 
 };
   
-useEffect(() => {
-  fetchGetReview(id , page, limit); // 這裡傳遞 page 和 limit
-}, [page]); // 監聽 page 變數，變更時重新獲取數據
 
 
   useEffect(() => {
@@ -219,14 +223,10 @@ useEffect(() => {
     }
 };
 
-
-
 useEffect(()=>{
-  reviewData.length === 0 ? setRatingStar(0) :
-  setRatingStar(reviewData.reduce((sum , item)=> sum + item.rating, 0) / Number(reviewData.length))
-
-},[reviewData])
-
+  reviewData.length === 0 ? setRatingStar(0) : setRatingStar(reviewData.reduce((sum , item)=> sum + item.rating, 0) / Number(reviewData.length))
+  RatingstarAll.length === 0 ? setAvgRatingStar(0) : setAvgRatingStar((RatingstarAll.reduce((sum , item)=> sum + item.rating, 0) / Number(RatingstarAll.length)).toFixed(2))
+},[reviewData , RatingstarAll])
 
   const fetchGetActivity = async (id) => {
     setLoading(true);
@@ -280,10 +280,9 @@ const handleDateClick = (date) => {
     ...preData,
     userId: userId,
     event_id: id,
-    event_name: activityData.content?.title,
+    activityName: activityData.content?.title,
     image: activityData.images,
     location: activityData.city,
-    quantity: 1,
     last_bookable_date: date, // 更新最後可預約日期
   }));
 };
@@ -377,7 +376,7 @@ return (
                       <button className='addFavorites'><span className="material-icons favoriteHeart">favorite_border</span><span>加入收藏</span></button>
                       
                     </h2>
-                    <span className='rating'><span className="material-icons">star</span>{Ratingstar}({reviewData.length}) <span className='addFavorites'>{reviewData.length} 人參加過</span></span>
+                    <span className='rating'><span className="material-icons">star</span>{avgRatingstar}({RatingstarAll.length}) <span className='addFavorites'>{RatingstarAll.length} 人參加過</span></span>
                   </div>
                   <hr />
                   <div className='actContent'>
@@ -446,7 +445,7 @@ return (
                             lineHeight: "48px"
                           }}
                         >
-                          {Ratingstar}
+                          {avgRatingstar}
                         </span>
                         <div className="d-flex ratingStart">
                           {renderStars(Ratingstar)} {/* ⭐ 渲染動態星星 */}

@@ -6,7 +6,7 @@ import BookingPage1 from '@/pages/Home/ActivityList/Booking/Step1.jsx';
 import BookingPage2 from '@/pages/Home/ActivityList/Booking/Step2.jsx';
 import BookingPage3 from '@/pages/Home/ActivityList/Booking/Step3.jsx';
 import BookingPage4 from '@/pages/Home/ActivityList/Booking/Step4.jsx';
-import Journal from '@/pages/Home/Journal';
+import Journal from '@/pages/Home/Journal/JournalListPage/index.jsx'
 
 import CollectionList from '@/pages/Home/Member/CollectionList';
 import PersonalData from '@/pages/Home/Member/PersonalData';
