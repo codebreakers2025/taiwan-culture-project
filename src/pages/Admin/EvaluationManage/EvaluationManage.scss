@@ -1,0 +1,11 @@
+.single-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-review-management tr {
+  th,td {
+    white-space: nowrap;
+  }
+}

@@ -1,4 +1,4 @@
-import { ActivityCard } from '@/components/Card/Activity';
+import { ActivityCard} from '@/components/Card/ActivityCard';
 import './ActivityList.scss';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
