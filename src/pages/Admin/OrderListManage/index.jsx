@@ -39,7 +39,8 @@ const OrderManagement = () => {
       childCount: 0,
       adultPrice: 200,
       childPrice: 150,
-      paymentStatus: "PENDING",
+      paymentStatus: "",
+      status: "",
       totalAmount: 0 
     });
     setShowModal(false);
@@ -89,7 +90,8 @@ const OrderManagement = () => {
             <th>活動名稱</th>
             <th>活動期間</th>
             <th>活動時段</th>
-            <th>訂單人數</th>
+            <th>預約人數</th>
+            <th>預約狀態</th>
             <th>訂單金額</th>
             <th>訂單狀態</th>
             <th>操作</th>
@@ -104,8 +106,9 @@ const OrderManagement = () => {
               <td>{order.activityPeriod.startDate} - {order.activityPeriod.endDate}</td>
               <td>{order.timeSlot}</td>
               <td>成人: {order.adultCount}, 兒童: {order.childCount}</td>
+              <td>{order.status === "reserved" ? "預約中" : order.status === "in_progress" ? "進行中" : order.status === "cancel" ? "已取消" : "未知的狀態"}</td>
               <td>{order.totalAmount}</td>
-              <td>{order.paymentStatus}</td>
+              <td>{order.paymentStatus === "PAID" ? "已付款" : order.paymentStatus === "PENDING" ? "尚未付款" : "未知的狀態"}</td>
               <td>
                 <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(order)}>查看</button>{' '}
                 <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(order.id)}>刪除</button>
@@ -120,7 +123,6 @@ const OrderManagement = () => {
         handleSave={handleSave} 
         currentOrder={currentOrder}
         setCurrentOrder={setCurrentOrder}
-        
         />
     </div>
   );

@@ -8,7 +8,7 @@ const LoginPage = () => {
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
-    role: 'admin',
+    role: 'ADMIN',
     rememberMe: false
   });
   const [loading, setLoading] = useState(false);
@@ -28,23 +28,21 @@ const LoginPage = () => {
     
     // 模擬登入請求
     try {
-      const res = await login(credentials);
-      if(res.role !== ADMIN || res.role !== ACTIVITY_MANAGER){
-          Swal.fire({
-            title: "登入失敗，您沒有權限可以登入!",
-            icon: "error"
-          })
-      }
+      const response = await login(credentials);
+      console.log(response);
+
       localStorage.setItem("userName", response.user.name);
       localStorage.setItem("userRole", response.user.role);
       localStorage.setItem("userAvator", response.user.avatar);
+
       Swal.fire({
         title: "登入成功",
         icon: "success"
       })
-
+      
       navigate('/admin/dashboard');
     } catch (error) {
+      console.log(error);
       Swal.fire({
         title: "登入失敗，請檢查帳號密碼!",
         icon: "error"

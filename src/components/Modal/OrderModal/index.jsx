@@ -22,7 +22,8 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
       childCount: 0,
       adultPrice: 200,
       childPrice: 150,
-      paymentStatus: "PENDING",
+      paymentStatus: "",
+      status: "",
       totalAmount: 0 
     });
 
@@ -43,6 +44,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
             '18:00-21:00'
           ],
           paymentStatus: currentOrder.paymentStatus || '',
+          status: currentOrder.status || '',
           adultCount: currentOrder.adultCount || 0,
           childCount: currentOrder.childCount || 0,
           adultPrice: currentOrder.adultPrice || 200,
@@ -152,8 +154,14 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
           </Form.Group>
 
           <Form.Group>
+            <Form.Label>預約狀態</Form.Label>
+            <Form.Control type="text" name="status" value={formData.status === "reserved" ? "預約中" : formData.status === "in_progress" ? "進行中" : formData.status === "cancel" ? "已取消" : "未知的狀態"} onChange={handleChange} />
+          </Form.Group>
+
+
+          <Form.Group>
             <Form.Label>訂單狀態</Form.Label>
-            <Form.Control type="text" name="paymentStatus" value={formData.paymentStatus} onChange={handleChange} />
+            <Form.Control type="text" name="paymentStatus" value={formData.paymentStatus === "PAID" ? "已付款" : formData.paymentStatus === "PENDING" ? "尚未付款" : "未知的狀態"} onChange={handleChange} />
           </Form.Group>
 
           <Form.Group>
