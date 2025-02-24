@@ -405,8 +405,8 @@
   "orders": [
     {
       "id": "ORD202402220001",
-      "userId": "",
-      "activityId": "1",
+      "userId": 1,
+      "activityId": 1,
       "createdAt": "2024-02-22 15:30:25",
       "contactName": "王小明",
       "activityName": "台北一日遊",
