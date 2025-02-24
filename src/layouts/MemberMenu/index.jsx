@@ -122,7 +122,7 @@ const Menu = () => {
               />
                 <img
                   // src={userData?.user?.avatar}
-                  src={userData.avatar}
+                  src={userData.avatar || "https://mighty.tools/mockmind-api/content/human/119.jpg"}
                   alt="User Avatar"
                   className="rounded-circle img-hover"
                   width="100"

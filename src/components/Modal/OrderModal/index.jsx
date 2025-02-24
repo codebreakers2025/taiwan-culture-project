@@ -22,7 +22,8 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
       childCount: 0,
       adultPrice: 200,
       childPrice: 150,
-      paymentStatus: "PENDING",
+      paymentStatus: "",
+      reservedStatus: "",
       totalAmount: 0 
     });
 
@@ -43,6 +44,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
             '18:00-21:00'
           ],
           paymentStatus: currentOrder.paymentStatus || '',
+          reservedStatus: currentOrder.reservedStatus || '',
           adultCount: currentOrder.adultCount || 0,
           childCount: currentOrder.childCount || 0,
           adultPrice: currentOrder.adultPrice || 200,
@@ -152,8 +154,14 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
           </Form.Group>
 
           <Form.Group>
+            <Form.Label>預約狀態</Form.Label>
+            <Form.Control type="text" name="status" value={formData.reservedStatus === "reserved" ? "預約中" : formData.reservedStatus === "in_progress" ? "進行中" : formData.reservedStatus === "cancel" ? "已取消" : "未知的狀態"} onChange={handleChange} />
+          </Form.Group>
+
+
+          <Form.Group>
             <Form.Label>訂單狀態</Form.Label>
-            <Form.Control type="text" name="paymentStatus" value={formData.paymentStatus} onChange={handleChange} />
+            <Form.Control type="text" name="paymentStatus" value={formData.paymentStatus === "PAID" ? "已付款" : formData.paymentStatus === "PENDING" ? "尚未付款" : "未知的狀態"} onChange={handleChange} />
           </Form.Group>
 
           <Form.Group>
@@ -182,11 +190,11 @@ OrderModal.propTypes = {
       contactName: PropTypes.string,
       activityName: PropTypes.string,
       activityLocation: PropTypes.string,
-      activityName: PropTypes.string,
       timeSlot: PropTypes.string,
       'activityPeriod.startDate': PropTypes.string,
       'activityPeriod.endDate': PropTypes.string,
       paymentStatus: PropTypes.string,
+      reservedStatus: PropTypes.string,
       adultCount: PropTypes.number,
       childCount: PropTypes.number,
       adultPrice: PropTypes.number,

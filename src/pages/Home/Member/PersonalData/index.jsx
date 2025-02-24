@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { userProfiles, updateUsers, getUsers} from '@/utils/api';
+import { userProfiles, updateUsers, getUserDetail} from '@/utils/api';
 import './PersonalData.scss';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -129,7 +129,7 @@ const handleSubmit = async (e) => {
 };
 
 const getUsersData = async () => {
-    const response = await getUsers(userId); 
+    const response = await getUserDetail(userId); 
     if (response && response.id) {
         // 📌 更新 formData，確保 id 被設定，代表是「編輯模式」
         setFormData(prevData => ({

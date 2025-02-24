@@ -85,7 +85,7 @@ const router = createHashRouter(
           element: <OrderListPage />,
         },
         {
-          path: 'order-management/detail',
+          path: 'order-management/detail/:id',
           element: <OrderDetailPage />,
         },
         {
@@ -123,10 +123,6 @@ const router = createHashRouter(
       element: <AdminLayout />,
       children: [
         {
-          path: 'login', 
-          element: <Login />,
-        },
-        {
           path: 'dashboard', 
           element: <Dashboard />,
         },
@@ -151,6 +147,10 @@ const router = createHashRouter(
           element: <EvaluationManage />,
         }
       ]
+    },
+    {
+      path: '/admin/login', 
+      element: <Login />,
     },
   ],
 )

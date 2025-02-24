@@ -1,9 +1,14 @@
 import PropTypes from "prop-types";
 import { Button, Table, Modal, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurrentEvent, newReview, setNewReview, activities }) => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { register,  handleSubmit, formState: { errors }, reset } = useForm();
+
+  useEffect(() => {
+    reset(newReview); // 每當 newReview 改變時，同步更新表單
+}, [newReview, reset]);
 
   return (
     <Modal show={showModal} onHide={handleClose}>
@@ -47,11 +52,11 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
               <Form.Label>評分</Form.Label>
               <Form.Select
                 {...register("rating", { required: "請選擇評分" })}
-                value={newReview.rating}
+                value={newReview.rating || ""}
                 onChange={(e) => setNewReview({ ...newReview, rating: parseInt(e.target.value) })}
                 // disabled={newReview.rating}
               >
-                {[5, 4, 3, 2, 1].map((star) => (
+                {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1].map((star) => (
                   <option key={star} value={star}>{"⭐".repeat(star)}</option>
                 ))}
               </Form.Select>

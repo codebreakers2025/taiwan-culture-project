@@ -1,5 +1,5 @@
 import "./ActivityDetailPage.scss";
-import { getActivitys , getUsers } from '@/utils/api';
+import { getActivitys , getUserDetail } from '@/utils/api';
 import { useState , useEffect , useRef } from 'react'; 
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css';
@@ -114,7 +114,7 @@ const ActivityDetailPage = () => {
   const [submitdData, setSubmitData] = useState({
     "id": "ORD202402220001",
     "userId":"",
-    "event_id": "",
+    "activityId": "",
     "createdAt": "2024-02-22 15:30:25",
     "contactName": "王小明",
     "activityName": "台北一日遊",
@@ -152,7 +152,7 @@ const ActivityDetailPage = () => {
 
   const getUser = async() => {
     try{
-      const response = await getUsers(userId);  
+      const response = await getUserDetail(userId);  
     }catch(error){
     }
   }
@@ -279,7 +279,7 @@ const handleDateClick = (date) => {
   setSubmitData((preData) => ({
     ...preData,
     userId: userId,
-    event_id: id,
+    activityId: id,
     activityName: activityData.content?.title,
     image: activityData.images,
     location: activityData.city,
@@ -469,7 +469,7 @@ return (
                             <div className="row reviewRow g-0" key={index}>
                               <div className="col-1 ratingerImg">
                                 <div className="roundedCircle">
-                                    <img src={item.user.avatar}
+                                    <img src={item.avatar}
                                     alt="..." 
                                     />
                                 </div>
@@ -477,7 +477,7 @@ return (
                               {/*單一評論和星星 */}
                               <div className="col-10 ratingContext">
                                 <div className="d-flex justify-content-between align-items-center">
-                                  <span className='ratingName'>{item.user.name}</span>
+                                  <span className='ratingName'>{item.name}</span>
                                   <div className='singleRating'>
                                   {renderStars(item.rating)}
                                   </div>

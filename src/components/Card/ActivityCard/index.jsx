@@ -4,7 +4,6 @@ import { addFavorites, getFavorites, deleteFavorites } from '@/utils/api';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 
-
 export const ActivityCard = ({ activity, isCollectedPage, onToggleFavorite, userId }) => {
 
 const [isFavorite, setIsFavorite] = useState(activity.isFavorited);
@@ -99,11 +98,12 @@ return (
         <img src={activity.images} className="card-img-top" />
         <div className="activity-card-body card-body">
             <div className="d-flex justify-content-between align-items-center">
-            <p className="card-text">{activity.date}·{activity.eventType}</p>
+            <p className="card-text">{activity.eventType}</p>
             <span className="rating">★ {activity.rating}</span>
             </div>
             <h5 className="card-title">{activity.city}: {activity.content.title}</h5>
             <p className="card-text">{activity.content.description}</p>
+            <span className='card-price'>{activity.price}</span>    
         
         {isCollectedPage ? (
             <span className={`material-icons favorite-icon ${isFavorite ? "favorite_border" : "favorite"}`} onClick={handleFavoriteClickRemove}>
