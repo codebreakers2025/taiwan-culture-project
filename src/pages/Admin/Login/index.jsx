@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '@/utils/api';
+import Swal from 'sweetalert2';
 
 
 const LoginPage = () => {
@@ -27,11 +28,27 @@ const LoginPage = () => {
     
     // 模擬登入請求
     try {
-      await login(credentials);
+      const res = await login(credentials);
+      if(res.role !== ADMIN || res.role !== ACTIVITY_MANAGER){
+          Swal.fire({
+            title: "登入失敗，您沒有權限可以登入!",
+            icon: "error"
+          })
+      }
+      localStorage.setItem("userName", response.user.name);
+      localStorage.setItem("userRole", response.user.role);
+      localStorage.setItem("userAvator", response.user.avatar);
+      Swal.fire({
+        title: "登入成功",
+        icon: "success"
+      })
 
       navigate('/admin/dashboard');
     } catch (error) {
-      alert('登入失敗，請檢查帳號密碼');
+      Swal.fire({
+        title: "登入失敗，請檢查帳號密碼!",
+        icon: "error"
+      })
     } finally {
       setLoading(false);
     }
@@ -120,7 +137,7 @@ const LoginPage = () => {
 
             {/* 額外資訊 */}
             <div className="text-center mt-4 text-muted">
-              <small>&copy; 2024 Your Company. All rights reserved.</small>
+              <small>&copy; 2025 體驗台灣好文化製作團隊. All rights reserved.</small>
             </div>
           </div>
         </div>

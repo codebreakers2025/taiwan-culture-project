@@ -7,13 +7,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
 
 const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCurrentEvent }) => {
-  const { control, register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
+  const { control, watch, register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
 
   const [imagePreview, setImagePreview] = useState('');
   const [imageFile, setImageFile] = useState(null);
 
   const cities = ["台北", "台中", "高雄"]; 
   const eventTypes = ["一日行程", "特色體驗", "戶外探索"]; 
+  // 監聽 `eventType、citie` 的值，讓它受控
+  const selectedEventType = watch("eventType", ""); // 預設值為空
+  const selectedCity = watch("city", ""); // 預設值為空
 
   useEffect(() => {
     if (currentEvent && currentEvent.content) {
@@ -91,6 +94,7 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
             <Form.Label>描述</Form.Label>
             <Form.Control
               as="textarea"
+              placeholder="活動內容"
               rows={3}
               {...register("content.description", {
                 required: "描述是必填的",
@@ -106,17 +110,18 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
           {/* Event Type Dropdown */}
           <Form.Group className="mb-3">
             <Form.Label>活動類型</Form.Label>
-            <Form.Control
-              as="select"
+            <Form.Select
               {...register("eventType", { required: "活動類型是必填的" })}
-              placeholder="活動類型"
+              value={selectedEventType}
+              onChange={(e) => setValue("eventType", e.target.value)}
             >
+              <option value="" disabled selected className="placeholder-option">請選擇活動類型</option>
               {eventTypes.map((type, index) => (
                 <option key={index} value={type}>
                   {type}
                 </option>
               ))}
-            </Form.Control>
+            </Form.Select>
             {errors.eventType && (
               <p className="text-danger">{errors.eventType.message}</p>
             )}
@@ -125,17 +130,18 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
           {/* City Dropdown */}
           <Form.Group className="mb-3">
             <Form.Label>城市</Form.Label>
-            <Form.Control
-              as="select"
+            <Form.Select
               {...register("city", { required: "城市是必填的" })}
-              placeholder="城市"
+              value={selectedCity}
+              onChange={(e) => setValue("city", e.target.value)}
             >
+              <option value="" disabled selected className="placeholder-option">請選擇城市</option>
               {cities.map((city, index) => (
                 <option key={index} value={city}>
                   {city}
                 </option>
               ))}
-            </Form.Control>
+            </Form.Select>
             {errors.city && <p className="text-danger">{errors.city.message}</p>}
           </Form.Group>
 

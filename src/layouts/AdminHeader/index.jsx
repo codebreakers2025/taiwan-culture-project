@@ -1,5 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect , useContext } from 'react';
+import { AdminContext } from '@/layouts/AdminLayout';
+import './AdminHeader.scss';
+
 import {
   Menu,
   Users,
@@ -14,12 +17,29 @@ import {
   LogOut,
   ChevronDown
 } from 'lucide-react';
-import { AdminContext } from '@/layouts/AdminLayout';
-import { useContext } from 'react';
+
 
 
   const AdminHeader = () => {
     const { toggleSidebar, toggleMobileNav, mobileNavOpen } = useContext(AdminContext);
+    const userName = localStorage.getItem("userName");
+    const userAvator = localStorage.getItem("userAvator");
+
+    // 登出函式
+    const handleLogout = () => {
+        // 清除 token
+        localStorage.removeItem("token");
+
+        // 顯示登出成功訊息
+        Swal.fire({
+            title: "登出成功！",
+            icon: "success"
+        })
+
+        // 關閉 modal
+        handleCloseModal();
+    };
+
  
     return (
       <>
@@ -44,7 +64,7 @@ import { useContext } from 'react';
             <div className={`collapse navbar-collapse ${mobileNavOpen ? 'show' : ''}`}>
               <div className="d-flex align-items-center ms-auto">
                 {/* Search */}
-                <div className="position-relative me-3 d-none d-lg-block">
+                {/* <div className="position-relative me-3 d-none d-lg-block">
                   <input 
                     type="text" 
                     className="form-control border-0 bg-light ps-4" 
@@ -52,33 +72,30 @@ import { useContext } from 'react';
                     style={{ width: '250px' }}
                   />
                   <Search size={16} className="position-absolute top-50 start-0 translate-middle-y ms-2 text-muted" />
-                </div>
+                </div> */}
 
                 {/* Notifications */}
-                <div className="dropdown me-3">
+                {/* <div className="dropdown me-3">
                   <button className="btn btn-link text-dark position-relative" data-bs-toggle="dropdown">
                     <Bell size={18} />
                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                       3
                     </span>
                   </button>
-                </div>
+                </div> */}
 
                 {/* User Menu */}
                 <div className="dropdown">
                   <button className="btn btn-link text-dark d-flex align-items-center" data-bs-toggle="dropdown">
-                    <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center" 
-                         style={{ width: '32px', height: '32px' }}>
-                      <User size={16} className="text-white" />
+                    <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center">
+                          <img src={userAvator} alt="User" className="rounded-circle"  width="40" height="40" />                     
+                      {/* <User size={16} className="text-white" /> */}
                     </div>
-                    <span className="ms-2">管理員</span>
-                    <ChevronDown size={16} className="ms-2" />
+                    <span className="ms-2">{userName}</span>
+                    <ChevronDown size={16} className="ms-2" />  
                   </button>
                   <ul className="dropdown-menu dropdown-menu-end">
-                    <li><a className="dropdown-item" href="#"><User size={16} className="me-2" /> 個人資料</a></li>
-                    <li><a className="dropdown-item" href="#"><Settings size={16} className="me-2" /> 設定</a></li>
-                    <li><hr className="dropdown-divider" /></li>
-                    <li><a className="dropdown-item text-danger" href="#"><LogOut size={16} className="me-2" /> 登出</a></li>
+                    <li><Link to="/admin/login" className="dropdown-item text-danger" href="#"><LogOut size={16} className="me-2" onClick={handleLogout} /> 登出</Link></li>
                   </ul>
                 </div>
               </div>
@@ -86,8 +103,6 @@ import { useContext } from 'react';
           </div>
         </nav>
         
-    
-  
         </>
     );
   };

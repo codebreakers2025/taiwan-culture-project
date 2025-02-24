@@ -2,7 +2,9 @@
 import  { useState, useEffect } from "react";
 import { getJournal ,createdJournal,updatedJournal, deletedJournal } from '@/utils/api';
 import './BlogManage.scss';
-import BlogModal from '@/components/Modal/Blog';
+import BlogModal from '@/components/Modal/BlogModal';
+import Swal from 'sweetalert2';
+
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
@@ -40,11 +42,11 @@ const BlogManagement = () => {
     if (id) {
       // Update the blog
       await updatedJournal(id, { title, date, content, status });
-      alert("更新成功");
+      Swal.fire({ title: "更新成功", icon: "success" });
     } else {
       // Create a new blog
       await createdJournal({ title, date, content, status });
-      alert("新增成功");
+      Swal.fire({ title: "新增成功", icon: "success" });
     }
      // Refresh the list of blogs
      AdminBlogManagement();
@@ -55,7 +57,7 @@ const BlogManagement = () => {
 
   const handleDelete = async(id) => {
     await deletedJournal(id);
-    alert("刪除成功");
+    Swal.fire({ title: "刪除成功", icon: "success" });
 
     // Refresh the list of blogs
     AdminBlogManagement();

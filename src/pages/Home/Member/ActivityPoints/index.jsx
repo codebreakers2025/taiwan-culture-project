@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const ActivityPoints = () => {
   // 模擬用戶數據

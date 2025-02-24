@@ -1,7 +1,7 @@
 // 評價管理組件
 import { useState, useEffect } from "react";
 import { getReviews, getActivityAll, addReviews, updateReviews, deleteReviews } from '@/utils/api';
-import ActivityReviewModal from '@/components/Modal/ActivityReview';
+import ActivityReviewModal from '@/components/Modal/ActivityReviewModal';
 import './EvaluationManage.scss';
 import Swal from 'sweetalert2';
 
@@ -20,7 +20,6 @@ const EvaluationManage = () => {
 
   const [newReview, setNewReview] = useState(initialReviewState);
 
-
   const AdminReviewManagement = async() => {
       try{
           const getReview = await getReviews();
@@ -36,71 +35,67 @@ const EvaluationManage = () => {
   });
 
   const handleShow = async(data) => {
-    const getActivity = await getActivityAll();
-    setActivities(getActivity);
-    if(data){
-      setNewReview(data);
-    } else {
-      setNewReview(initialReviewState);
+    try {
+      const getActivity = await getActivityAll();
+      setActivities(getActivity);
+
+      if (data) {
+        setNewReview({
+            ...data,
+            rating: data.rating ?? 5,  // 預設 rating 為 5（避免 undefined）
+        });
+      } else {
+        setNewReview({
+            ...initialReviewState,
+            rating: 5,  // 預設 rating
+        });
+      }
+
+      setShowModal(true);
+    } catch (error) {
+        console.error("Error fetching activities:", error);
     }
-    
-    setShowModal(true);
   };
 
   const handleClose = () => {
-    setNewReview({
-      reviewContent: "",
-      activityTitle: "",
-      rating: 0,
-      avatar: "",
-      name: "",
-      id: null
-    });
+    setNewReview({ reviewContent: "", activityTitle: "", rating: 0 });
     setShowModal(false);
   };
 
 
   const handleSave = async () => {
 
-    const data = {
-      reviewContent: newReview.reviewContent, 
-      activityTitle: newReview.activityTitle, 
-      rating: newReview.rating, 
-      avatar: "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
-      name: userName
-    };
-
-    if(newReview.id) {
-      await updateReviews(newReview.id, newReview);
-      setNewReview(newReview);
+    if (!newReview.reviewContent || !newReview.activityTitle) {
       Swal.fire({
-        title: "編輯成功",
-        icon: "success",
+        icon: "warning",
+        title: "請輸入評價內容並選擇活動",
+        confirmButtonText: "確定",
       });
-      // setNewReview(resetReview);  // 清空輸入框
-    } else {
-      if (!newReview.reviewContent || !newReview.activityTitle) {
-        Swal.fire({
-          icon: "warning",
-          title: "請輸入評價內容並選擇活動",
-          confirmButtonText: "確定"
-        });
-      }
-      await addReviews(data);
-      setNewReview(data);
-      // setNewReview(resetReview);  // 清空輸入框
-
-      Swal.fire({
-        title: "新增成功",
-        icon: "success",
-      });
+      return;
     }
-
-    handleClose();
-    await AdminReviewManagement();
-  }
-
-  const handleDelete = async(id) => {
+  
+    const data = {
+      reviewContent: newReview.reviewContent,
+      activityTitle: newReview.activityTitle,
+      rating: newReview.rating,
+      avatar: "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
+      name: userName,
+    };
+  
+    try {
+      if (newReview.id) {
+        await updateReviews(newReview.id, data);
+        Swal.fire({ title: "編輯成功", icon: "success" });
+      } else {
+        await addReviews(data);
+        Swal.fire({ title: "新增成功", icon: "success" });
+      }
+  
+      handleClose();
+      await AdminReviewManagement();
+    } catch (error) {
+      console.error("儲存評價失敗:", error);
+    }
     if(id){
       await deleteReviews(id);
       Swal.fire({

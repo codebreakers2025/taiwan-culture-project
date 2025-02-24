@@ -182,7 +182,6 @@ OrderModal.propTypes = {
       contactName: PropTypes.string,
       activityName: PropTypes.string,
       activityLocation: PropTypes.string,
-      activityName: PropTypes.string,
       timeSlot: PropTypes.string,
       'activityPeriod.startDate': PropTypes.string,
       'activityPeriod.endDate': PropTypes.string,

@@ -79,10 +79,17 @@ export const deletedJournal = async (id) => {
 
 
 // 個人資料管理
-export const getUsers = async (userId) => {
-    const response = await axios.get(`/api/profiles?userId=${userId}&_expand=user`);
+export const getUserDetail = async (userId) => {
+    const response = await axios.get(`/api/profiles`, {
+        params: { userId: `${userId}` , _expand: "user" }, // 透過 params 傳遞 _expand
+    });
     return response.data.length ? response.data[0] : null; // 取第一筆資料
 };
+
+// export const getUsers = async (userId) => {
+//     const response = await axios.get(`/api/profiles?userId=${userId}&_expand=user`);
+//     return response.data.length ? response.data[0] : null; // 取第一筆資料
+// };
 
 export const userProfiles = async (data) => {
     const response = await axios.post(`/api/profiles`, data);
@@ -182,6 +189,14 @@ export const getOrderAll = async () => {
 // 獲取單筆訂單
 export const getOrders = async (orderId) => {
     const response = await axios.get(`/api/orders/${orderId}`);
+    return response.data; 
+};
+
+// 獲取單筆訂單
+export const getOrderDetail = async (orderId) => {
+    const response = await axios.get(`/api/orders/${orderId}`, {
+        params: { _expand: "user" }, // 透過 params 傳遞 _expand
+      });
     return response.data; 
 };
 

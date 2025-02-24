@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getMemberAll, updatedMembers, register } from '@/utils/api';
 import './MemberManage.scss';
-import MemberModal from '@/components/Modal/Member';
+import MemberModal from '@/components/Modal/MemberModal';
+import Swal from 'sweetalert2';
 
 const UserManagement = () => {
     const [members, setMembers] = useState([]);
@@ -26,11 +27,11 @@ const handleSave = async(userData) => {
     try {
         if (editingUser) {
             await updatedMembers(editingUser.id, userData);
-            alert("編輯成功");
+            Swal.fire({ title: "編輯成功", icon: "success" });
             AdminUsers();
         } else {
             await register(userData);
-            alert("新增成功");
+            Swal.fire({ title: "新增成功", icon: "success" });
             AdminUsers();
         }
 
@@ -84,7 +85,7 @@ return (
                         <td className="py-3 px-4">{user.email}</td>
                         <td className="py-3 px-4">
                         <span className="badge rounded-pill bg-primary bg-opacity-10 text-primary px-3">
-                            {user.role}
+                            {user.role === 'ADMIN' ? '管理員' : user.role === 'ACTIVITY_MANAGER' ? '活動管理者' : user.role === 'Member' ? '會員': '未指定角色'}
                         </span>
                         </td>
                         {/* <td>{user.status ? "啟用" : "停用"}</td> */}

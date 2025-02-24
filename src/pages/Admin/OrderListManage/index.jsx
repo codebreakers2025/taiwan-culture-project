@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { getOrderAll, createOrder, updateOrder, deleteOrder } from '@/utils/api';
 import { Button, Table, Modal, Form } from "react-bootstrap";
-import OrderModal from '@/components/Modal/Order';
+import OrderModal from '@/components/Modal/OrderModal';
 
 
 const OrderManagement = () => {
@@ -26,19 +26,34 @@ const OrderManagement = () => {
   };
 
   const handleClose = () => {
+    setCurrentOrder({
+      contactName: '',
+      activityName: '',
+      activityLocation: '',
+      activityPeriod: {
+        startDate: '',
+        endDate: ''
+      },
+      timeSlot: '',
+      adultCount: 0,
+      childCount: 0,
+      adultPrice: 200,
+      childPrice: 150,
+      paymentStatus: "PENDING",
+      totalAmount: 0 
+    });
     setShowModal(false);
-    setCurrentOrder(null);
+    // setCurrentOrder(null);
   };
 
   const handleSave = async (order) => {
     if (order.id){
       await updateOrder(order.id, order);
-      alert("更新成功");
+      Swal.fire({ title: "新成功", icon: "success" });
     }else {
       await createOrder(order);
-      alert("新增成功");
+      Swal.fire({ title: "新增成功", icon: "success" });
     }
-
     getDataFetch();
     setShowModal(false);
   };

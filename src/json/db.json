@@ -4,15 +4,15 @@
       "email": "admin@gmail.com",
       "password": "$2a$10$Wg2B6ggBSZILbvyOnwWnluNtrC8.Dv4ClUSe.9L7WQUFfhA.Q/XoC",
       "name": "系統管理員",
-      "role": "會員",
-      "avatar": "",
+      "role": "ADMIN",
+      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
       "id": 1
     },
     {
       "email": "admin123@gmail.com",
       "password": "$2a$10$v85Pxn1Cex.VTQi8NKJkgOF1FT3zB3m8vEPGugTvboIoeW10D8j3q",
-      "name": "系統管理員A",
-      "role": "會員",
+      "name": "活動管理者",
+      "role": "ACTIVITY_MANAGER",
       "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740111558/abqxa84kdmokplslyrov.jpg",
       "id": 2
     }
@@ -26,6 +26,7 @@
       "rating": 4.5,
       "startDate": "2025-01-21",
       "endDate": "2025-02-21",
+      "price": "666",
       "eventType": "一日行程",
       "content": {
         "title": "經典行程＆高美濕地一日遊",
@@ -40,10 +41,11 @@
       "rating": 4.8,
       "startDate": "2025-01-21",
       "endDate": "2025-02-21",
+      "price": "666",
       "eventType": "特色體驗",
       "content": {
         "title": "沉浸式 DIY 調製香水",
-        "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
+        "description": "在繁華的台北，體驗獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
       }
     },
     {
@@ -54,48 +56,12 @@
       "rating": 4.7,
       "startDate": "2025-01-21",
       "endDate": "2025-02-21",
+      "price": "666",
       "eventType": "特色體驗",
       "content": {
         "title": "天送埤火車站 | 高空繩索體驗 ",
         "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
       }
-    },
-    {
-      "content": {
-        "title": "AAA",
-        "description": "BBB"
-      },
-      "eventType": "一日行程",
-      "city": "台北",
-      "rating": 3,
-      "startDate": "2025-01-26",
-      "endDate": "2025-02-28",
-      "id": 14
-    },
-    {
-      "content": {
-        "title": "BBB",
-        "description": "BBB"
-      },
-      "eventType": "一日行程",
-      "city": "台中",
-      "rating": 4,
-      "startDate": "2025-01-26",
-      "endDate": "2025-02-28",
-      "id": 15
-    },
-    {
-      "content": {
-        "title": "CC",
-        "description": "CCC\n"
-      },
-      "eventType": "一日行程",
-      "city": "高雄",
-      "rating": 4,
-      "startDate": "2025-01-26",
-      "endDate": "2025-02-28",
-      "images": "",
-      "id": 16
     }
   ],
   "activityDetails": [
@@ -129,12 +95,6 @@
     }
   ],
   "journal": [
-    {
-      "title": "注入創新泉源的職人手做工作坊",
-      "date": "2025-01-21",
-      "content": "<p><span class=\"ql-size-18px\">World Baseball Classic qualifiers 2025 WBC賽程、中華隊名單、直播資訊、賽事分組懶人包111</span></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><span class=\"ql-size-18px\">﻿</span></p>",
-      "id": 1
-    },
     {
       "id": 2,
       "title": "喚醒感官的茶道體驗之旅",
@@ -197,13 +157,6 @@
       "content": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
       "date": "2025-01-25",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
-    },
-    {
-      "title": "經典賽",
-      "date": "2025-02-28",
-      "content": "<p><span class=\"ql-size-24px\">2026年第六屆世界棒球經典賽資格賽456</span></p><p><br></p><p><br></p><p><br></p><p><span class=\"ql-size-24px\"><span class=\"ql-cursor\">﻿</span></span></p>",
-      "status": "",
-      "id": 11
     }
   ],
   "reviews": [
@@ -278,40 +231,7 @@
     }
   ],
   "reservations": [
-    {
-      "id": 1,
-      "startDate": "2025-02-20",
-      "endDate": "2025-03-20",
-      "location": {
-        "latitude": 25.03368,
-        "longitude": 121.5623082,
-        "title": "台北101觀景台"
-      },
-      "validOnDate": true,
-      "ticketType": "景點票券",
-      "groupSize": {
-        "adults": 2,
-        "children": 1,
-        "total": 3
-      },
-      "price": {
-        "adult": 600,
-        "child": 300,
-        "total": 1500
-      },
-      "image": "/uploads/taipei101.jpg",
-      "applicant": {
-        "name": "張小明2",
-        "email": "xiaoming@example.com",
-        "phone": "0912345678"
-      },
-      "orderStatus": "待付款",
-      "payment": {
-        "status": "未付款",
-        "method": null,
-        "transactionId": null
-      }
-    }
+
   ],
   "orders": [
     {
@@ -324,13 +244,16 @@
         "startDate": "2024-03-15",
         "endDate": "2024-03-23"
       },
+      "activityId": 1,
+      "userId": 2,
       "adultCount": 4,
       "childCount": 3,
       "adultPrice": 150,
       "childPrice": 120,
       "timeSlot": "09:00-17:00",
       "totalAmount": 960,
-      "paymentStatus": "PAID"
+      "paymentStatus": "PAID",
+      "status": "reserved"
     },
     {
       "id": "ORD202402220002",
@@ -342,13 +265,16 @@
         "startDate": "2024-03-15",
         "endDate": "2024-03-23"
       },
+      "activityId": 1,
+      "userId": 2,
       "adultCount": 2,
       "childCount": 2,
       "adultPrice": 200,
       "childPrice": 150,
       "timeSlot": "09:00-12:00",
       "totalAmount": 700,
-      "paymentStatus": "PENDING"
+      "paymentStatus": "PENDING",
+      "status": "in_progress"
     }
   ],
   "tickets": [
