@@ -330,6 +330,9 @@ const renderDay = (day) => {
   );
 };
 
+console.log(reviewData);
+
+
 return (
 <div className="activity-detail-page container">
 

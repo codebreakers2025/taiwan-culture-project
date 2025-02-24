@@ -365,6 +365,10 @@
     },
     {
       "id": 2,
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+        "name": "漩渦鳴人"
+      },
       "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
       "name": "奇犽",
       "rating": 4.5,
@@ -374,6 +378,10 @@
     },
     {
       "id": 3,
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+        "name": "漩渦鳴人"
+      },
       "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
       "name": "酷拉皮卡",
       "rating": 4.5,
@@ -383,6 +391,10 @@
     },
     {
       "id": 4,
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+        "name": "漩渦鳴人"
+      },
       "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
       "name": "宇智波佐助",
       "rating": 4.5,
@@ -392,6 +404,10 @@
     },
     {
       "id": 5,
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+        "name": "漩渦鳴人"
+      },
       "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
       "name": "艾連·葉卡",
       "rating": 4.5,
@@ -412,6 +428,10 @@
     },
     {
       "id": 6,
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+        "name": "漩渦鳴人"
+      },
       "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
       "name": "米卡莎",
       "rating": 4,

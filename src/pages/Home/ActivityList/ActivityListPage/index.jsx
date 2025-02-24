@@ -272,6 +272,7 @@ const handleFavoriteClick =  async(id) => {
         )
     );
 };
+
   
   return (
     <div className="test-container">
