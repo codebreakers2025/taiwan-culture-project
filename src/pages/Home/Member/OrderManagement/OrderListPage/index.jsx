@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { getOrderAll, getActivityAll } from '@/utils/api';
 import './OderListPage.scss';
 
-
 const OrderListPage = () => {
   const [orders, setOrders] = useState([]);
 

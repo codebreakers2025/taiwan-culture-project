@@ -129,24 +129,6 @@ server.get('/get-signature', (req, res) => {
 });
 
 
-// 獲取上傳簽名的端點
-server.get('/get-signature', (req, res) => {
-  const timestamp = Math.round(new Date().getTime() / 1000);
-  const signature = cloudinary.utils.api_sign_request(
-    {
-      timestamp: timestamp
-    },
-    cloudinary.config().api_secret
-  );
-
-  res.json({
-    signature,
-    timestamp,
-    apiKey: cloudinary.config().api_key
-  });
-});
-
-
 server.get('/', (req, res) => {
   res.send('Welcome to the JSON Server!');
 });
