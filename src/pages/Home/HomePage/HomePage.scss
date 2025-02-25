@@ -383,6 +383,13 @@
   .card-body {
     padding-left: 20px;
     padding-top: 6px;
+    .card-text {
+      // 設定多行文字
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+    }
   }
   h2 {
     color: $text-color-1;
@@ -392,9 +399,11 @@
     margin-bottom: 8px;
     .card-title {
       font-weight: var(--font-weight-bold);
+      white-space: nowrap;
     }
     .card-rating {
       color: $secondary-color-4;
+      white-space: nowrap;
       span:last-of-type {
         color: $text-color-4;
       }

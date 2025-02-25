@@ -67,20 +67,15 @@ const Menu = () => {
         const imageUrl = imageData.secure_url;
 
         if (!imageUrl) setError('無法取得圖片 URL');
-    
-        // 更新用戶資料
-        // const updatedUser = { ...userData, image: imageUrl };
-        // console.log(updatedUser);
         
         await updatedMembers(userId, {avatar: imageUrl});
 
-        // 設定新的 userData，確保畫面更新
         // setUserData(updatedUser);
         setUserData((prev) => ({
           ...prev,
           avatar: imageUrl, // 更新的圖片
         }));
-        // setPreviewImage({image: imageUrl}); // 也更新預覽圖片
+
         await getUsersAvatar();
       } catch (error) {
         setError('Upload failed:', error);
@@ -88,22 +83,16 @@ const Menu = () => {
       
     };
 
-    const getUsersAvatar = async () => {
-      // console.log(userData?.user);
-        try{
-          const getMember = await getMembers(userId);
-            setUserData({...getMember});
-
-        //   if (!userData) {
-        //     const getMember = await getMembers(userId);
-        //     setUserData({...getMember});
-        // } 
-      } catch(error){
-          console.log(error);
-      }
-    }
 
       useEffect(() => {
+        const getUsersAvatar = async () => {
+          try{
+            const getMember = await getMembers(userId);
+            setUserData({...getMember});
+        } catch(error){
+            console.log(error);
+        }
+      }
         getUsersAvatar();
       }, []);
 

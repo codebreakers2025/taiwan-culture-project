@@ -29,8 +29,6 @@ const LoginPage = () => {
     // 模擬登入請求
     try {
       const response = await login(credentials);
-      console.log(response);
-
       localStorage.setItem("userName", response.user.name);
       localStorage.setItem("userRole", response.user.role);
       localStorage.setItem("userAvator", response.user.avatar);

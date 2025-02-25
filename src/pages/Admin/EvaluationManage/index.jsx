@@ -62,7 +62,6 @@ const EvaluationManage = () => {
     setShowModal(false);
   };
 
-
   const handleSave = async () => {
 
     if (!newReview.reviewContent || !newReview.activityTitle) {
@@ -107,6 +106,16 @@ const EvaluationManage = () => {
 
   };
 
+  const handleDelete = async (id) => {
+    await deleteReviews(id);
+    Swal.fire({
+      icon: "warning",
+      title: "確定是否刪除評論",
+      confirmButtonText: "確定",
+    });
+    await AdminReviewManagement();
+  }
+
   useEffect(() => {
     AdminReviewManagement();
 }, []); 
@@ -127,7 +136,6 @@ const EvaluationManage = () => {
             <th className="py-3 px-4">ID</th>
             <th className="py-3 px-4">使用者名稱</th>
             <th className="py-3 px-4">活動名稱</th>
-            {/* <th className="py-3 px-4">評價內容</th> */}
             <th className="py-3 px-4 text-center">操作</th>
           </tr>
         </thead>
@@ -142,10 +150,9 @@ const EvaluationManage = () => {
                     <span className="fw-bold text-dark">{review.name}</span>    
                 </td>
                 <td className="py-3 px-4">{review.activityTitle}</td>
-                {/* <td className="py-3 px-4 single-ellipsis">{review.reviewContent}</td> */}
                 <td className="py-3 px-4">
                   <div className="d-flex justify-content-center gap-2">
-                  <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(review)}>編輯</button>
+                  <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(review)}>查看</button>
                   <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(review.id)}>刪除</button>
                   </div>
                 </td>

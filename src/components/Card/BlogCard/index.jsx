@@ -3,15 +3,13 @@ import './Blog.scss';
 
 
 export const BlogCard = ({ image, title, content, date }) => {
-  // PropTypes for validation
-
 
   return (
     <>
         <img src={image} alt={title} />
         <p className="card-date">{date}</p>
         <h5 className="card-title">{title}</h5>
-        <p className="card-text">{content}</p>
+        <p className="card-text" dangerouslySetInnerHTML={{ __html: content }}></p>
     </>
   );
 };

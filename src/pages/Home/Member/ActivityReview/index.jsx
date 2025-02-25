@@ -1,150 +1,210 @@
-import { useEffect, useState } from "react";
-import { getReviews, addReviews, updateReviews, getActivityAll } from '@/utils/api';
+import { useEffect, useState, useRef } from "react";
+import { addReviews, getActivityAll, uploadImageToCloudinary } from '@/utils/api';
+import Swal from 'sweetalert2';
 
 const ActivityReview = () => {
-    const [reviews, setReviews] = useState([]);
+    const [imageFiles, setImageFiles] = useState([]); // 用來儲存多張圖片
+    const [previewImage, setPreviewImage] = useState(""); // 儲存單一圖片預覽
+
+    const [selectedActivity, setSelectedActivity] = useState(""); // 獨立管理活動類型
+
+    const fileInputRef = useRef(null); // 用來重置 file input
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const userName = localStorage.getItem("userName");
+    const userAvator = localStorage.getItem("userAvator");
+
     const [activities, setActivities] = useState([]);
     const [newReview, setNewReview] = useState({
         reviewContent: "",
         rating: 5,
         activityTitle: "",
-        user: {
-          avatar: "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
-          name: "訪客"
-        }
-      });
+        imageFiles: [],
+        avatar: userAvator,
+        name: userName
+    });
 
     useEffect(() => {
-        // getReview();
+        // 取得活動資料
+        const getActivies= async () => {
+            const response = await getActivityAll();
+            setActivities(response);
+        };
         getActivies();
     }, []);
 
+    useEffect(() => {
+        if (isSubmitted) {
+            setNewReview({
+                reviewContent: "",
+                rating: 5,
+                activityTitle: "",
+                imageFiles: [],
+                avatar: userAvator,
+                name: userName
+            });
 
-    const getReview = async () => {
-        const res = await getReviews();
-        setReviews(res);
+            setSelectedActivity(""); // **清空下拉選單的值**
+
+            if (fileInputRef.current) {
+                fileInputRef.current.value = ""; // 清空 file input
+            }
+            setIsSubmitted(false); // **清除提交狀態，避免重複觸發**
+        }
+    }, [isSubmitted]);
+
+    // 刪除圖片
+    const handleDeleteImage = (index) => {
+        setNewReview((prev) => ({
+            ...prev,
+            imageFiles: prev.imageFiles.filter((_, i) => i !== index) // 移除指定 index 的圖片
+        }));
     };
 
-    const getActivies= async () => {
-        const res = await getActivityAll();
-        setActivities(res);
+    // 處理主圖片上傳
+    const handleImageChange = async(e) => {
+        const file = e.target.files[0];
+        if (file) {
+        // 顯示圖片預覽
+        const reader = new FileReader();
+        reader.onload = () => {
+            setPreviewImage(reader.result); // 更新圖片預覽
+            setImageFiles((prevFiles) => [...prevFiles, file]); // 新增圖片到圖片陣列
+        };
+        reader.readAsDataURL(file);
+        }
+
+        // 上傳圖片
+        const imageUrl = await uploadImageToCloudinary(file);
+        setNewReview((prev) => ({
+            ...prev,
+            imageFiles: [...prev.imageFiles, imageUrl]
+        }));
+
     };
 
+    const handleActivityChange = (e) => {
+        setSelectedActivity(e.target.value);
+        setNewReview((prev) => ({ ...prev, activityTitle: e.target.value }));
+    };
+
+    // 新增評論
     const addReview = async () => {
-        // if (!newReview.reviewContent || !newReview.activityTitle) {
-        //     return alert("請輸入評價內容並選擇活動");
-        //   }
+        if (!newReview.reviewContent || !newReview.activityTitle) {
+            Swal.fire({ title: "請輸入評價內容並選擇活動", icon: "warning" });
+        }
 
-          await addReviews(newReview);
-        //   getReview();
+        try {
+            await addReviews(newReview);
+            Swal.fire({ title: "評論新增成功", icon: "success" });
 
-        setNewReview({ 
-            reviewContent: "", 
-            rating: 5, 
-            activityType: "", 
-            user: {
-                avatar: "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/default.png",
-                name: "訪客"
-            },
-         });
+            // 觸發 useEffect 來清空表單
+            setIsSubmitted(true); 
+
+        } catch (error) {
+            Swal.fire({ title: "評論新增失敗", icon: "error" });
+            console.error("評論新增失敗", error);
+        }
     };
-
-
-    const updateReview = async (id) => {
-        const updatedReview = reviews.find((review) => review.id === id);
-        if (!updatedReview) return;
-      
-        const newContent = prompt("請輸入新的評價內容", updatedReview.reviewContent);
-        if (newContent === null || newContent.trim() === "") return;
-      
-        await updateReviews(id, { ...updatedReview, reviewContent: newContent });
-        // getReview();
-      };
-      
 
     return (
-    <div className="page-container">
-        <div className="container">
-        <h2>評價留言</h2>
+        <div className="page-container">
+            <div className="container">
+            <h2>評價留言</h2>
+            {/* 新增評價 */}
+            <div className="card mb-3">
+                <div className="card-body">
+                    <div className="mb-3">
+                    <label className="form-label">活動類型</label>
+                    <select
+                        className="form-select"
+                        value={newReview.eventType}
+                        onChange={(e) => setNewReview({ ...newReview, eventType: e.target.value })}
+                    >
+                        <option value="">請選擇類型</option>
+                        {[...new Set(activities.map((a) => a.eventType))].map((type) => (
+                        <option key={type} value={type}>{type}</option>
+                        ))}
+                    </select>
+                    </div>
+                    
+                    <div className="mb-3">
+                    <label className="form-label">活動名稱</label>
+                    <select
+                        className="form-select"
+                        value={newReview.id}
+                        onChange={(e) => setNewReview({ ...newReview, activityTitle: e.target.value })}
+                        disabled={!newReview.eventType}
+                    >
+                        <option value="">請選擇活動</option>
+                        {activities.map((activity) => (
+                            <option key={activity.id} value={activity.content.title}>
+                            { activity.content.title}
+                            </option>
+                        ))}
+                    </select>
+                    </div>
 
-{/* 新增評價 */}
-<div className="card mb-3">
-    <div className="card-body">
-    <div className="mb-3">
-        <label className="form-label">活動類型</label>
-        <select
-            className="form-select"
-            value={newReview.eventType}
-            onChange={(e) => setNewReview({ ...newReview, eventType: e.target.value })}
-        >
-            <option value="">請選擇類型</option>
-            {[...new Set(activities.map((a) => a.eventType))].map((type) => (
-            <option key={type} value={type}>{type}</option>
-            ))}
-        </select>
-        </div>
-        
-        <div className="mb-3">
-        <label className="form-label">活動名稱</label>
-        <select
-            className="form-select"
-            value={newReview.id}
-            onChange={(e) => setNewReview({ ...newReview, activityTitle: e.target.value })}
-            disabled={!newReview.eventType}
-        >
-            <option value="">請選擇活動</option>
-            {activities.map((activity) => (
-                <option key={activity.id} value={activity.content.title}>
-                { activity.content.title}
-                </option>
-            ))}
-        </select>
-        </div>
-        <div className="mb-3">
-        <label className="form-label">評價內容</label>
-        <textarea
-            className="form-control"
-            value={newReview.reviewContent}
-            onChange={(e) => setNewReview({ ...newReview, reviewContent: e.target.value })}
-        ></textarea>
-        </div>
-        <div className="mb-3">
-        <label className="form-label">評分</label>
-        <select
-            className="form-select"
-            value={newReview.rating}
-            onChange={(e) => setNewReview({ ...newReview, rating: parseInt(e.target.value) })}
-        >
-            {[5, 4, 3, 2, 1].map((star) => (
-            <option key={star} value={star}>{"⭐".repeat(star)}</option>
-            ))}
-        </select>
-        </div>
-        <button className="btn btn-primary" onClick={addReview}>提交評價</button>
-    </div>
-</div>
+                    <div className="mb-3">
+                    <label className="form-label">評價內容</label>
+                        <textarea
+                            className="form-control"
+                            value={newReview.reviewContent}
+                            onChange={(e) => setNewReview({ ...newReview, reviewContent: e.target.value })}
+                        ></textarea>
+                    </div>
 
-{/* 評價列表 */}
-{/* <ul className="list-group">
-    {reviews.map((review) => {
-        const activity = activities.find(a => a.id === review.id);
-        return (
-        <li key={review.id} className="list-group-item d-flex justify-content-between align-items-start">
-            <div>
-            <div><strong>{review.user}</strong> - {"⭐".repeat(review.rating)}</div>
-            {activity && <p className="fw-bold">{activity.type} - {activity.name}</p>}
-            <p>{review.text}</p>
-            {review.reply && <p className="text-muted">管理員回覆: {review.reply}</p>}
+                    <div className="mb-3">
+                        <label htmlFor="activityImage" className="form-label">活動照片</label>
+
+                        {/* 上傳圖片 */}
+                        <input 
+                            type="file" 
+                            className="form-control" 
+                            id="activityImage" 
+                            accept="image/*" 
+                            ref={fileInputRef} // 綁定 ref
+                            onChange={handleImageChange}
+                        />
+
+                        {/* 顯示已上傳的圖片 */}
+                        <div className="mt-3 d-flex flex-wrap">
+                            {newReview.imageFiles.map((imageUrl, index) => (
+                                <div key={index} className="position-relative me-2 mb-2">
+                                    <img
+                                        src={imageUrl}
+                                        alt={`Uploaded preview ${index}`}
+                                        style={{ width: 150, height: 150, objectFit: 'cover' }}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger btn-sm position-absolute top-0 end-0"
+                                        onClick={() => handleDeleteImage(index)}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mb-3">
+                    <label className="form-label">評分</label>
+                    <select
+                        className="form-select"
+                        value={newReview.rating}
+                        onChange={(e) => setNewReview({ ...newReview, rating: parseInt(e.target.value) })}
+                    >
+                        {[5, 4, 3, 2, 1].map((star) => (
+                        <option key={star} value={star}>{"⭐".repeat(star)}</option>
+                        ))}
+                    </select>
+                    </div>
+                    <button className="btn custom-btn" onClick={addReview}>提交評價</button>
+                </div>
             </div>
-            <button className="btn btn-danger btn-sm" onClick={() => deleteReview(review.id)}>刪除</button>
-        </li>
-        );
-    })}
-</ul> */}
-
-
+            </div>
         </div>
-    </div>
     );
 }
 

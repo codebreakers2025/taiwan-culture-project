@@ -81,7 +81,6 @@ const OrderListPage = () => {
       <div className="row">
         {filterOrdersByTab(orders).length > 0 ? (
           filterOrdersByTab(orders).map(order => (
-            console.log(order),
             <div className="col-lg-12 mb-4" key={order.id}>
               <div className="card h-100 shadow-sm">
                 <div className="row g-0">

@@ -20,7 +20,6 @@ const OrderManagement = () => {
   };
 
   const handleShow = (order = null) => {
-    // console.log(order);
     setCurrentOrder(order);
     setShowModal(true);
   };

@@ -20,9 +20,9 @@ const BlogManagement = () => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", date: "", content: "", status: "草稿" });
+  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", date: "", content: "", images: "", status: "草稿" });
 
-  const handleShow = (blog = { id: null, title: "", date: "", content: "", status: "" }) => {
+  const handleShow = (blog = { id: null, title: "", date: "", content: "", images: "", status: "" }) => {
     setCurrentBlog(blog);
     setShowModal(true);
   };
@@ -31,35 +31,29 @@ const BlogManagement = () => {
     if(!currentBlog.id) {
       currentBlog.title = "",
       currentBlog.date = "",
-      currentBlog.content = ""
+      currentBlog.content = "",
+      currentBlog.images = ""
     }
     setShowModal(false);
   };
 
-
   const handleSave = async(currentBlog) => {
-    const { id, title, date, content, status } = currentBlog;
+    const { id, title, date, content, images, status } = currentBlog;
     if (id) {
-      // Update the blog
-      await updatedJournal(id, { title, date, content, status });
+      await updatedJournal(id, { title, date, content, images, status });
       Swal.fire({ title: "更新成功", icon: "success" });
     } else {
-      // Create a new blog
-      await createdJournal({ title, date, content, status });
+      await createdJournal({ title, date, content, images, status });
       Swal.fire({ title: "新增成功", icon: "success" });
     }
-     // Refresh the list of blogs
-     AdminBlogManagement();
-
-     // Close the modal
-     handleClose();
+    AdminBlogManagement();
+    handleClose();
   };
 
   const handleDelete = async(id) => {
     await deletedJournal(id);
     Swal.fire({ title: "刪除成功", icon: "success" });
 
-    // Refresh the list of blogs
     AdminBlogManagement();
   };
 
@@ -81,7 +75,6 @@ const BlogManagement = () => {
             <th className="py-3 px-4">ID</th>
             <th className="py-3 px-4">標題</th>
             <th className="py-3 px-4">日期</th>
-            {/* <th>狀態</th> */}
             <th className="py-3 px-4 text-center">操作</th>
           </tr>
         </thead>
@@ -91,7 +84,6 @@ const BlogManagement = () => {
               <td className="py-3 px-4">{blog.id}</td>
               <td className="py-3 px-4">{blog.title}</td>
               <td className="py-3 px-4">{blog.date}</td>
-              {/* <td>{blog.status}</td> */}
               <td className="py-3 px-4">
                 <div className="d-flex justify-content-center gap-2">
                   <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(blog)}>編輯</button>{' '}
@@ -111,10 +103,7 @@ const BlogManagement = () => {
         handleSave={handleSave}
         currentBlog={currentBlog}
         setCurrentBlog={setCurrentBlog}
- 
       />
-
-    
     </div>
   );
 };

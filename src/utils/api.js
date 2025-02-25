@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwancultureproject.onrender.com'
@@ -11,7 +12,7 @@ export const register = async (data) => {
         email: data.email,
         password: data.password,
         name: data.name,
-        role: "會員",
+        role: "Member",
         avatar: "https://mighty.tools/mockmind-api/content/human/119.jpg"
     });
     return response.data; 
@@ -269,17 +270,40 @@ export const getPayments = async (id) => {
 
 
 
-// 圖片/文件上傳
-export const updateAvatar = async (formData) => {
-    const response = await axios.post(`/api/upload`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-    return response.data;
-};
+// 圖片上傳
+export const uploadImageToCloudinary = async(file) => {
+    try {
+        // 1. 獲取 Cloudinary 簽名
+        const signResponse = await fetch('api/get-signature', {
+        method: 'GET'
+        });
+        const { signature, timestamp, apiKey } = await signResponse.json();
 
+        // 2. 準備 FormData
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('signature', signature);
+        formData.append('timestamp', timestamp);
+        formData.append('api_key', apiKey);
 
+        // 3. 上傳到 Cloudinary
+        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/dwjbzadev/image/upload`, {
+            method: 'POST',
+            body: formData
+        });
+        const imageData = await cloudinaryResponse.json();
+        const imageUrl = imageData.secure_url;
+
+        if (!imageUrl) {
+            Swal.fire({ title: "無法取得圖片 URL", icon: "warning" });
+            console.log('無法取得圖片 URL');
+        return;
+        }
+        return imageUrl
+    } catch (error) {
+        Swal.fire({ title: '上傳圖片失敗: ' + error.message, icon: "error" });
+    }
+}
 
 
 

@@ -1,14 +1,48 @@
 import PropTypes from "prop-types";
 import { Button, Table, Modal, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { uploadImageToCloudinary } from '@/utils/api.js';
 
 const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurrentEvent, newReview, setNewReview, activities }) => {
   const { register,  handleSubmit, formState: { errors }, reset } = useForm();
 
+  const [previewImages, setPreviewImages] = useState([]);
+  const [mainImageFile, setMainImageFile] = useState(null);
+  const [savedImage, setSavedImage] = useState([]); // 儲存從資料庫抓取的圖片
+
+    // 處理主圖片上傳
+    const handleMainImageChange = async(e) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        setMainImageFile(file);
+  
+        // 預覽圖片
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setPreviewImages([event.target.result]);
+        };
+        reader.readAsDataURL(file);
+        
+        // 上傳圖片
+        const imageUrl = await uploadImageToCloudinary(file);
+        setNewReview((prev) => ({
+          ...prev,
+          images: imageUrl,
+        }));
+        // setValue("images", imageUrl);
+      }
+    };
+
   useEffect(() => {
     reset(newReview); // 每當 newReview 改變時，同步更新表單
 }, [newReview, reset]);
+
+useEffect(() => {
+  if (newReview.id) {
+      setSavedImage(newReview.imageFiles); 
+    }
+}, [newReview.id]);
 
   return (
     <Modal show={showModal} onHide={handleClose}>
@@ -49,6 +83,49 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
             </Form.Group>
 
             <Form.Group className="mb-3">
+            <Form.Label>活動圖片</Form.Label>
+            {!newReview.id ? (
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleMainImageChange}
+              />
+            ) : (
+              savedImage.length > 0 && (
+                <div className="d-flex gap-2">
+                  {savedImage.map((img, index) => (
+                    <img
+                      key={index}
+                      src={img} 
+                      alt={`活動圖片 ${index + 1}`}
+                      className="mt-3"
+                      style={{ width: "50%", objectFit: "cover" }}
+                    />
+                ))}
+                </div>
+              )
+            )}
+
+            {/* 預覽上傳的圖片 (適用於新增模式) */}
+            {!newReview.id && previewImages.length > 0 && (
+                <div className="mt-3 d-flex flex-wrap">
+                {previewImages.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`預覽圖片 ${index + 1}`}
+                    className="m-2"
+                    style={{ width: "30%", objectFit: "cover" }}
+                  />
+                ))}
+              </div>
+              )}
+             {errors.images && (
+               <p className="text-danger">{errors.images.message}</p>
+             )}
+          </Form.Group>
+            
+            <Form.Group className="mb-3">
               <Form.Label>評分</Form.Label>
               <Form.Select
                 {...register("rating", { required: "請選擇評分" })}
@@ -62,6 +139,7 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
               </Form.Select>
               {errors.rating && <p className="text-danger">{errors.rating.message}</p>}
             </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>活動狀態</Form.Label>
               <Form.Select
@@ -76,7 +154,7 @@ const EventModal = ({ showModal, handleClose, handleSave, currentEvent, setCurre
 
         <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>取消</Button>
-            <Button variant="primary" type="submit">儲存</Button>
+            {/* <Button variant="primary" type="submit">儲存</Button> */}
         </Modal.Footer>
           </Form>
     </Modal>

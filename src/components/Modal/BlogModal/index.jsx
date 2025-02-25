@@ -4,14 +4,26 @@ import  { useState, useEffect, useRef } from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import EditorToolbar, { modules, formats } from '@/components/EditorToolbar';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { uploadImageToCloudinary } from '@/utils/api.js';
+import './Blog.scss';
+
 
 
 const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrentBlog }) => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
-
+  const { control, register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
+    defaultValues: {
+      date: currentBlog.date ? new Date(currentBlog.date) : null, // 預設值為 currentBlog.date
+    },
+  });
+  
   const quillRef = useRef(null);
   const [editorValue, setEditorValue] = useState('');
+
+  const [previewImages, setPreviewImages] = useState([]);
+  const [mainImageFile, setMainImageFile] = useState(null);
 
 
     // 初始化
@@ -34,11 +46,25 @@ const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
   }, [currentBlog?.id]);
 
 
+  useEffect(() => {
+    if (currentBlog && typeof currentBlog.images) {
+      const imageString = typeof currentBlog.images === "string"
+      ? currentBlog.images
+      : JSON.stringify(currentBlog.images); // 確保為字串
+
+      setPreviewImages([imageString]); 
+    } else {
+      setPreviewImages([imageString]); 
+    }
+  }, [currentBlog]);
+
+
   // 處理輸入變更
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCurrentBlog((prev) => ({ ...prev, [name]: value }));
   };
+
 
   // **處理編輯器內容變更**
   const onEditorValueChange = (value) => {
@@ -50,6 +76,28 @@ const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
     const handleSaveClick = () => {
       handleSave({ ...currentBlog, content: editorValue });
     };
+
+      // 處理主圖片上傳
+  const handleMainImageChange = async(e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setMainImageFile(file);
+
+      // 預覽圖片
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPreviewImages([event.target.result]);
+      };
+      reader.readAsDataURL(file);
+      
+      // 上傳圖片
+      const imageUrl = await uploadImageToCloudinary(file);
+      setCurrentBlog((prev) => ({
+        ...prev,
+        images: imageUrl,
+      }));
+    }
+  };
 
 
   return (
@@ -79,6 +127,51 @@ const blogModal = ({ showModal, handleClose, handleSave, currentBlog, setCurrent
             onChange={handleInputChange}
           />
         </Form.Group>
+
+        {/* <Form.Group className="mb-3">
+            <Form.Label>日期</Form.Label>
+            <Controller
+            name="date"
+            value={currentBlog.date}
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                {...field}
+                selected={field.value ? new Date(field.value) : null}
+                onChange={(date) => {
+                  field.onChange(date); 
+                  setValue('date', date);
+                }}
+                dateFormat="yyyy-MM-dd"
+                className="form-control"
+                placeholderText="選擇日期"
+              />
+            )}
+          />
+          </Form.Group> */}
+
+            {/* Image Upload */}
+            <Form.Group className="mb-3">
+            <Form.Label>活動主圖</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={handleMainImageChange}
+              placeholder="活動主圖"
+            />
+            {previewImages.length > 0 && (
+              <div className="mt-3">
+                <img
+                  src={previewImages[0]}
+                  alt="主圖預覽"
+                  className="mt-3 blog-img"
+                />
+              </div>
+            )}
+            {/* {errors.images && (
+              <p className="text-danger">{errors.images.message}</p>
+            )} */}
+          </Form.Group>
 
         <Form.Group className="mb-3">
             <Form.Label>內容</Form.Label>
