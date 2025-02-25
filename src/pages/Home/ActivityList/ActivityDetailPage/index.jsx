@@ -113,13 +113,11 @@ const ActivityDetailPage = () => {
   const limit = 2;
   const [submitdData, setSubmitData] = useState({
     "id": "ORD202402220001",
-    "userId":"",
-    "activityId": "",
+    "userId": null,
+    "activityId": null,
     "createdAt": "2024-02-22 15:30:25",
     "contactName": "王小明",
     "activityName": "台北一日遊",
-    "location": "",
-    "image":"image",
     "last_bookable_date":"",
     "activityLocation": "台北市信義區信義路五段7號",
     "activityPeriod": {
@@ -144,7 +142,7 @@ const ActivityDetailPage = () => {
 
   const getReverseData = async() => {
     try{
-      const response = await axios.get(`/api/reservationData/${id}`)
+      const response = await axios.get(`/api/reservations/${id}`)
       setGetReservationData(response.data) 
     }catch(error){
     }
@@ -234,8 +232,8 @@ useEffect(()=>{
     try {
         const response  = await getActivitys(id); 
         setActivityData(response); 
-        response.activityDetails.length===0 ? " " : setActivityDetailData(response.activityDetails)
-        response.activityDetails.length===0 ? " " : setActivityDetailDataImages(response.activityDetails?.[0]?.images)
+        response.activityDetails.length===0 ? "" : setActivityDetailData(response.activityDetails)
+        response.activityDetails.length===0 ? "" : setActivityDetailDataImages(response.activityDetails?.[0]?.images)
         setShowMainImage(
           response?.activityDetails?.[0]?.images?.length > 0 
           ? response.activityDetails[0].images[0].description.image  // 取得第一張圖片
@@ -502,13 +500,13 @@ return (
                               <div className="pagenation" >
 
                               <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
-                              <span class="material-icons">
+                              <span className="material-icons">
                               chevron_left
                               </span>
                               </button>
                               <div className="currentPage">{renderPaginationButtons()}</div>
                               <button onClick={() => setPage((prev) => prev + 1)}>
-                                <span class="material-icons">
+                                <span className="material-icons">
                                 navigate_next
                                 </span>
                               </button> 

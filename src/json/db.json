@@ -39,11 +39,11 @@
       "city": "台中",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
       "isFavorited": false,
-      "rating": 4.5,
+      "rating": 4.8,
       "startDate": "2025-01-21",
       "endDate": "2025-02-21",
       "price": "666",
-      "eventType": "一日行程",
+      "eventType": "特色體驗",
       "content": {
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
@@ -124,35 +124,6 @@
       "content": {
         "title": "沉浸式 DIY 調製香水",
         "description": "在繁華的台北，體驗獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
-      }
-    },
-    {
-      "id": 3,
-      "city": "宜蘭",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
-      "isFavorited": false,
-      "rating": 4.7,
-      "startDate": "2025-01-21",
-      "endDate": "2025-02-21",
-      "price": "666",
-      "eventType": "特色體驗",
-      "content": {
-        "title": "天送埤火車站 | 高空繩索體驗 ",
-        "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
-      },
-      "detailsId": 3
-    },
-    {
-      "id": 1,
-      "city": "台中",
-      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
-      "isFavorited": false,
-      "rating": 4.5,
-      "date": "2025-01-21",
-      "eventType": "一日行程",
-      "content": {
-        "title": "經典行程＆高美濕地一日遊",
-        "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
       },
       "detailsId": 1,
       "activityDetails": [
@@ -216,22 +187,82 @@
           }
         }
       ]
-    }
-  ],
-  "activityDetails": [
+    },
     {
-      "id": 1,
-      "activityId": 1,
-      "images": [
-        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
-        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
-        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
-        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-4.png"
-      ],
-      "features": [
-        "彩虹眷村的繽紛色彩",
-        "高美濕地的夕陽美景",
-        "探索台中老兵的童心"
+      "id": 3,
+      "city": "宜蘭",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
+      "isFavorited": false,
+      "rating": 4.7,
+      "startDate": "2025-01-21",
+      "endDate": "2025-02-21",
+      "price": "666",
+      "eventType": "特色體驗",
+      "content": {
+        "title": "天送埤火車站 | 高空繩索體驗 ",
+        "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
+      },
+      "detailsId": 1,
+      "activityDetails": [
+        {
+          "id": 1,
+          "activityId": 1,
+          "images": [
+            {
+              "description": {
+                "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+                "descriptionOne": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情",
+                "context": "「一生必遊」的美景，當夕陽西下，天空和濕地都被染成金黃色，景色如詩如畫"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "近距離觀察濕地生態，親身感受大自然的魅力。",
+                "context": "夕陽觀賞區、木棧道體驗、潮間帶探索"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "夕陽觀賞區、木棧道體驗、潮間帶探索",
+                "context": "高美濕地夕陽絕美，木棧道漫步，生態豐富，風車映照水面，如詩如畫"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "風車成排，倒映在水面，宛如畫中的詩意景色",
+                "context": "高美濕地融合生態與美景，是台中必訪的觀光勝地。"
+              }
+            },
+            {
+              "description": {
+                "image": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "descriptionOne": "親子旅遊首選，寓教於樂，探索大自然的奧秘。",
+                "context": "來高美濕地，看最美日落，感受大自然的壯麗魅力"
+              }
+            }
+          ],
+          "features": [
+            "彩虹眷村的繽紛色彩",
+            "高美濕地的夕陽美景",
+            "探索台中老兵的童心"
+          ],
+          "location": {
+            "latitude": 24.1947,
+            "longitude": 120.6354,
+            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+          },
+          "sectionOne": {
+            "title": "經典行程",
+            "description": "介紹彩虹眷村，帶您進入五光十色的世界，並聆聽這些繽紛牆壁背後的故事。"
+          },
+          "sectionTwo": {
+            "title": "高美濕地夕陽",
+            "description": "在這裡，您可以漫步於大自然之間，感受與夕陽交織的美麗時光。"
+          }
+        }
       ]
     }
   ],
@@ -371,7 +402,6 @@
       "userId": 2
     }
   ],
-  "reservations": [],
   "tickets": [
     {
       "id": "TKT202402220001",
@@ -387,9 +417,8 @@
       "status": "VALID",
       "qrCode": "https://example.com/qr/TKT202402220002"
     }
-
   ],
-  "reservationData": [
+  "reservations": [
     {
       "id": 1,
       "2025-01-01": {
@@ -438,14 +467,6 @@
       "method": "CREDIT_CARD",
       "paymentTime": "2024-02-22T14:35:00+08:00",
       "status": "SUCCESS"
-    },
-    {
-      "id": "PAY202402220002",
-      "orderId": "ORD202402220002",
-      "amount": 700,
-      "method": "PENDING",
-      "paymentTime": null,
-      "status": "PENDING"
     }
   ]
 }

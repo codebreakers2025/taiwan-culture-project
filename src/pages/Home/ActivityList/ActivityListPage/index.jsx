@@ -48,7 +48,7 @@ const PageNation = ({totalPage, setTotalPage, page, setPage}) => {
           </button>
           <div className="currentPage">{renderPaginationButtons()}</div>
           <button onClick={() => setPage((prev) => prev + 1)}>
-            <span class="material-icons">
+            <span className="material-icons">
             navigate_next
             </span>
           </button> 
@@ -262,16 +262,6 @@ const handleFavoriteClick =  async(id) => {
     }
   };
 
-  const handleFavoriteToggle = (id, newStatus) => {
-    console.log(`活動 ${id} 的收藏狀態更改為: ${newStatus}`);
-    setActivityData(prevData =>
-        prevData.map((activity) =>
-            activity.id === id 
-            ? { ...activity, isFavorited: newStatus } // 更新 isFavorited 狀態
-            : activity
-        )
-    );
-};
 
   
   return (
@@ -280,9 +270,9 @@ const handleFavoriteClick =  async(id) => {
         <div className="container">
           {/* 麵包屑 */}
           <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#">首頁</a></li>
-              <li class="breadcrumb-item active" aria-current="page">所有活動</li>
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="#">首頁</a></li>
+              <li className="breadcrumb-item active" aria-current="page">所有活動</li>
             </ol>
           </nav>
           <div className="row">
