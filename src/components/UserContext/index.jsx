@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUsers } from '@/utils/api';
+import { getUserDetail } from '@/utils/api';
 
 const UserContext = createContext();
 
@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await getUsers(userId);
+        const response = await getUserDetail(userId);
         setUserData(response);
       } catch (error) {
         console.error("獲取使用者資料失敗:", error);

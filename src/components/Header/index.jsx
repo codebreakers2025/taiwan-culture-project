@@ -1,53 +1,22 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Header.scss';
 import { register, login } from '@/utils/api';
 import Swal from 'sweetalert2';
+import AuthModal from '@/components/Modal/AuthModal';
 
 const Header = () => {
     // 設定語言
     const { t } = useTranslation();
     const { i18n } = useTranslation();
     const changeLanguage = (lng) => { i18n.changeLanguage(lng); };
+    const navigate = useNavigate();
 
     // 用戶
-    const [userData, setUserData] = useState({}); // 存儲用戶資料
-
-    // 登入註冊資料
-    const [loginData, setLoginData] = useState(
-        { 
-            email: "", 
-            password: "",
-            name: userData.name,
-            role: "會員",
-            avatar: "",
-        }
-    );
-    const [registerData, setRegisterData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    });
+    const [userData, setUserData] = useState({}); 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    // 表單輸入處理
-    const handleInputChange = (e, isLoginForm) => {
-        const { id, value } = e.target;
-        if (isLoginForm) {
-            setLoginData((prev) => {
-                const newData = { ...prev, [id]: value };
-                return newData;
-            });
-        } else {
-            setRegisterData((prev) => {
-                const newData = { ...prev, [id]: value };
-                return newData;
-            });
-        }
-    };
 
   //登入註冊邏輯
     const [showModal, setShowModal] = useState(false);
@@ -61,33 +30,50 @@ const Header = () => {
     //     console.log("Google Sign-In triggered");
     // };
 
+    // 登入註冊資料
+    const [loginData, setLoginData] = useState(
+        { 
+            email: "", 
+            password: "",
+            name: "",
+            role: "",
+            avatar: "https://mighty.tools/mockmind-api/content/human/119.jpg",
+        }
+    );
+
+    const [registerData, setRegisterData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
     // 登入邏輯
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
         try {
-            const response = await login(loginData); // 替換為你的 API 函數
-            // if(response.status === "停用"){
-            //     Swal.fire({
-            //         title: "此帳號已停用，無法登錄",
-            //         icon: "warning"
-            //     })
-            //     return;
-            // }
+            const response = await login(loginData); 
             setIsLoggedIn(true);
-            // 存入 localStorage
             localStorage.setItem("userId", response.user.id);
             localStorage.setItem("userName", response.user.name);
+            localStorage.setItem("userRole", response.user.role);
+            if(!response.user.avatar){
+                localStorage.setItem("userAvator", "https://mighty.tools/mockmind-api/content/human/119.jpg");
+            } else {
+                localStorage.setItem("userAvator", response.user.avatar);
+            }
+            // console.log(response.user);
             updateUserData({
                 name: response.user.name,
-                image: "https://mighty.tools/mockmind-api/content/human/119.jpg", // 使用者圖片的 URL
+                image: response.user.avatar, 
             });
             Swal.fire({
                 title: "登入成功!",
                 icon: "success"
             })
-            handleCloseModal(); // 關閉模態框
+            handleCloseModal(); 
         } catch (error) {
             setError("登入失敗，請檢查帳號或密碼");
             console.error('登入失敗:', error);
@@ -106,7 +92,7 @@ const Header = () => {
         setLoading(true);
         setError(null);
         try {
-            await register(registerData); // 替換為你的 API 函數
+            await register(registerData); 
             Swal.fire({
                 title: "註冊成功!",
                 icon: "success"
@@ -134,6 +120,8 @@ const Header = () => {
             title: "登出成功！",
             icon: "success"
         })
+
+        navigate("/");
 
         // 關閉 modal
         handleCloseModal();
@@ -175,11 +163,12 @@ const Header = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         const userNmae = localStorage.getItem("userName");
+        const userAvator = localStorage.getItem("userAvator");
         if (token) {
             setIsLoggedIn(true);
             setUserData({
                 name: userNmae,
-                image: "https://mighty.tools/mockmind-api/content/human/119.jpg", // 使用者圖片的 URL
+                image: userAvator, // 使用者圖片的 URL
             });
         } else {
             setIsLoggedIn(false);
@@ -203,240 +192,140 @@ const Header = () => {
         return () => {
           window.removeEventListener("resize", handleResize);
         };
-      }, []);
+    }, []);
 
-    
     return (
         <header className={`header ${menuOpen ? "menu-open" : ""}`}>
-        <nav className="navbar navbar-expand-lg navbar-light">
-            <div className="container d-flex justify-content-between align-items-center">
-            <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
-                <h1 className="header-logo-side m-0 d-flex align-items-center"></h1>
-            </Link>
-            <button 
-                className={`navbar-toggler ${menuOpen ? "" : "collapsed"}`}
-                type="button" 
-                data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" 
-                aria-expanded={menuOpen} 
-                aria-label="Toggle navigation"
-                onClick={toggleNavbar}>
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className={`collapse navbar-collapse ${menuOpen ? "show" : ""} ${isLoggedIn ? "user-circle" : ""}`} id="navbarNav">
-                <button className="btn btn-secondary user-circle-button" type="button">
-                    <img
-                        src={userData.image}
-                        alt="User"
-                        className="rounded-circle"
-                        width="60"
-                        height="60"
-                    />
-                    <span className="ms-2">{userData.name}</span>
+            <nav className="navbar navbar-expand-lg navbar-light">
+                <div className="container d-flex justify-content-between align-items-center">
+                <Link className="navbar-brand nav-link d-flex align-items-center" to="/">
+                    <h1 className="header-logo-side m-0 d-flex align-items-center"></h1>
+                </Link>
+                <button 
+                    className={`navbar-toggler ${menuOpen ? "" : "collapsed"}`}
+                    type="button" 
+                    data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" 
+                    aria-expanded={menuOpen} 
+                    aria-label="Toggle navigation"
+                    onClick={toggleNavbar}>
+                    <span className="navbar-toggler-icon"></span>
                 </button>
-                <ul className={`navbar-nav ms-auto ${isLoggedIn ? "user-member-menu" : ""}`}>
-                    <li className="nav-item member-item">
-                        <Link className="nav-link" to="/member-center/personal-data" onClick={closeMenu}>{t('member.center')}</Link>
-                    </li>
-                    <li className="nav-item member-item">
-                        <Link className="nav-link" to="/member-center/order-management/list" onClick={closeMenu}>{t('member.orderList')}</Link>
-                    </li>
-                    <li className="nav-item member-item">
-                        <Link className="nav-link" to="/member-center/collection-list" onClick={closeMenu}>{t('member.favoritesList')}</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/activity-list" onClick={closeMenu}>{t('menu.activityList')}</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/journal-list" onClick={closeMenu}>{t('menu.journal')}</Link>
-                    </li>
-                    {/* 多國語系切換 */}
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {t('menu.lang')}
-                        </a>
-                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.zhCn')}</button>
-                            </li>
-                            <li>
-                                <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.en')}</button>
-                            </li>
-                            <li>
-                                <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.jp')}</button>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                {/* 登入/登出按鈕 */}
-                { isMobile ? (
-                    <button className="btn btn-primary" onClick={isLoggedIn ? handleLogout : handleOpenModal}>
-                        {isLoggedIn ? t("member.signOut") : t("member.signIn")}
+                <div className={`collapse navbar-collapse ${menuOpen ? "show" : ""} ${isLoggedIn ? "user-circle" : ""}`} id="navbarNav">
+                    <button className="btn btn-secondary user-circle-button" type="button">
+                        <img
+                            src={userData.image}
+                            alt="User"
+                            className="rounded-circle"
+                            width="60"
+                            height="60"
+                        />
+                        <span className="ms-2">{userData.name}</span>
                     </button>
-                    ) : (
-                        isLoggedIn ? (
-                            (
-                                // 電腦版顯示下拉選單
-                                <div className="dropdown dropdown-user-header">
-                                <button
-                                    className="btn btn-secondary dropdown-toggle"
-                                    type="button"
-                                    id="user-dropdown-circle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    <img
-                                        src={userData.image}
-                                        alt="User"
-                                        className="rounded-circle"
-                                        width="40"
-                                        height="40"
-                                    />
-                                    <span className="ms-2">{userData.name}</span>
-                                </button>
-                                <ul className="dropdown-menu user-member-menu" aria-labelledby="user-dropdown-circle">
-                                    <li>
-                                        <Link className="dropdown-item" to="/member-center/personal-data">{t('member.center')}</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/member-center/order-management/list">{t('member.orderList')}</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/member-center/collection-list">{t('member.favoritesList')}</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" href="#" onClick={handleLogout}>
-                                            {t('member.signOut')}
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        )
+                    <ul className={`navbar-nav ms-auto ${isLoggedIn ? "user-member-menu" : ""}`}>
+                        <li className="nav-item member-item">
+                            <Link className="nav-link" to="/member-center/personal-data" onClick={closeMenu}>{t('member.center')}</Link>
+                        </li>
+                        <li className="nav-item member-item">
+                            <Link className="nav-link" to="/member-center/order-management/list" onClick={closeMenu}>{t('member.orderList')}</Link>
+                        </li>
+                        <li className="nav-item member-item">
+                            <Link className="nav-link" to="/member-center/collection-list" onClick={closeMenu}>{t('member.favoritesList')}</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/activity-list" onClick={closeMenu}>{t('menu.activityList')}</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/journal-list" onClick={closeMenu}>{t('menu.journal')}</Link>
+                        </li>
+                        {/* 多國語系切換 */}
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {t('menu.lang')}
+                            </a>
+                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.zhCn')}</button>
+                                </li>
+                                <li>
+                                    <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.en')}</button>
+                                </li>
+                                <li>
+                                    <button className="dropdown-item" onClick={() => changeLanguage('zhCn')}>{t('lang.jp')}</button>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {/* 登入/登出按鈕 */}
+                    { isMobile ? (
+                        <button className="btn btn-primary" onClick={isLoggedIn ? handleLogout : handleOpenModal}>
+                            {isLoggedIn ? t("member.signOut") : t("member.signIn")}
+                        </button>
                         ) : (
-                            <button className="btn btn-primary" onClick={handleOpenModal}>
-                                {t("member.signIn")}
-                            </button>
-                        )
-                    )
-                }
-            </div>
-            </div>
-        </nav>
-
-        {/* 登入/註冊彈窗 */}
-        {showModal && (
-            <div
-                className="modal fade show"
-                style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">{isLogin ? t('form.login') : t('form.register')}</h5>
-                            <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseModal}></button>
-                        </div>
-                        <div className="modal-body">
-                            {error && <div className="alert alert-danger">{error}</div>}
-                            {isLogin ? (
-                            <form onSubmit={handleLogin}>
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">{t('form.email')}</label>
-                                    <input 
-                                        type="email" 
-                                        className="form-control" 
-                                        id="email" 
-                                        value={loginData.email} 
-                                        onChange={(e) => handleInputChange(e, true)} 
-                                        placeholder={t('form.pleaseEnterYourEmail')} 
-                                        required />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">{t('form.password')}</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="password"
-                                        value={loginData.password}
-                                        onChange={(e) => handleInputChange(e, true)}
-                                        placeholder={t('form.pleaseEnterYourPassword')}
-                                        required />
-                                    </div>
-                                    <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.loggingIn') : t('form.login')}</button>
-                                    {/* <button
-                                        type="button"
-                                        className="btn btn-outline-secondary w-100 mt-2"
-                                        onClick={() => console.log("Google 登入")} >
-                                        <i className="fab fa-google"></i> {t('form.loginGoogle')}
-                                    </button> */}
-
-                                <div className="text-center mt-3">
-                                    <span>{t('form.notMember')}</span>{" "}
+                            isLoggedIn ? (
+                                (
+                                    // 電腦版顯示下拉選單
+                                    <div className="dropdown dropdown-user-header">
                                     <button
+                                        className="btn btn-secondary dropdown-toggle"
                                         type="button"
-                                        className="btn btn-link"
-                                        onClick={() => setIsLogin(false)} >
-                                        {t('form.registerNow')}
+                                        id="user-dropdown-circle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        <img
+                                            src={userData.image}
+                                            alt="User"
+                                            className="rounded-circle"
+                                            width="40"
+                                            height="40"
+                                        />
+                                        <span className="ms-2">{userData.name}</span>
                                     </button>
+                                    <ul className="dropdown-menu user-member-menu" aria-labelledby="user-dropdown-circle">
+                                        <li>
+                                            <Link className="dropdown-item" to="/member-center/personal-data">{t('member.center')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link className="dropdown-item" to="/member-center/order-management/list">{t('member.orderList')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link className="dropdown-item" to="/member-center/collection-list">{t('member.favoritesList')}</Link>
+                                        </li>
+                                        <li>
+                                            <Link className="dropdown-item" href="#" onClick={handleLogout}>
+                                                {t('member.signOut')}
+                                            </Link>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </form>
+                            )
                             ) : (
-                            <form onSubmit={handleRegister}>
-                                <div className="mb-3">
-                                    <label htmlFor="name" className="form-label">使用者名稱</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="name"
-                                        value={registerData.name}
-                                        onChange={(e) => handleInputChange(e, false)}
-                                        placeholder="請輸入使用者名稱"
-                                        required />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">{t('form.email')}</label>
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        id="email"
-                                        value={registerData.email}
-                                        onChange={(e) => handleInputChange(e, false)}
-                                        placeholder={t('form.pleaseEnterYourEmail')}
-                                        required />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">{t('form.password')}</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="password"
-                                        value={registerData.password}
-                                        onChange={(e) => handleInputChange(e, false)}
-                                        placeholder={t('form.pleaseEnterYourPassword')}
-                                        required />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="confirmPassword" className="form-label">{t('form.confirmPassword')}</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="confirmPassword"
-                                        value={registerData.confirmPassword}
-                                        onChange={(e) => handleInputChange(e, false)}
-                                        placeholder={t('form.ReEnterPassword')}
-                                        required />
-                                </div>
-                                <button type="submit" className="btn btn-primary w-100" disabled={loading}>{loading ? t('form.Registering') : t('form.register')}</button>
-                                <div className="text-center mt-3">
-                                <span>{t('form.isMember')}</span>{" "}
-                                <button type="button" className="btn btn-link" onClick={() => setIsLogin(true)}>{t('form.signInNow')}</button>
-                                </div>
-                            </form>
-                            )}
-                        </div>
-                    </div>
+                                <button className="btn btn-primary" onClick={handleOpenModal}>
+                                    {t("member.signIn")}
+                                </button>
+                            )
+                        )
+                    }
                 </div>
-            </div>
-        )}
-    </header>
+                </div>
+            </nav>
+            <AuthModal 
+                showModal={showModal}
+                handleCloseModal={handleCloseModal}
+                isLogin={isLogin}
+                setIsLogin={setIsLogin}
+                handleLogin={handleLogin}
+                handleRegister={handleRegister}
+                loginData={loginData}
+                setLoginData={setLoginData}
+                registerData={registerData}
+                setRegisterData={setRegisterData}
+                t={(key) => key} // Replace this with your translation function
+                error={error}
+                loading={loading}
+            />
+        </header>
         );
     };
 

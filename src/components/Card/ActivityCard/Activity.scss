@@ -38,4 +38,13 @@
   p{
     color: $text-color-9;
   }
+  span.card-price {
+    font-size: $text-font-header-5;
+    font-weight: var(--font-weight-bold);
+    display: block;
+    &::before {
+      content: "NT$";
+      margin-right: 5px;
+    }
+  }
 }

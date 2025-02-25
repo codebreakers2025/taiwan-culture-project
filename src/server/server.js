@@ -65,6 +65,12 @@ app.use('/uploads', express.static(uploadDir));
 // 上傳 API
 app.post('/api/upload', upload.single('image'), (req, res) => {
 
+  // const { image } = req.body; // Base64 字串
+  
+  // if (!image) {
+  //   return res.status(400).json({ error: '沒有上傳檔案' });
+  // }
+
   if (!req.file) {
     return res.status(400).json({ error: "未選擇文件" });
   }
@@ -72,6 +78,35 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     message: "圖片上傳成功",
     imageUrl: `/uploads/${req.file.filename}`,
   });
+
+  // 解析 Base64 格式
+  // const matches = image.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);
+  // if (!matches || matches.length !== 3) {
+  //   return res.status(400).json({ error: '無效的 Base64 圖片格式' });
+  // }
+
+  // const extension = matches[1];  // 取得副檔名 (png, jpg, etc.)
+  // const base64Data = matches[2]; // 取得 Base64 純數據
+  // const buffer = Buffer.from(base64Data, 'base64');
+
+  
+
+  // 確保上傳資料夾存在
+  // if (!fs.existsSync(uploadDir)) {
+  //   fs.mkdirSync(uploadDir, { recursive: true });
+  // }
+
+  // 儲存圖片
+  // const fileName = `image_${Date.now()}.${extension}`;
+  // const filePath = path.join(uploadDir, fileName);
+
+  // 回傳圖片 URL
+  // fs.writeFile(filePath, buffer, (err) => {
+  //   if (err) {
+  //     return res.status(500).json({ error: '無法儲存圖片' });
+  //   }
+  //   res.json({ imageUrl: `/uploads/${fileName}` });
+  // });
 
 });
 

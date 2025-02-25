@@ -1,7 +1,7 @@
 import "./ActivityDetailPage.scss";
 import React from "react";
 import Breadcrumb from "@/components/Breadcrumb"
-import { getActivitys , getUsers } from '@/utils/api';
+import { getActivitys , getUsers , getUserDetail } from '@/utils/api';
 import { useState , useEffect , useRef } from 'react'; 
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css';
@@ -115,13 +115,11 @@ const ActivityDetailPage = () => {
   const limit = 2;
   const [submitdData, setSubmitData] = useState({
     "id": "ORD202402220001",
-    "userId":"",
-    "event_id": "",
+    "userId": null,
+    "activityId": null,
     "createdAt": "2024-02-22 15:30:25",
     "contactName": "王小明",
     "activityName": "台北一日遊",
-    "location": "",
-    "image":"image",
     "last_bookable_date":"",
     "activityLocation": "台北市信義區信義路五段7號",
     "activityPeriod": {
@@ -146,7 +144,7 @@ const ActivityDetailPage = () => {
 
   const getReverseData = async() => {
     try{
-      const response = await axios.get(`/api/reservationData/${id}`)
+      const response = await axios.get(`/api/reservations/${id}`)
       setGetReservationData(response.data) 
     }catch(error){
     }
@@ -154,7 +152,7 @@ const ActivityDetailPage = () => {
 
   const getUser = async() => {
     try{
-      const response = await getUsers(userId);  
+      const response = await getUserDetail(userId);  
     }catch(error){
     }
   }
@@ -236,8 +234,8 @@ useEffect(()=>{
     try {
         const response  = await getActivitys(id); 
         setActivityData(response); 
-        response.activityDetails.length===0 ? " " : setActivityDetailData(response.activityDetails)
-        response.activityDetails.length===0 ? " " : setActivityDetailDataImages(response.activityDetails?.[0]?.images)
+        response.activityDetails.length===0 ? "" : setActivityDetailData(response.activityDetails)
+        response.activityDetails.length===0 ? "" : setActivityDetailDataImages(response.activityDetails?.[0]?.images)
         setShowMainImage(
           response?.activityDetails?.[0]?.images?.length > 0 
           ? response.activityDetails[0].images[0].description.image  // 取得第一張圖片
@@ -281,7 +279,7 @@ const handleDateClick = (date) => {
   setSubmitData((preData) => ({
     ...preData,
     userId: userId,
-    event_id: id,
+    activityId: id,
     activityName: activityData.content?.title,
     image: activityData.images,
     location: activityData.city,
@@ -471,7 +469,7 @@ return (
                             <div className="row reviewRow g-0" key={index}>
                               <div className="col-1 ratingerImg">
                                 <div className="roundedCircle">
-                                    <img src={item.user.avatar}
+                                    <img src={item.avatar}
                                     alt="..." 
                                     />
                                 </div>
@@ -479,7 +477,7 @@ return (
                               {/*單一評論和星星 */}
                               <div className="col-10 ratingContext">
                                 <div className="d-flex justify-content-between align-items-center">
-                                  <span className='ratingName'>{item.user.name}</span>
+                                  <span className='ratingName'>{item.name}</span>
                                   <div className='singleRating'>
                                   {renderStars(item.rating)}
                                   </div>
@@ -504,13 +502,13 @@ return (
                               <div className="pagenation" >
 
                               <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
-                              <span class="material-icons">
+                              <span className="material-icons">
                               chevron_left
                               </span>
                               </button>
                               <div className="currentPage">{renderPaginationButtons()}</div>
                               <button onClick={() => setPage((prev) => prev + 1)}>
-                                <span class="material-icons">
+                                <span className="material-icons">
                                 navigate_next
                                 </span>
                               </button> 

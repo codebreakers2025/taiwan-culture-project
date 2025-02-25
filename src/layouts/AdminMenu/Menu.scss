@@ -1,30 +1,11 @@
+.admin-page-section a {
+  color: $text-color-1;
+  &:hover {
+    transition: all .3s;
+    opacity: 0.85;
+  }
+}
 
-
-// .main-content {
-//   background-color: #f8f9fa;
-//   min-height: 100vh;
-// }
-
-
-// .admin-sidebar {
-//     min-height: 100vh;
-//     width: 250px !important;
-//     position: fixed;
-//     left: 0px;
-//     top: 0px;
-//     transition: width 0.3s;
-//     padding: 0;
-
-//   .nav-link:hover {
-//     background-color: rgba(255, 255, 255, 0.1);
-//   }
-  
-//   .nav-link.active {
-//     background-color: #0d6efd;
-//   }
-  
-//   .nav-link {
-//     white-space: nowrap;
-//     overflow: hidden;
-//   }
-// }
+.admin-page-section .logo svg{
+  color: $text-color-1 !important;
+}

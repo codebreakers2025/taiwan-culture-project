@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import { getActivityAll, addActivitys, updatedActivitys, deleteActivitys } from '@/utils/api';
 import './ActivityManage.scss';
-import ActivityModal from '@/components/Modal/Activity';
+import ActivityModal from '@/components/Modal/ActivityModal';
+import Swal from 'sweetalert2';
 
 
 const EventManagement = () => {
@@ -31,9 +32,11 @@ const EventManagement = () => {
             event.id === currentEvent.id ? currentEvent : event
           )
         );
+        Swal.fire({ title: "編輯成功", icon: "success" });
       } else {
         const newEvent  = await addActivitys(currentEvent);
         setEvents((prevEvents) => [...prevEvents, newEvent ]);
+        Swal.fire({ title: "新增成功", icon: "success" });
       }
     } catch(error) {
       console.log("Error adding event", error);
@@ -45,6 +48,7 @@ const EventManagement = () => {
     try {
       await deleteActivitys(id);
       setEvents(events.filter(event => event.id !== id));
+      Swal.fire({ title: "刪除成功", icon: "success" });
     } catch (error) {
       console.log("Error deleting event", error)
     }
