@@ -1,4 +1,6 @@
 import "./ActivityDetailPage.scss";
+import React from "react";
+import Breadcrumb from "@/components/Breadcrumb"
 import { getActivitys , getUsers } from '@/utils/api';
 import { useState , useEffect , useRef } from 'react'; 
 import L from 'leaflet'
@@ -337,7 +339,7 @@ return (
 <div className="activity-detail-page container">
 
   <div className="showContainer">
-    
+    <Breadcrumb />
       <div className="mainPic">
 
       {Array.isArray(activityDetailData) ? (

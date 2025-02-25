@@ -1,5 +1,7 @@
 import { ActivityCard} from '@/components/Card/ActivityCard';
+import React from "react";
 import './ActivityList.scss';
+import Breadcrumb from "@/components/Breadcrumb"
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { addFavorites, getFavorites } from '@/utils/api';
@@ -279,12 +281,7 @@ const handleFavoriteClick =  async(id) => {
       <div className="content">
         <div className="container">
           {/* 麵包屑 */}
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#">首頁</a></li>
-              <li class="breadcrumb-item active" aria-current="page">所有活動</li>
-            </ol>
-          </nav>
+          <Breadcrumb />
           <div className="row">
             <div className="col-lg-3 col-12">
               <div className="left-searchBar">
