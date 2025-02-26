@@ -162,7 +162,7 @@ const OrderDetailPage = () => {
                     </tr>
                     <tr className="d-block mt-3 mb-3">
                         <td className="field-label-name">人數上限</td>
-                        <td className="ps-3">10 人</td>
+                        <td className="ps-3">15 人</td>
                     </tr>
                 </tbody>
             </table>
