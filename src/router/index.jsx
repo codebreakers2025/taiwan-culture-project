@@ -25,7 +25,8 @@ import Dashboard from '@/pages/Admin/Dashboard';
 import MemberManage from '@/pages/Admin/MemberManage';
 import OrderListManage from '@/pages/Admin/OrderListManage';
 import BlogManage from '@/pages/Admin/BlogManage';
-import ActivityManage from '@/pages/Admin/ActivityManage';
+import ActivityManageListPage from '@/pages/Admin/ActivityManage/ActivityManageListPage';
+import ActivityManageDetailPage from '@/pages/Admin/ActivityManage/ActivityDetailPage';
 import EvaluationManage from '@/pages/Admin/EvaluationManage';
 
 import AdminLayout from '@/layouts/AdminLayout';
@@ -140,7 +141,11 @@ const router = createHashRouter(
         },
         {
           path: 'activity-list',
-          element: <ActivityManage />,
+          element: <ActivityManageListPage />,
+        },
+        {
+          path: 'activity-list/:id',
+          element: <ActivityManageDetailPage />,
         },
         {
           path: 'evaluation',

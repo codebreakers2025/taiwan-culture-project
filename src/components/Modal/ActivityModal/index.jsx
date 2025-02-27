@@ -1,19 +1,24 @@
 import PropTypes from "prop-types";
-import { Button, Table, Modal, Form } from "react-bootstrap";
+import { Button, Table, Modal, Form, Alert} from "react-bootstrap";
 import { useForm, Controller  } from "react-hook-form";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
+import { uploadImageToCloudinary } from '@/utils/api.js';
+
 
 const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCurrentEvent }) => {
   const { control, watch, register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
 
-  const [imagePreview, setImagePreview] = useState('');
-  const [imageFile, setImageFile] = useState(null);
+  const [previewImages, setPreviewImages] = useState([]);
+  const [mainImageFile, setMainImageFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const cities = ["台北", "台中", "高雄"]; 
   const eventTypes = ["一日行程", "特色體驗", "戶外探索"]; 
+
   // 監聽 `eventType、citie` 的值，讓它受控
   const selectedEventType = watch("eventType", ""); // 預設值為空
   const selectedCity = watch("city", ""); // 預設值為空
@@ -28,28 +33,42 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
       setValue("images", currentEvent.images || "");
       setValue("eventType", currentEvent.eventType || "");
       setValue("rating", currentEvent.rating || 0);
+      setValue("price", currentEvent.price || 0);
+
+      if (currentEvent && typeof currentEvent.images) {
+        const imageString = typeof currentEvent.images === "string"
+        ? currentEvent.images
+        : JSON.stringify(currentEvent.images); // 確保為字串
+
+        setPreviewImages([imageString]); 
+        setValue("images", imageString);
+      }
     } else {
       reset();
+      setPreviewImages([]);
     }
   }, [currentEvent, setValue, reset]);
 
-  useEffect(() => {
-    console.log('imagePreview updated:', imagePreview);
-  }, [imagePreview]);
+  // 處理主圖片上傳
+  const handleMainImageChange = async(e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setMainImageFile(file);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    console.log('handleImageChange triggered');
-    console.log('files:', e.target.files);
-    if (file) {
-      console.log('Selected file:', file);
-      setImageFile(file);
-      // 創建預覽 URL
-      const previewUrl = URL.createObjectURL(file);
-      console.log('Preview URL:', previewUrl);
-      setImagePreview(previewUrl);
-
-      // setValue('images', file);
+      // 預覽圖片
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPreviewImages([event.target.result]);
+      };
+      reader.readAsDataURL(file);
+      
+      // 上傳圖片
+      const imageUrl = await uploadImageToCloudinary(file);
+      setCurrentEvent((prev) => ({
+        ...prev,
+        images: imageUrl,
+      }));
+      setValue("images", imageUrl);
     }
   };
 
@@ -61,15 +80,17 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
       endDate: format(new Date(data.endDate), 'yyyy-MM-dd'),
       rating: Number(data.rating),
       id: currentEvent ? currentEvent?.id : null, // 保留 ID
+      activityDetails: []
     };
     // setCurrentEvent(updatedEvent); // 更新 currentEvent
     await handleSave(updatedEvent);
+
   } catch (error) {
     console.error("Form submission error:", error);
   }
   };
 
-
+  {error && <Alert variant="danger">{error}</Alert>}
   return (
     <Modal size="lg" show={showModal} onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -156,10 +177,9 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
                 {...field}
                 selected={field.value ? new Date(field.value) : null}
                 onChange={(date) => field.onChange(date)}
-                dateFormat="yyyy/MM/dd"
+                dateFormat="yyyy-MM-dd"
                 className="form-control"
                 placeholderText="選擇開始日期"
-                showDateSelect
               />
             )}
           />
@@ -187,34 +207,39 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
             {errors.endDate && <p className="text-danger">{errors.endDate.message}</p>}
           </Form.Group>
 
+          {/* Price */}
+          <Form.Group className="mb-3">
+            <Form.Label>價格</Form.Label>
+            <Form.Control
+              type="number"
+              {...register("price", { required: "價錢是必填的" })}
+            />
+            {errors.price && <p className="text-danger">{errors.price.message}</p>}
+          </Form.Group>
+
            {/* Image Upload */}
-          {/* <Form.Group className="mb-3">
-            <Form.Label>活動圖片</Form.Label>
+          <Form.Group className="mb-3">
+            <Form.Label>活動主圖</Form.Label>
             <Form.Control
               type="file"
               accept="image/*"
-              onChange={(e) => {
-                handleImageChange(e);
-                // 如果使用 react-hook-form，需要手動設置值
-                setValue('images', e.target.files[0]);
-              }}
-              placeholder="活動圖片"
-              {...register("images", { required: "圖片 URL 是必填的" })}
+              onChange={handleMainImageChange}
+              placeholder="活動主圖"
             />
-            {imagePreview && (
+            {previewImages.length > 0 && (
               <div className="mt-3">
                 <img
-                  src={imagePreview}
-                  alt="Preview"
+                  src={previewImages[0]}
+                  alt="主圖預覽"
                   className="mt-3"
-                  style={{ width: "100%", height: "auto", maxHeight: "200px", objectFit: 'contain' }}
+                  style={{ width: "75%", objectFit: "cover" }}
                 />
               </div>
             )}
             {errors.images && (
               <p className="text-danger">{errors.images.message}</p>
             )}
-          </Form.Group> */}
+          </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>評分</Form.Label>
@@ -246,7 +271,10 @@ ActivityModal.propTypes = {
   currentEvent: PropTypes.shape({
     id: PropTypes.number,
     city: PropTypes.string,
-    images: PropTypes.string,
+    images: PropTypes.oneOfType([
+      PropTypes.string, 
+      PropTypes.oneOf([null]) // 允許 null
+    ]),
     isFavorited: PropTypes.bool,
     rating: PropTypes.number,
     startDate: PropTypes.string,

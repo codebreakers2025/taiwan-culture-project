@@ -1,10 +1,11 @@
 // 活動管理組件
 import { useState, useEffect } from "react";
 import { getActivityAll, addActivitys, updatedActivitys, deleteActivitys } from '@/utils/api';
-import './ActivityManage.scss';
+import './ActivityDetailPage.scss';
 import ActivityModal from '@/components/Modal/ActivityModal';
 import Swal from 'sweetalert2';
-
+import { Modal, Button, Form, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const EventManagement = () => {
 
@@ -97,7 +98,8 @@ const EventManagement = () => {
               <td className="py-3 px-4">{event.city}</td>
               <td className="py-3 px-4">
               <div className="d-flex justify-content-center gap-2">
-                <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(event)}>編輯</button>{' '}
+                <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(event)}>編輯內容</button>{' '}
+                <Link to={`${event.id}`} className="btn btn-outline-primary btn-sm">查看詳情</Link>{' '}
                 <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(event.id)}>刪除</button>
               </div>
               </td>

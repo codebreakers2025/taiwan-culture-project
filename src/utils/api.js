@@ -45,7 +45,7 @@ export const addActivitys = async (data) => {
 };
 
 export const updatedActivitys = async (id, data) => {
-    const response = await axios.put(`/api/activity/${id}`, data);
+    const response = await axios.patch(`/api/activity/${id}`, data);
     return response.data; 
 };
 
