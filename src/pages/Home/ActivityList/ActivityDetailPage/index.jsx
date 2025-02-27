@@ -153,21 +153,6 @@ const ActivityDetailPage = () => {
 
   const  param  = useParams();
   const { id } = param
-
-  useEffect(() => {
-    getMemberData()
-  }, []);
-
-  const getMemberData = async() => {
-    try{
-      const response = await getMembers(userId)
-      console.log(response);
-      
-    }catch{
-
-    }
-  }
-  
   
   
   const navigate = useNavigate();

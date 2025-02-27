@@ -20,7 +20,8 @@ const Step1 = () => {
   const [adultCount, setAdultCount] = useState(2);
   const [childCount, setChildCount] = useState(1);
   const [selectValue , setSelectValue] = useState('')
-
+  console.log(submitData);
+  
   //react-hook-form
   const {
     register,
@@ -54,6 +55,11 @@ const Step1 = () => {
     // 當表單提交時，將資料傳遞給 Step2 頁面
     navigate("/activity-list/booking2", { state: data });
   };
+
+  const date = new Date(submitData.last_bookable_date);
+
+  const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2, '0')}月${date.getDate().toString().padStart(2, '0')}日`;
+
   
   console.log(watch());
   
@@ -81,8 +87,8 @@ const Step1 = () => {
                   <div className="img-placeholder"><img src="" alt="" /></div>
                 </Col>
                 <Col md={8}>
-                  <p><strong>台北101觀景台門票</strong></p>
-                  <p><i className="bi bi-calendar"></i> 2024年9月20日</p>
+                  <p><strong>{submitData.activityName}</strong></p>
+                  <p><i className="bi bi-calendar"></i>{formattedDate}</p>
                   <p><i className="bi bi-ticket"></i> 景點/票券</p>
                   <p><i className="bi bi-clock"></i> 票券當日有效</p>
                   <p><i className="bi bi-cash"></i> 大人 150 / 張，兒童 120 / 張</p>

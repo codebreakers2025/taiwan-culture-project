@@ -147,8 +147,6 @@ const ActivityList = () => {
   useEffect(()=>{
     searchActivity()
   },[page])
-
-  console.log(searchData);
   
   const searchActivity = () => {
     if (!searchInput && !selectedStartDate && !selectedEndDate && !selectedType && !selectedSite && !selectedPrice) {
