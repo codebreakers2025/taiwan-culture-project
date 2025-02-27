@@ -1,0 +1,37 @@
+.activity-detail-page{
+  .card-title.h5 {
+    margin-bottom: 0;
+  }
+  .form-label {
+    font-size: $text-font-header-5;
+  }
+  
+}
+
+.trip-title{}
+  .trip-highlights{
+    div .form-label {
+      margin-bottom: 0;
+    }
+    ul {
+      padding: 0;
+      li {
+        margin-bottom: 12px;
+        button {
+          margin-left: 12px;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+  .trip-images{}
+  .trip-map{}
+  .trip-section{
+    .card {
+      padding: 24px;
+      button {
+        width: fit-content;
+        margin-left: auto;
+      }
+    }
+  }

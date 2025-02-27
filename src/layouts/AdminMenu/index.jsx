@@ -31,7 +31,7 @@ const AdminMenu = () => {
                 <div className="p-3 border-bottom border-secondary logo">
                     <div className="d-flex align-items-center">
                     <Package size={24} className="text-primary" />
-                    {sidebarOpen && <Link to="/admin/dashboard" className="ms-2 fw-bold fs-5">管理系統</Link>}
+                    {sidebarOpen && <Link to="/admin/dashboard" className="ms-2 fw-bold fs-5 title">管理系統</Link>}
                     </div>
                 </div>
 

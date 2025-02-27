@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";  // 取得動態路由參數
 import { Modal, Button, Form, Card, Alert } from "react-bootstrap";
-import { addActivitys, updatedActivitys, getActivitys } from '@/utils/api';
+import { addActivitys, updatedActivitys, getActivitys, uploadImageToCloudinary } from '@/utils/api';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+import './ActivityDetilPage.scss';
 
 
 const EventDetail = () => {
@@ -21,7 +22,6 @@ const EventDetail = () => {
       map: { latitude: 0, longitude: 0, mapLink: "" },
       sections: []
     });
-
 
     useEffect(() => {
       const fetchData = async () => {
@@ -50,6 +50,11 @@ const EventDetail = () => {
 
     // 新增圖片
     const addImage = () => {
+      if (activityData.images.length >= 5) {
+        alert("最多只能上傳 5 張圖片");
+        return;
+      }
+
       setActivityData((prev) => ({
         ...prev.images,
         images: [...prev.images, { url: "" }]
@@ -57,17 +62,27 @@ const EventDetail = () => {
     };
   
     // 更新圖片
-    const updateImage = (index, value) => {
-      const newImages = [...activityData.images];
-      newImages[index].url = value;
-      setActivityData((prev) => ({ ...prev, images: newImages }));
+    const updateImage = async(index, value) => {
+      const file = value?.target?.files[0]; // 確保取得檔案
+      if(file){
+        // 上傳圖片
+        const imageUrl = await uploadImageToCloudinary(file);
+        const newImages = [...activityData.images]; // 更新 images 陣列
+        newImages[index].url = imageUrl; // 更新對應的 url
+        setActivityData((prev) => ({ ...prev, images: newImages })); // 更新 images 屬性
+      }
     };
 
     // 更新活動圖片
-    const updateImageInfo = (index, value) => {
-      const newImages = [...activityData.sections];
-      newImages[index].image = value;
-      setActivityData((prev) => ({ ...prev, images: newImages }));
+    const updateImageInfo = async(index, value) => {
+      const file = value?.target?.files[0]; // 確保取得檔案
+      if(file){
+         // 上傳圖片
+        const imageUrl = await uploadImageToCloudinary(file);
+        const newSections = [...activityData.sections]; // 更新 sections 陣列
+        newSections[index].image = imageUrl; // 更新對應的 image
+        setActivityData((prev) => ({ ...prev, sections: newSections })); // 更新 sections 屬性
+      }
     };
   
     // 移除圖片
@@ -178,11 +193,13 @@ const EventDetail = () => {
         };
       });
     };
+
+
     
 
-    {error && <Alert variant="danger">{error}</Alert>}
+  {error && <Alert variant="danger">{error}</Alert>}
   return (
-      <Card className="p-4 shadow-lg">
+      <Card className="p-4 shadow-lg activity-detail-page">
         <Card.Header className="d-flex justify-content-between align-items-center">
           <Card.Title>編輯行程</Card.Title>
           <Button variant="close" onClick={handleClose}></Button>
@@ -191,7 +208,7 @@ const EventDetail = () => {
           <Form onSubmit={handleSubmit(handleSave)}>
 
             {/* 行程標題 */}
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-4 trip-title">
               <Form.Label>行程標題</Form.Label>
               <Form.Control
                 type="text"
@@ -202,8 +219,8 @@ const EventDetail = () => {
             </Form.Group>
 
             {/* 行程特色 */}
-            <Form.Group className="mb-3">
-              <div className="d-flex justify-content-between">
+            <Form.Group className="mb-4 trip-highlights">
+              <div className="d-flex justify-content-between align-items-center mb-3">
                 <Form.Label>行程特色</Form.Label>
                 <Button variant="secondary" onClick={addTripHighlight}>新增行程特色</Button>
               </div>
@@ -222,46 +239,63 @@ const EventDetail = () => {
             </Form.Group>
 
             {/* 圖片管理 */}
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-4 trip-images">
               <div className="d-flex justify-content-between">
-                <Form.Label>圖片</Form.Label>
-                <Button variant="secondary" onClick={addImage}>新增圖片</Button>
+                <Form.Label>封面圖片</Form.Label>
+                {activityData.images.length < 5 && ( // 限制最多 5 張圖片
+                <Button 
+                  variant="secondary" 
+                  onClick={addImage} 
+                >
+                  新增圖片
+                </Button>
+                )}
               </div>
 
-              {activityData.images.map((img, index) => (
-                <div key={index} className="d-flex flex-column mb-2">
-                  {/* 圖片上傳 Input */}
-                  <Form.Control
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => updateImage(index, e)}
-                  />
-
-                  {/* 預覽區域 */}
-                  {img.url && (
-                    <div className="mt-2 d-flex align-items-center">
-                      <img
-                        src={img.url}
-                        alt="預覽圖片"
-                        className="img-thumbnail"
-                        style={{ maxWidth: "200px", maxHeight: "150px", objectFit: "contain" }}
-                      />
-                      <Button
-                        variant="danger"
-                        className="ms-2"
-                        onClick={() => removeImage(index)}
+              <div className="d-flex justify-content-start flex-wrap">
+                {activityData.images.map((img, index) => (
+                  <div key={index} className="position-relative mb-2 me-2 d-flex flex-column align-items-center">
+                      {/* 圖片預覽區域 */}
+                      <div 
+                        className="img-thumbnail position-relative"
+                        style={{
+                          width: "200px",
+                          height: "200px",
+                          overflow: "hidden",
+                          cursor: "pointer"
+                        }}
+                        onClick={() => document.getElementById(`file-input-${index}`).click()} // 點擊圖片觸發 file input
                       >
-                        刪除
-                      </Button>
+                        {/* 圖片預覽 */}
+                        {img.url && (
+                          <img
+                            src={img.url}
+                            alt={`預覽圖片 ${index + 1}`}
+                            className="img-fluid"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover"
+                            }}
+                          />
+                        )}
+                        {/* 隱藏的 file input */}
+                        <input
+                          id={`file-input-${index}`}
+                          type="file"
+                          accept="image/*"
+                          style={{ display: "none" }} // 隱藏 file input 元素
+                          onChange={(e) => updateImage(index, e)}
+                        />
+                      </div>
                     </div>
-                  )}
-                </div>
-              ))}
+                  ))}
+              </div>
+
             </Form.Group>
 
-
             {/* 地圖連結 */}
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-4 trip-map">
               <Form.Label>地圖連結</Form.Label>
               <Form.Control
                 type="text"
@@ -271,15 +305,13 @@ const EventDetail = () => {
             </Form.Group>
 
             {/* 活動介紹 */}
-            <Form.Group className="mb-3">
-              <div className="d-flex justify-content-between">
+            <Form.Group className="mb-4 trip-section">
+              <div className="d-flex justify-content-between align-items-center mb-3">
                 <Form.Label>活動介紹</Form.Label>
                 <Button variant="secondary" onClick={addSection}>新增活動介紹</Button>
               </div>
               {activityData.sections.map((section, index) => (
-                <div key={index} className="mb-3">
-                  <Form.Label>圖片上傳</Form.Label>
-
+                <Card key={index} className=" shadow-sm p-3 mb-3 bg-body rounded">
                   <Form.Group className="mb-3">
                     <div className="d-flex align-items-center">
                       {/* 圖片上傳 Input */}
@@ -322,9 +354,9 @@ const EventDetail = () => {
                     className="mt-2"
                     onClick={() => removeSection(index)}
                   >
-                    刪除
+                    刪除區塊
                   </Button>
-                </div>
+                </Card>
               ))}
             </Form.Group>
 

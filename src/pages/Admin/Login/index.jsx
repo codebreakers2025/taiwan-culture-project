@@ -5,10 +5,10 @@ import Swal from 'sweetalert2';
 
 
 const LoginPage = () => {
+  const userRole = localStorage.getItem("userRole");
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
-    role: 'ADMIN',
     rememberMe: false
   });
   const [loading, setLoading] = useState(false);
@@ -30,8 +30,15 @@ const LoginPage = () => {
     try {
       const response = await login(credentials);
       localStorage.setItem("userName", response.user.name);
-      localStorage.setItem("userRole", response.user.role);
       localStorage.setItem("userAvator", response.user.avatar);
+
+      if(response.user.role === "Member"){
+        Swal.fire({
+          title: "登入失敗，你沒有權限!!",
+          icon: "warning"
+        })
+        return
+      }
 
       Swal.fire({
         title: "登入成功",
