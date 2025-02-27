@@ -1,25 +1,37 @@
 import "./ActivityDetailPage.scss";
 import React from "react";
 import Breadcrumb from "@/components/Breadcrumb"
-import { getActivitys , getUsers , getUserDetail } from '@/utils/api';
+import { getActivitys , getMembers } from '@/utils/api';
 import { useState , useEffect , useRef } from 'react'; 
+import Swal from 'sweetalert2';
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css';
 import { Outlet, useParams , Link , useNavigate , useLocation} from "react-router-dom";
 import axios from "axios";
+
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwancultureproject.onrender.com'
  : 'http://localhost:3002'
 
 
-const MapComponent = ({activityDetailData}) => {
+const MapComponent = ({activityDetailData , loading}) => {
 
-  if (!activityDetailData || !activityDetailData[0]?.location) {
+  if (loading) {
     return <p style={{marginLeft:'auto'}}>找不到活動資訊</p>; // ✅ 這樣才對
   }
+  
+  if (!activityDetailData || activityDetailData.length === 0) {
+    return <p style={{ marginLeft: 'auto' }}>找不到活動資訊</p>;  // ✅ 當資料為空時，顯示錯誤訊息
+  }
 
-  const { latitude, longitude } = activityDetailData[0].location;
+  // ✅ 確保 activityDetailData[0] 存在，才解構 map
+  const { map } = activityDetailData[0] || {};
+  if (!map) {
+    return <p style={{ marginLeft: 'auto' }}>地圖資訊不可用</p>;
+  }
+
+  const { latitude, longitude } = map;
 
   useEffect(() => {
     if (!document.getElementById("map")._leaflet_id) {
@@ -98,10 +110,11 @@ const ReviewBars = ({ reviewData }) => {
 
 const ActivityDetailPage = () => {
 
+  const token = localStorage.getItem('token');
   const userId = Number(localStorage.getItem("userId"));
   const [activityData, setActivityData] = useState([]);
   const [reviewData, setReviewData] = useState([]);
-  const [activityDetailDataImages, setActivityDetailDataImages] = useState([]);
+  const [activityDetailDataSection, setActivityDetailDataSection] = useState([]);
   const [activityDetailData, setActivityDetailData] = useState({});
   const [showMainImage, setShowMainImage] = useState("");
   const [getReservationData , setGetReservationData] = useState({})
@@ -140,19 +153,29 @@ const ActivityDetailPage = () => {
 
   const  param  = useParams();
   const { id } = param
+
+  useEffect(() => {
+    getMemberData()
+  }, []);
+
+  const getMemberData = async() => {
+    try{
+      const response = await getMembers(userId)
+      console.log(response);
+      
+    }catch{
+
+    }
+  }
+  
+  
+  
   const navigate = useNavigate();
 
   const getReverseData = async() => {
     try{
       const response = await axios.get(`/api/reservations/${id}`)
       setGetReservationData(response.data) 
-    }catch(error){
-    }
-  }
-
-  const getUser = async() => {
-    try{
-      const response = await getUserDetail(userId);  
     }catch(error){
     }
   }
@@ -191,7 +214,6 @@ useEffect(() => {
 
 
 const getReviews = async (id , page = 1, limit = 2) => {
-  console.log(id);
   const response = await axios.get(`/api/reviews?activityId=${id}&_page=${page}&_limit=${limit}`);
   return response.data;
 
@@ -203,11 +225,9 @@ const getReviews = async (id , page = 1, limit = 2) => {
     fetchGetActivity(id);
     fetchGetReview(id);
     getReviewsAll(id);
-    getReverseData(id);
+    getReverseData(id)
   }, [id]); 
-  useEffect(()=>{
-    getUser();
-  },[])
+
 
   const fetchGetReview = async (id, page = 1, limit) => {
     setLoading(true);
@@ -225,7 +245,7 @@ const getReviews = async (id , page = 1, limit = 2) => {
 
 useEffect(()=>{
   reviewData.length === 0 ? setRatingStar(0) : setRatingStar(reviewData.reduce((sum , item)=> sum + item.rating, 0) / Number(reviewData.length))
-  RatingstarAll.length === 0 ? setAvgRatingStar(0) : setAvgRatingStar((RatingstarAll.reduce((sum , item)=> sum + item.rating, 0) / Number(RatingstarAll.length)).toFixed(2))
+  RatingstarAll.length === 0 ? setAvgRatingStar(0) : setAvgRatingStar((RatingstarAll.reduce((sum , item)=> sum + item.rating, 0) / Number(RatingstarAll.length)).toFixed(1))
 },[reviewData , RatingstarAll])
 
   const fetchGetActivity = async (id) => {
@@ -233,19 +253,21 @@ useEffect(()=>{
     setError(null);
     try {
         const response  = await getActivitys(id); 
+        
         setActivityData(response); 
         response.activityDetails.length===0 ? "" : setActivityDetailData(response.activityDetails)
-        response.activityDetails.length===0 ? "" : setActivityDetailDataImages(response.activityDetails?.[0]?.images)
+        response.activityDetails.length===0 ? "" : setActivityDetailDataSection(response.activityDetails?.[0]?.sections)
         setShowMainImage(
           response?.activityDetails?.[0]?.images?.length > 0 
-          ? response.activityDetails[0].images[0].description.image  // 取得第一張圖片
+          ? response.activityDetails[0].images[0].url  // 取得第一張圖片
           : "Loading" )
     } catch (error) {
         console.error("Error fetching activity:", error);
         setError('Error fetching activity:', error);
-    } 
+    } finally{
+      setLoading(false);// ✅ 確保無論成功或失敗都會更新 `loading`
+    }
 };
-
 
 const renderStars = (rating) => {
   
@@ -288,10 +310,24 @@ const handleDateClick = (date) => {
 };
 
 const submitDateClick = () => {
+  
   if(selectedData===null){
-    alert("請輸入日期")
+    Swal.fire({
+        title: "請選擇預約日期",
+        icon: "error"
+    })
     return
   }
+  if(token===null){
+    Swal.fire({
+      title: "請登入會員",
+      icon: "error"
+      
+  })
+  setSelectedDate('')
+  return
+  }
+
 
     setTimeout(() => {
       navigate("/activity-list/booking1" ,{ state: submitdData }); // 跳轉到預約頁面
@@ -330,9 +366,6 @@ const renderDay = (day) => {
   );
 };
 
-console.log(reviewData);
-
-
 return (
 <div className="activity-detail-page container">
 
@@ -355,7 +388,7 @@ return (
                 {item.images?.slice(1).map((image, imgIndex) => (
 
                   <div className="col-6 no-gutters image-container" key={imgIndex}>
-                    <img src={image?.description?.image} alt={`Thumbnail ${index}-${imgIndex}`} />
+                    <img src={image?.url} alt={`Thumbnail ${index}-${imgIndex}`} />
                   </div>
                 ))}
               </div>
@@ -386,7 +419,12 @@ return (
                       <div className='actContentTitle'>
                         <p>行程特色</p>
                       </div>
-                      <p className="card-text">{activityData.content?.description}</p>
+                      <h3 className="card-text">{activityDetailData[0]?.trip?.title}</h3>
+                      {activityDetailData[0]?.trip?.highlights.map((item,index)=>
+                        <div key={index}>
+                          <p className="card-text">{item}</p>
+                        </div>
+                      )}
                         
                   </div>
                   <hr/>
@@ -407,11 +445,11 @@ return (
                       <div className='actContentTitle site'>
                         <p>活動介紹</p>
                       </div>
-                        {Array.isArray(activityDetailDataImages) ? (
-                            activityDetailDataImages.map((item, index) => (
+                        {Array.isArray(activityDetailDataSection) ? (
+                            activityDetailDataSection.map((item, index) => (
                                 <div key={index}>
                                   <div className="actPic">
-                                      <img src={item?.description?.image} 
+                                      <img src={item.image} 
                                         alt="" 
                                         className="card-img w-100"
                                         style={{objectFit:"cover"}}
@@ -420,9 +458,9 @@ return (
                                   </div>
                                   <div className='contentText'>
                                     <div className='contentTextsmall'>
-                                      <span className="material-icons">arrow_drop_up</span><p>{item?.description?.descriptionOne}</p>
+                                      <span className="material-icons">arrow_drop_up</span><p>{item.imageCaption}</p>
                                     </div>
-                                    <p className="contentDescribute">{item?.description?.context}</p>
+                                    <p className="contentDescribute">{item.description}</p>
                                   </div>
                                 </div>
 
@@ -488,10 +526,10 @@ return (
                               </div>
                               <div className="ratingImage">
                                   <div className='imageBox'>
-                                    <img src="https://s3-alpha-sig.figma.com/img/e43c/4ddc/24e2eec1f3e6bac5d8bfafccf14caa44?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=OaEACSJq6KxJtq7Qk0mwZ2RH8X7LRUHQUIFvj5K5XCjEcTorXtX4w5IREGZypQAhIMNS6BTfjqI0CtOjXzqpYSrC2x1khppSt17rxdCNGCr2r5oqsnSDnixWcKEf6kAtqyDY1LjUBFDbawtPSgVmAOwndyeNEG--cQounJl0DKgf-H7o5bStPIl7lCDgnmJT3aQMNNCWVf2XktLIuzv5dgdnIof2veJLhXn7UzN4D1w6qFh9mb7njhhT6dxNbUPo-4CdHOaynkQcAv6x3lckI-fQcB9kxLeaqmtpytvQRj952vbPlQqVokWG3FrbOd2BtsTGb~OnvnWEYXys9KsUbg__" alt=""  />
+                                    <img src="https://picsum.photos/200/300" alt=""  />
                                   </div>
                                   <div className='imageBox'>
-                                    <img src="https://s3-alpha-sig.figma.com/img/9922/f9fd/3bd52448703b8cf5f15fb1df56141e94?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RyLBREEx4No7oLNSzIaQq41yZQjXXOk1RGCdwmnBhSCCLRaOkU9TOwhr2PbDa8ST09DJCjHIQf-d9T4UNBXyN1KJzniWe2DX1PozR6RQCORklrFUtan3reA8rD9uIoMh9-WxnSg8RuvWW9XbEIZ2tUcrAg1h82XZAZVODO73R2qcvPXWaF9a5AqAMaWcouS-~-ms0xWDhsc4p8Z8g2gIH6F442oGRwaZeiE26t3zb~V2u0jFsjtMYTExmBJH8fcwBsCqC6RE9d4gsFZ52UKM53Nvu-sf7gcoXsneM0XV67ZdoXOTHGfZYlItUTbIaPzSO9lqQd1l96ayC6QODspl8g__" alt=""  />
+                                    <img src="https://picsum.photos/200" alt=""  />
                                   </div>
                                 </div>
                                 
@@ -507,7 +545,7 @@ return (
                               </span>
                               </button>
                               <div className="currentPage">{renderPaginationButtons()}</div>
-                              <button onClick={() => setPage((prev) => prev + 1)}>
+                              <button onClick={() => setPage((prev) => prev + 1)}  disabled={page === totalPage}>
                                 <span className="material-icons">
                                 navigate_next
                                 </span>

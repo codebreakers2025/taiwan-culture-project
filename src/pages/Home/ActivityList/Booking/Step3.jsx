@@ -2,9 +2,17 @@ import React from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step3.scss";
+import { useLocation } from "react-router-dom";
+import { useForm } from 'react-hook-form';
 
 const Step3 = () => {
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const submitData = location.state || {}; 
+
+  console.log("Step3 submitData:", submitData);
+  
 
   return (
     <Container className="payment-step py-4">
@@ -57,7 +65,7 @@ const Step3 = () => {
                 </Form.Group>
                 
                 <div className="text-center mt-4">
-                  <Button variant="secondary" className="me-2" onClick={() => navigate("/activity-list/booking2")}>返回上一頁</Button>
+                  <Button variant="secondary" className="me-2" onClick={() => navigate("/activity-list/booking2",{ state: submitData })}>返回上一頁</Button>
                   <Button variant="primary" className="px-4" onClick={() => navigate("/activity-list/booking4")}>提交</Button>
                 </div>
               </Form>

@@ -18,7 +18,6 @@ const Breadcrumb = () => {
         getActivitys(id).then((data) => setActivityName(data.content.title));
     }
   }, [id]);
-  console.log(activityName);
   
   return (
     <nav className="breadcrumb">

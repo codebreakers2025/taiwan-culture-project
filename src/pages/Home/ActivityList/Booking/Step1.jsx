@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step1.scss";
 import { useLocation } from "react-router-dom";
+import { useForm } from 'react-hook-form';
 
 const renderTooltip = (props) => (
   <Tooltip id="button-tooltip" {...props}>
@@ -11,15 +12,51 @@ const renderTooltip = (props) => (
 );
 
 const Step1 = () => {
-  const navigate = useNavigate();
-  const [adultCount, setAdultCount] = useState(2);
-  const [childCount, setChildCount] = useState(1);
 
   const location = useLocation();
   const submitData = location.state || {}; // 確保有資料
 
-  console.log("收到的預約資料:", submitData);
+  const navigate = useNavigate();
+  const [adultCount, setAdultCount] = useState(2);
+  const [childCount, setChildCount] = useState(1);
+  const [selectValue , setSelectValue] = useState('')
 
+  //react-hook-form
+  const {
+    register,
+    watch,
+    reset,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      adultCount: selectValue || "",  // 預設為空，讓選項顯示 "請選擇報名人數"
+    },
+    mode: "onTouched"
+  });
+  
+  useEffect(() => {
+    if (Object.keys(submitData).length > 0) {
+      reset({
+        ...submitData,
+        adultCount: selectValue || "", // 確保 `adultCount` 預設為 ""
+      });
+    }
+  }, [submitData, reset]);
+
+  const onSubmit = (data) => {
+    const adultCount = Number(data.adultCount); // 转换为数字
+    console.log(adultCount);
+    
+    console.log({ ...data, adultCount }); // 确保 adultCount 为数字
+    
+    // 當表單提交時，將資料傳遞給 Step2 頁面
+    navigate("/activity-list/booking2", { state: data });
+  };
+  
+  console.log(watch());
+  
   return (
     <Container className="booking-step1 py-4">
       {/* 頁面標題 */}
@@ -41,7 +78,7 @@ const Step1 = () => {
               
               <Row>
                 <Col md={4}>
-                  <div className="img-placeholder"></div>
+                  <div className="img-placeholder"><img src="" alt="" /></div>
                 </Col>
                 <Col md={8}>
                   <p><strong>台北101觀景台門票</strong></p>
@@ -56,8 +93,16 @@ const Step1 = () => {
               <div className="mt-3">
                 <label>人數：</label>
                 <OverlayTrigger placement="top" overlay={renderTooltip}>
-                  <Form.Select>
-                    <option>請選擇報名人數</option>
+                  <Form.Select {...register("adultCount", { 
+                    required: "請選擇報名人數",
+                    onChange: (e) => {
+                      const value = e.target.value;
+                      setSelectValue(value); // 更新 selectValue
+                      setValue("adultCount", value); // 更新 react-hook-form 表单的值
+                    },
+                  })} 
+                  value={selectValue}  >
+                    <option value="" disabled>請選擇報名人數</option>
                     <option value="1">1 人</option>
                     <option value="2">2 人</option>
                     <option value="3">3 人</option>
@@ -83,7 +128,9 @@ const Step1 = () => {
               
               {/* 確認按鈕 */}
               <div className="mt-4 text-center">
-                <Button variant="primary" className="px-4" onClick={() => navigate("/activity-list/booking2")}>確認報名</Button>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Button variant="primary" type="submit" className="px-4">確認報名</Button>
+                </form>
               </div>
             </Card.Body>
           </Card>

@@ -1,4 +1,3 @@
-import { ActivityCard} from '@/components/Card/ActivityCard';
 import React from "react";
 import './ActivityList.scss';
 import Breadcrumb from "@/components/Breadcrumb"
@@ -83,7 +82,7 @@ const ActivityList = () => {
   const navigate = useNavigate();
   const handleNavigate = (e , activity) => {
       e.preventDefault();
-      navigate(`/activity-list/${activity.detailsId}`);
+      navigate(`/activity-list/${activity.id}`);
       window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
   };
 
@@ -148,12 +147,14 @@ const ActivityList = () => {
   useEffect(()=>{
     searchActivity()
   },[page])
+
+  console.log(searchData);
+  
   const searchActivity = () => {
     if (!searchInput && !selectedStartDate && !selectedEndDate && !selectedType && !selectedSite && !selectedPrice) {
       setSearchResultsData([])
       setSearchingValue([])
       fetchGetActivityAll()
-      console.log("a");
       return;
     }
     setSearchingValue([searchInput , selectedStartDate , selectedType, selectedEndDate, selectedSite, selectedPrice])
@@ -162,8 +163,8 @@ const ActivityList = () => {
       const matchesTitle = searchInput ? item.content?.title?.match(new RegExp(searchInput, 'i')) : true;
       const matchesDate =
       selectedStartDate || selectedEndDate
-                ? new Date(item.date) >= new Date(selectedStartDate || "1970-01-01") &&
-                new Date(item.date) <= new Date(selectedEndDate || "2099-12-31")
+                ? new Date(item.startDate) >= new Date(selectedStartDate || "1970-01-01") &&
+                new Date(item.startDate) <= new Date(selectedEndDate || "2099-12-31")
                 : true;
       const matchesType = selectedType ? item.eventType === selectedType : true;
       const matchesSite = selectedSite ? item.city === selectedSite : true;
@@ -172,21 +173,16 @@ const ActivityList = () => {
       return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;
     });
     setTotalPage(Math.ceil(searchResults.length/limit))
-    console.log(Math.ceil(searchResults.length/limit));
-    
     
     const startIdx = (page - 1) * limit;
     const endIdx = startIdx + limit;
-    console.log(startIdx , endIdx , page);
     
     const paginatedResults = searchResults.slice(startIdx, endIdx);
 
-    console.log(paginatedResults);
     setSearchResultsData(paginatedResults); // Log the filtered results
   };
 
   const searchBtn = () => {
-    console.log(page);
     setPage(1)
     searchActivity()
 
@@ -245,15 +241,10 @@ const ActivityList = () => {
 }
 
 const handleFavoriteClick =  async(id) => {
-      console.log(id);
-
       const isAlreadyFavorited = await checkExistingFavorite();
-
-      console.log(isAlreadyFavorited);
 
       if(isAlreadyFavorited) {
         // 檢查是否已收藏
-        console.log("是否已收藏:", isAlreadyFavorited);
         Swal.fire({
             title: "已加入過收藏!",
             text: "請勿重複收藏",
@@ -272,12 +263,6 @@ const handleFavoriteClick =  async(id) => {
         <div className="container">
           {/* 麵包屑 */}
           <Breadcrumb />
-          <nav aria-label="breadcrumb">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="#">首頁</a></li>
-              <li className="breadcrumb-item active" aria-current="page">所有活動</li>
-            </ol>
-          </nav>
           <div className="row">
             <div className="col-lg-3 col-12">
               <div className="left-searchBar">
@@ -381,7 +366,7 @@ const handleFavoriteClick =  async(id) => {
                           <img src={activity.images} className="card-img-top" alt="activity" />
                           <div className="card-body">
                             <div className="d-flex justify-content-between align-items-center">
-                              <p className="card-text">{activity.date}·{activity.eventType}</p>
+                              <p className="card-text">{activity.startDate}·{activity.eventType}</p>
                               <span className="rating">★ {(() => {
                                 const filteredReviews = reviewData.filter(item => item.activityId === activity.id);
                                 if (filteredReviews.length === 0) return 0;
@@ -394,7 +379,7 @@ const handleFavoriteClick =  async(id) => {
                             <span className={`material-icons favorite-icon ${favorite ? "favorite" : "favorite_border"} ${loading ? 'disabled' : ''}`}
                             onClick={(e)=>handleFavoriteClick(activity.id)}
                             style={{ cursor: loading ? 'default' : 'pointer' }}>{favorite ? "favorite" : "favorite_border"}</span>
-                            <span className="paid mt-1">666</span>
+                            <span className="paid mt-1">{activity.price}</span>
                             <button className="btn btn-primary activity-btn" onClick={(e) => handleNavigate(e, activity)}>查看更多</button>
                           </div>
                         </div>
@@ -402,7 +387,23 @@ const handleFavoriteClick =  async(id) => {
                     ))
                   )}
                 </div>
-                <PageNation totalPage={totalPage} setTotalPage={setTotalPage} page={page} setPage={setPage} limit={limit}/>
+                <div className="row">
+                    {/* Check if no search results and there are search criteria */}
+                    {(searchResultsData.length === 0 && searchingValue.length > 0) ? (
+                      ""
+                    ) : (
+                      <div className="col-12">
+                        {/* Render Pagination only if there are results */}
+                        <PageNation 
+                          totalPage={totalPage} 
+                          setTotalPage={setTotalPage} 
+                          page={page} 
+                          setPage={setPage} 
+                        />
+                      </div>
+                    )}
+                  </div>
+
               </div>
             </div>
           </div>
