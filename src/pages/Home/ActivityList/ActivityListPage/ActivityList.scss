@@ -4,6 +4,14 @@
         padding: 50px 0;
     }
 
+    // 手機版搜尋彈窗
+    .modal.fade {
+        .left-searchBar {
+            display: block;
+        }
+    }
+
+    // 電腦版左邊搜尋
     .left-searchBar {
         display: none;
         background-color: white;
@@ -81,6 +89,7 @@
         }
     }
 
+    // 手機版搜尋按鈕
     .mobile-bar {
         margin-bottom: var(--spacing-large);
 
@@ -102,6 +111,7 @@
         }
     }
 
+    // 電腦版右邊內容
     .right-content {
         text-align: center;
         .card {
@@ -185,46 +195,45 @@
             &:hover {
                 background-color: $primary-color-5;
                 border: none;
+                color: #fff;
             }
         }
     }
 }
 
-.activity-link {
-    cursor: pointer;
-    text-decoration: none;
-}
 
-.test-container .right-content .btn:hover {
-    color: #fff;
-}
-.pagenation{
+// 分頁欄
+.pagenation {
     display: flex;
     justify-content: center;
     margin-top: 32px;
-  }
-  .pagenation button{
-    border: 1px solid #EEEEEE;
-    border-radius: 8px;
-    width: 40px;
-    height: 40px;
-    background-color: #ffffff;
-    margin-left: 12px;
+    
+    button {
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        background-color: #ffffff;
+        margin-left: 12px;
+    }
 
-  }
+    .currentPage {
+        button:disabled {
+            background-color: #4daab0; /* 灰色背景 */
+            color: #ffffff; /* 灰色文字 */
+            cursor: not-allowed; /* 改變滑鼠游標 */
+        }
+    }
 
-  .pagenation .currentPage button:disabled {
-    background-color: #4DAAB0; /* 灰色背景 */
-    color: #ffffff; /* 灰色文字 */
-    cursor: not-allowed; /* 改變滑鼠游標 */
-  }
+    .material-icons {
+        line-height: 1.5;
+    }
+    
+    span {
+        font-size: 24px;
+        color: #616161;
+    }
+}
 
 
 
-  .pagenation .material-icons{
-    line-height: 1.5;
-  }
-  .pagenation span{
-    font-size: 24px;
-    color: #616161;
-  }
