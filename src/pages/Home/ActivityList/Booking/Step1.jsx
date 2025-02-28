@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step1.scss";
 import { useLocation } from "react-router-dom";
+import { useForm } from 'react-hook-form';
 
 const renderTooltip = (props) => (
   <Tooltip id="button-tooltip" {...props}>
@@ -11,15 +12,57 @@ const renderTooltip = (props) => (
 );
 
 const Step1 = () => {
-  const navigate = useNavigate();
-  const [adultCount, setAdultCount] = useState(0);
-  const [childCount, setChildCount] = useState(0);
 
   const location = useLocation();
   const submitData = location.state || {}; 
 
-  console.log("收到的預約資料:", submitData);
+  const navigate = useNavigate();
+  const [adultCount, setAdultCount] = useState(2);
+  const [childCount, setChildCount] = useState(1);
+  const [selectValue , setSelectValue] = useState('')
+  
+  //react-hook-form
+  const {
+    register,
+    watch,
+    reset,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      adultCount: selectValue || "",  // 預設為空，讓選項顯示 "請選擇報名人數"
+    },
+    mode: "onTouched"
+  });
+  
+  useEffect(() => {
+    if (Object.keys(submitData).length > 0) {
+      reset({
+        ...submitData,
+        adultCount: selectValue || "", // 確保 `adultCount` 預設為 ""
+      });
+    }
+  }, [submitData, reset]);
 
+  const onSubmit = (data) => {
+   
+    
+    const adultCount = Number(data.adultCount); // 转换为数字
+    
+    const totalPrice = data.adultCount*data.adultPrice
+    const updatedData = { ...data, adultCount, totalAmount: totalPrice};
+    
+    // 當表單提交時，將資料傳遞給 Step2 頁面
+    navigate("/activity-list/booking2", { state: updatedData });
+  };
+
+  const date = new Date(submitData.last_bookable_date);
+
+  const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2, '0')}月${date.getDate().toString().padStart(2, '0')}日`;
+
+  
+  
   return (
     <Container className="booking-step1 py-4">
       {/* 頁面標題 */}
@@ -43,96 +86,54 @@ const Step1 = () => {
         <Col md={8}>
           <Card className="p-3 booking-card">
             <Card.Body>
-              <h4 className="mb-3 text-center">您的預約行程是</h4>
-
-              <div className="booking-info">
-                {/* 左側圖片區塊 */}
-                <div className="img-placeholder">
-                  <i className="bi bi-image" style={{ fontSize: "2rem", color: "#aaa" }}></i>
-                </div>
-
-                {/* 右側資訊卡片 */}
-                <div className="info-card">
-                  <h5 className="info-title">
-                    <i className="bi bi-geo-alt"></i> 台北101觀景台門票
-                  </h5>
-                  <p className="info-item">
-                    <i className="bi bi-calendar"></i> 2024年9月20日
-                  </p>
-                  <p className="info-item">
-                    <i className="bi bi-ticket"></i> 景點/票券
-                  </p>
-                  <p className="info-item">
-                    <i className="bi bi-hourglass-split"></i> 票券當日有效
-                  </p>
-                  <p className="info-item">
-                    <i className="bi bi-cash"></i> 成人 150 / 張，兒童 120 / 張
-                  </p>
-                </div>
+              <h4 className="mb-3">您的預約行程是</h4>
+              
+              <Row>
+                <Col md={4}>
+                  <div className="img-placeholder"><img src="" alt="" /></div>
+                </Col>
+                <Col md={8}>
+                  <p><strong>{submitData.activityName}</strong></p>
+                  <p><i className="bi bi-calendar"></i>{formattedDate}</p>
+                  <p><i className="bi bi-ticket"></i> 景點/票券</p>
+                  <p><i className="bi bi-clock"></i> 票券當日有效</p>
+                  <p><i className="bi bi-cash"></i> 大人 150 / 張，兒童 120 / 張</p>
+                </Col>
+              </Row>
+              
+              {/* 報名人數選擇 */}
+              <div className="mt-3">
+                <label>人數：</label>
+                <OverlayTrigger placement="top" overlay={renderTooltip}>
+                  <Form.Select 
+                    className={`form-control ${errors.adultCount ? "is-invalid" : ""}`}
+                    {...register("adultCount", { 
+                      validate: (value) => {
+                        if (!value || isNaN(value)) return "報名人數需大於等於 1";
+                        return true;
+                      },
+                    onChange: (e) => {
+                      const value = e.target.value;
+                      setSelectValue(value); // 更新 selectValue
+                      setValue("adultCount", value, { shouldValidate: true }); // 更新表單值並觸發驗證
+                    },
+                  })} 
+                  value={selectValue}  >
+                    <option value="" disabled>請選擇報名人數</option>
+                    <option value="1">1 人</option>
+                    <option value="2">2 人</option>
+                    <option value="3">3 人</option>
+                  </Form.Select>
+                </OverlayTrigger>
               </div>
+              {errors.adultCount && <div className="invalid-feedback d-block text-start">{errors.adultCount?.message}</div>}
 
-              {/* 人數調整按鈕 */}
-              <div className="people-counter mt-3">
-                <div className="counter-item">
-                  <span className="label">成人 (12 歲以上)</span>
-                  <span className="price">NT$150 / 每人</span>
-                  <div className="counter-control">
-                    <Button
-                      variant="outline-dark"
-                      className="circle-btn"
-                      onClick={() => setAdultCount(Math.max(adultCount - 1, 0))}
-                    >
-                      −
-                    </Button>
-                    <span className="count">{adultCount}</span>
-                    <Button
-                      variant="outline-dark"
-                      className="circle-btn"
-                      onClick={() => setAdultCount(adultCount + 1)}
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-                <div className="counter-item">
-                  <span className="label">兒童 (6-11 歲)</span>
-                  <span className="price">NT$120 / 每人</span>
-                  <div className="counter-control">
-                    <Button
-                      variant="outline-dark"
-                      className="circle-btn"
-                      onClick={() => setChildCount(Math.max(childCount - 1, 0))}
-                    >
-                      −
-                    </Button>
-                    <span className="count">{childCount}</span>
-                    <Button
-                      variant="outline-dark"
-                      className="circle-btn"
-                      onClick={() => setChildCount(childCount + 1)}
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-              </div>
 
               {/* 確認按鈕 */}
               <div className="mt-4 text-center">
-                <Button
-                  variant="secondary"
-                  className="me-2"
-                  onClick={() => navigate("/activity-list/1")}
-                >
-                  返回上一頁
-                </Button>
-                <Button
-                  variant="primary"
-                  className="px-4"
-                  onClick={() => navigate("/activity-list/booking2")}
-                >
-                  確認報名
-                </Button>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Button variant="primary" type="submit" className="px-4">確認報名</Button>
+                </form>
               </div>
             </Card.Body>
           </Card>

@@ -51,7 +51,11 @@
 
 .info-item span {
   font-size: 1.2rem;
-  color: #333;
+  font-weight: bold;
+}
+.invalid-feedback {
+  color: red !important;
+  font-size: 0.875rem;
 }
 
 .people-counter {
