@@ -2,10 +2,19 @@ import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step4.scss";
+import { useLocation } from "react-router-dom";
 
 const Step4 = () => {
   const navigate = useNavigate();
 
+    const location = useLocation();
+    const submitData = location.state || {}; 
+    console.log(submitData);
+
+    const date = new Date(submitData.last_bookable_date);
+
+    const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2, '0')}月${date.getDate().toString().padStart(2, '0')}日`;
+    
   return (
     <Container className="completion-page py-4">
       {/* 頁面標題 */}
@@ -30,11 +39,11 @@ const Step4 = () => {
               <Card className="p-2 mt-3">
                 <Card.Body>
                   <h5>您的行程</h5>
-                  <p><strong>台北101觀景台門票</strong></p>
-                  <p>日期：2024年9月20日</p>
-                  <p>人數：4 位成人</p>
-                  <p>行程時間：10:00 - 17:00</p>
-                  <p>訂單編號：ABC-123-456</p>
+                  <p><strong>{submitData.activityName}</strong></p>
+                  <p>日期：{formattedDate}</p>
+                  <p>人數：{submitData.adultCount}位成人</p>
+                  <p>行程時間：{submitData.last_bookable_date}</p>
+                  <p>訂單編號：{submitData.orderId}</p>
                 </Card.Body>
               </Card>
               

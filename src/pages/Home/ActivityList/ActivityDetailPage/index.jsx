@@ -127,25 +127,30 @@ const ActivityDetailPage = () => {
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 2;
   const [submitdData, setSubmitData] = useState({
-    "id": "ORD202402220001",
-    "userId": null,
-    "activityId": null,
-    "createdAt": "2024-02-22 15:30:25",
-    "contactName": "王小明",
-    "activityName": "台北一日遊",
-    "last_bookable_date":"",
-    "activityLocation": "台北市信義區信義路五段7號",
-    "activityPeriod": {
-      "startDate": "2024-03-15",
-      "endDate": "2024-03-23"
-    },
-    "adultCount": 4,
-    "childCount": 3,
-    "adultPrice": 150,
-    "childPrice": 120,
-    "timeSlot": "09:00-17:00",
-    "totalAmount": 960,
-    "paymentStatus": "PAID"
+      "id": "",
+      "userId": 1,
+      "activityId": 1,
+      "createdAt": "2024-02-22 15:30:25",
+      "contactName": "王小明",
+      "activityName": "台北一日遊",
+      "last_bookable_date": "",
+      "activityLocation": "台北市信義區信義路五段7號",
+      "activityPeriod": {
+        "startDate": "2024-03-15",
+        "endDate": "2024-03-23"
+      },
+      "adultCount": 4,
+      "childCount": 3,
+      "adultPrice": 150,
+      "childPrice": 120,
+      "timeSlot": "09:00-17:00",
+      "totalAmount": 960,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202402220001",
+      "type": "CHILD",
+      "status": "VALID",
+      "reservedStatus": "reserved",
+      "qrCode": "https://example.com/qr/TKT202402220003"
   });
 
   const [error, setError] = useState(null);
@@ -279,7 +284,7 @@ const renderStars = (rating) => {
 };
 
 const handleDateClick = (date) => {
-  
+
   setSelectedDate(date);
   const dateData = getReservationData[date];
   setSelectedData(dateData);
@@ -288,15 +293,14 @@ const handleDateClick = (date) => {
     userId: userId,
     activityId: id,
     activityName: activityData.content?.title,
-    image: activityData.images,
-    location: activityData.city,
+    activityLocation: activityData.city,
     last_bookable_date: date, // 更新最後可預約日期
   }));
 };
 
 const submitDateClick = () => {
   
-  if(selectedData===null){
+  if(selectedDate.length===0){
     Swal.fire({
         title: "請選擇預約日期",
         icon: "error"
@@ -306,9 +310,8 @@ const submitDateClick = () => {
   if(token===null){
     Swal.fire({
       title: "請登入會員",
-      icon: "error"
-      
-  })
+      icon: "error"})
+
   setSelectedDate('')
   return
   }
@@ -545,7 +548,7 @@ return (
               {/*CallToAction */}
               <div className="card priceArea addDateTime col-lg-4">
                 <div className="card-body priceAreatitle">
-                  <h2 className="actTitle">NT$420起</h2>
+                  <h2 className="actTitle">NT${activityData.price}起</h2>
                   <div className="callbutton">
                   <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     選擇日期
@@ -559,7 +562,7 @@ return (
 
       <div className="mobileView">
         <div className="card-body actTitleMobile">
-          <h2 className="">NT$420起</h2>
+          <h2 className="">NT${activityData.price}起</h2>
           <div className="callbutton">
           <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             選擇日期

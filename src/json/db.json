@@ -500,7 +500,50 @@
       "type": "CHILD",
       "status": "VALID",
       "reservedStatus": "reserved",
-      "qrCode": "https://example.com/qr/TKT202402220003"
+      "qrCode": "https://example.com/qr/TKT202402220003",
+      "paymentData": {
+        "contactName": "123",
+        "cardNumber": "233",
+        "expiryDate": "333",
+        "cvv": "433"
+      }
+    },
+    {
+      "id": "ORD202502280002",
+      "userId": 5,
+      "activityId": "1",
+      "createdAt": "2025-02-28 12:59:30",
+      "contactName": "王小明",
+      "activityName": "經典行程＆高美濕地一日遊",
+      "last_bookable_date": "2025-01-01",
+      "activityLocation": "台中",
+      "activityPeriod": {
+        "startDate": "2024-03-15",
+        "endDate": "2024-03-23"
+      },
+      "adultCount": 2,
+      "childCount": 3,
+      "adultPrice": 150,
+      "childPrice": 120,
+      "timeSlot": [
+        "09:00-12:00",
+        "14:00-17:00",
+        "09:00-17:00",
+        "18:00-21:00"
+      ],
+      "totalAmount": 960,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202502280002",
+      "type": "CHILD",
+      "status": "VALID",
+      "reservedStatus": "reserved",
+      "qrCode": "https://example.com/qr/TKT202402220003",
+      "paymentData": {
+        "contactName": "123",
+        "cardNumber": "233",
+        "expiryDate": "333",
+        "cvv": "433"
+      }
     }
   ],
   "payments": [

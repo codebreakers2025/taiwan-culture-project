@@ -166,7 +166,7 @@ const ActivityList = () => {
                 : true;
       const matchesType = selectedType ? item.eventType === selectedType : true;
       const matchesSite = selectedSite ? item.city === selectedSite : true;
-      const matchesPrice = selectedPrice ? item.price <= selectedSite : true;
+      const matchesPrice = selectedPrice ? item.price <= selectedPrice : true;
       
       return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;
     });

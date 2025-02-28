@@ -20,7 +20,6 @@ const Step1 = () => {
   const [adultCount, setAdultCount] = useState(2);
   const [childCount, setChildCount] = useState(1);
   const [selectValue , setSelectValue] = useState('')
-  console.log(submitData);
   
   //react-hook-form
   const {
@@ -47,13 +46,15 @@ const Step1 = () => {
   }, [submitData, reset]);
 
   const onSubmit = (data) => {
-    const adultCount = Number(data.adultCount); // 转换为数字
-    console.log(adultCount);
+   
     
-    console.log({ ...data, adultCount }); // 确保 adultCount 为数字
+    const adultCount = Number(data.adultCount); // 转换为数字
+    
+    const totalPrice = data.adultCount*data.adultPrice
+    const updatedData = { ...data, adultCount, totalAmount: totalPrice};
     
     // 當表單提交時，將資料傳遞給 Step2 頁面
-    navigate("/activity-list/booking2", { state: data });
+    navigate("/activity-list/booking2", { state: updatedData });
   };
 
   const date = new Date(submitData.last_bookable_date);
@@ -61,7 +62,6 @@ const Step1 = () => {
   const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2, '0')}月${date.getDate().toString().padStart(2, '0')}日`;
 
   
-  console.log(watch());
   
   return (
     <Container className="booking-step1 py-4">
@@ -99,12 +99,17 @@ const Step1 = () => {
               <div className="mt-3">
                 <label>人數：</label>
                 <OverlayTrigger placement="top" overlay={renderTooltip}>
-                  <Form.Select {...register("adultCount", { 
-                    required: "請選擇報名人數",
+                  <Form.Select 
+                    className={`form-control ${errors.adultCount ? "is-invalid" : ""}`}
+                    {...register("adultCount", { 
+                      validate: (value) => {
+                        if (!value || isNaN(value)) return "報名人數需大於等於 1";
+                        return true;
+                      },
                     onChange: (e) => {
                       const value = e.target.value;
                       setSelectValue(value); // 更新 selectValue
-                      setValue("adultCount", value); // 更新 react-hook-form 表单的值
+                      setValue("adultCount", value, { shouldValidate: true }); // 更新表單值並觸發驗證
                     },
                   })} 
                   value={selectValue}  >
@@ -115,7 +120,7 @@ const Step1 = () => {
                   </Form.Select>
                 </OverlayTrigger>
               </div>
-              
+              {errors.adultCount && <div className="invalid-feedback d-block text-start">{errors.adultCount?.message}</div>}
               {/* 人數調整按鈕 */}
               <div className="d-flex justify-content-between mt-3">
                 <div>

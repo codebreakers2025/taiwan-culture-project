@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Step2.scss";
@@ -7,9 +7,11 @@ import { useLocation } from "react-router-dom";
 const Step2 = () => {
   const navigate = useNavigate();
   const location = useLocation();
+ 
   const submitData = location.state || {}; 
 
   console.log("Step2 submitData:", submitData);
+  
   
   const date = new Date(submitData.last_bookable_date);
 
@@ -48,10 +50,10 @@ const Step2 = () => {
                 <Col md={6}>
                   <Card className="p-2">
                     <Card.Body>
-                      <h5>主題式導覽行程訂單</h5>
-                      <p>地點: 台北101</p>
-                      <p>時間: 10:00 - 17:00</p>
-                      <p><strong>NT$ 1080</strong></p>
+                      <h5>行程訂單</h5>
+                      <p>地點: {submitData.activityLocation}</p>
+                      <p>時間: {submitData.last_bookable_date}</p>
+                      <p><strong>NT$ {submitData.totalAmount}</strong></p>
                     </Card.Body>
                   </Card>
                 </Col>
