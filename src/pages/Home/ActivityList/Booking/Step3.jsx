@@ -60,15 +60,21 @@ const Step3 = () => {
     <Container className="payment-step py-4">
       {/* 頁面標題 */}
       <h2 className="text-center mb-4">付款資料</h2>
-      
+
       {/* 進度指示器 */}
       <div className="progress-steps d-flex justify-content-center mb-4">
-        <Button variant="dark" className="me-2">1. 行程資料</Button>
-        <Button variant="dark" className="me-2">2. 確認訂單</Button>
-        <Button variant="dark" className="me-2">3. 付款資料</Button>
+        <Button variant="dark" className="me-2">
+          1. 行程資料
+        </Button>
+        <Button variant="dark" className="me-2">
+          2. 確認訂單
+        </Button>
+        <Button variant="dark" className="me-2">
+          3. 付款資料
+        </Button>
         <Button variant="outline-dark">4. 完成預約</Button>
       </div>
-      
+
       <Row className="justify-content-center">
         <Col md={8}>
           <Card className="p-3 payment-card">
@@ -85,7 +91,7 @@ const Step3 = () => {
                   }})}/>
                   {errors.contactName && <div className="invalid-feedback text-start">{errors.contactName?.message}</div>}
                 </Form.Group>
-                
+
                 <Form.Group className="mb-3" controlId="cardNumber">
                   <Form.Label>信用卡號</Form.Label>
                   <Form.Control type="text" placeholder="xxxx-xxxx-xxxx-xxxx" {...register("cardNumber", { required: "此欄位為必填" ,  pattern : {
@@ -94,7 +100,7 @@ const Step3 = () => {
                   } })} />
                   {errors.cardNumber && <div className="invalid-feedback text-start">{errors.cardNumber?.message}</div>}
                 </Form.Group>
-                
+
                 <Row>
                   <Col md={6}>
                     <Form.Group className="mb-3" controlId="expiryDate">

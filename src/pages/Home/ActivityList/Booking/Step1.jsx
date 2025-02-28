@@ -14,7 +14,7 @@ const renderTooltip = (props) => (
 const Step1 = () => {
 
   const location = useLocation();
-  const submitData = location.state || {}; // 確保有資料
+  const submitData = location.state || {}; 
 
   const navigate = useNavigate();
   const [adultCount, setAdultCount] = useState(2);
@@ -67,15 +67,21 @@ const Step1 = () => {
     <Container className="booking-step1 py-4">
       {/* 頁面標題 */}
       <h2 className="text-center mb-4">預約行程表單</h2>
-      
+
       {/* 進度指示器 */}
       <div className="progress-steps d-flex justify-content-center mb-4">
-        <Button variant="dark" className="me-2">1. 行程資料</Button>
-        <Button variant="outline-dark" className="me-2">2. 確認訂單</Button>
-        <Button variant="outline-dark" className="me-2">3. 付款資料</Button>
+        <Button variant="dark" className="me-2">
+          1. 行程資料
+        </Button>
+        <Button variant="outline-dark" className="me-2">
+          2. 確認訂單
+        </Button>
+        <Button variant="outline-dark" className="me-2">
+          3. 付款資料
+        </Button>
         <Button variant="outline-dark">4. 完成預約</Button>
       </div>
-      
+
       <Row className="justify-content-center">
         <Col md={8}>
           <Card className="p-3 booking-card">
@@ -122,21 +128,51 @@ const Step1 = () => {
               </div>
               {errors.adultCount && <div className="invalid-feedback d-block text-start">{errors.adultCount?.message}</div>}
               {/* 人數調整按鈕 */}
-              <div className="d-flex justify-content-between mt-3">
-                <div>
-                  <span>成人：</span>
-                  <Button variant="outline-dark" onClick={() => setAdultCount(Math.max(adultCount - 1, 0))}>-</Button>
-                  <span className="px-2">{adultCount}</span>
-                  <Button variant="outline-dark" onClick={() => setAdultCount(adultCount + 1)}>+</Button>
+              <div className="people-counter mt-3">
+                <div className="counter-item">
+                  <span className="label">成人 (12 歲以上)</span>
+                  <span className="price">NT$150 / 每人</span>
+                  <div className="counter-control">
+                    <Button
+                      variant="outline-dark"
+                      className="circle-btn"
+                      onClick={() => setAdultCount(Math.max(adultCount - 1, 0))}
+                    >
+                      −
+                    </Button>
+                    <span className="count">{adultCount}</span>
+                    <Button
+                      variant="outline-dark"
+                      className="circle-btn"
+                      onClick={() => setAdultCount(adultCount + 1)}
+                    >
+                      +
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <span>孩童：</span>
-                  <Button variant="outline-dark" onClick={() => setChildCount(Math.max(childCount - 1, 0))}>-</Button>
-                  <span className="px-2">{childCount}</span>
-                  <Button variant="outline-dark" onClick={() => setChildCount(childCount + 1)}>+</Button>
+                <div className="counter-item">
+                  <span className="label">兒童 (6-11 歲)</span>
+                  <span className="price">NT$120 / 每人</span>
+                  <div className="counter-control">
+                    <Button
+                      variant="outline-dark"
+                      className="circle-btn"
+                      onClick={() => setChildCount(Math.max(childCount - 1, 0))}
+                    >
+                      −
+                    </Button>
+                    <span className="count">{childCount}</span>
+                    <Button
+                      variant="outline-dark"
+                      className="circle-btn"
+                      onClick={() => setChildCount(childCount + 1)}
+                    >
+                      +
+                    </Button>
+                  </div>
                 </div>
               </div>
-              
+
               {/* 確認按鈕 */}
               <div className="mt-4 text-center">
                 <form onSubmit={handleSubmit(onSubmit)}>

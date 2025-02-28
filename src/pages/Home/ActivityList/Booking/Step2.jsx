@@ -21,20 +21,26 @@ const Step2 = () => {
     <Container className="booking-step2 py-4">
       {/* 頁面標題 */}
       <h2 className="text-center mb-4">確認表單</h2>
-      
+
       {/* 進度指示器 */}
       <div className="progress-steps d-flex justify-content-center mb-4">
-        <Button variant="dark" className="me-2">1. 行程資料</Button>
-        <Button variant="dark" className="me-2">2. 確認訂單</Button>
-        <Button variant="outline-dark" className="me-2">3. 付款資料</Button>
+        <Button variant="dark" className="me-2">
+          1. 行程資料
+        </Button>
+        <Button variant="dark" className="me-2">
+          2. 確認訂單
+        </Button>
+        <Button variant="outline-dark" className="me-2">
+          3. 付款資料
+        </Button>
         <Button variant="outline-dark">4. 完成預約</Button>
       </div>
-      
+
       <Row className="justify-content-center">
-        <Col md={8}>
-          <Card className="p-3 confirmation-card">
+        <Col md={10}>
+          <Card className="p-4 confirmation-card">
             <Card.Body>
-              <h4 className="mb-3">您想報名的是</h4>
+              <h4 className="mb-3 text-center">您想報名的是</h4>
               <Row>
                 <Col md={6}>
                   <Card className="p-2">
@@ -58,7 +64,7 @@ const Step2 = () => {
                   </Card>
                 </Col>
               </Row>
-              
+
               {/* 操作按鈕 */}
               <div className="mt-4 text-center">
                 <Button variant="secondary" className="me-2" onClick={() => navigate("/activity-list/booking1", { state: submitData })}>返回行程資訊</Button>

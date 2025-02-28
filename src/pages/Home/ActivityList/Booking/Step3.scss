@@ -5,6 +5,7 @@
 .payment-card {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
 .payment-card .form-control {
@@ -12,6 +13,6 @@
 }
 
 .payment-card button {
-  font-size: 1.1rem;
-  padding: 10px 20px;
+  font-size: 1rem; 
+  padding: 10px 20px; 
 }
