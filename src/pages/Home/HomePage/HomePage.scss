@@ -342,6 +342,9 @@
     img {
       margin-bottom: 8px;
       width: 100%;
+      min-height: 258px;
+      border-radius: 40px;
+      object-fit: cover;
     }
   }
   .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after,
@@ -514,7 +517,18 @@
 }
 
 @media (max-width: 991px) {
-  
+  .journal-section .swiper-slide img {
+    min-height: 210px;
+  }
+}
+
+@media (max-width: 768px) {
+  .journal-section .swiper-slide img {
+    min-height: 240px;
+  }
+  .swiper-wrapper .card-title {
+    white-space: normal;
+  }
 }
 
 @media (max-width: 577px){
@@ -535,7 +549,7 @@
 
 }
 
-@media (max-width: 375px) {
+@media (max-width: 480px) {
     .journal-section {
       .col-custom {
         width: 100%;

@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
+import { getOrderAll, getVouchers, getRewards, updatedVouchers, updatedRewards} from '@/utils/api';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import './Center.scss';
 
 const Center = () => {
   const [settings, setSettings] = useState({
@@ -7,41 +11,100 @@ const Center = () => {
     push: true,
   });
 
-  const [trips, setTrips] = useState([
-    { id: 1, name: "台北一日遊", date: "2025-03-10", status: "預定" },
-    { id: 2, name: "九份老街美食之旅", date: "2025-03-15", status: "預定" },
-  ]);
-
+  const [trips, setTrips] = useState([]);
   const [rewards, setRewards] = useState({
-    points: 1200,
-    achievements: ["完成第一次預訂", "專屬VIP優惠"],
+    points: 2500,
+    achievements: [],
   });
 
-  const [tickets, setTickets] = useState([
-    { id: 1, name: "台北一日遊票券", date: "2025-03-10", status: "已發送" },
-    { id: 2, name: "九份老街美食之旅票券", date: "2025-03-15", status: "已發送" },
-  ]);
+  const [tickets, setTickets] = useState([]);
 
-  const [entries, setEntries] = useState([
-    { id: 1, title: "台北旅行記錄", date: "2025-03-10", content: "這是我的台北一日遊日誌..." },
-    { id: 2, title: "九份老街探險", date: "2025-03-15", content: "品嘗了當地的美食..." },
-  ]);
+  useEffect(() => {
 
-  const [cards, setCards] = useState([
-    { id: 1, type: "信用卡", last4Digits: "1234" },
-    { id: 2, type: "支付寶", last4Digits: "5678" },
-  ]);
+    const fetchTripData = async () => {
+      const response = await getOrderAll();
+      setTrips(response);
+    }
+
+    const fetchTicketsData = async () => {
+      const response = await getVouchers();
+      setTickets(response);  
+    }
+
+    const fetchRewardsData = async () => {
+      const response = await getRewards();
+      setRewards(response);
+      checkAndRewardTicket(response);  // 檢查是否達標
+    }
+
+    fetchTripData();
+    fetchTicketsData();
+    fetchRewardsData();
+  }, []);
+
+
+  // 檢查積分是否達標，並自動發送票券
+  const checkAndRewardTicket = async(rewardsData) => {
+    let newAchievements = [...rewardsData.achievements];
+    let newTickets = [...tickets];
+    let rewardMessage = "";
+
+    // 檢查是否達到3000或5000積分
+    if (rewardsData.points >= 3000 && !newAchievements.includes("達成3000積分，獲得免費票券")) {
+      newAchievements.push("達成3000積分，獲得免費票券");
+      newTickets.push({
+        id: newTickets.length + 1,
+        name: "台北一日遊票券",
+        date: "2025-03-10",
+        status: "尚未使用",
+      });
+      rewardMessage = "恭喜您達成3000積分，已獲得免費票券！";
+    }
+    
+    if (rewardsData.points >= 5000 && !newAchievements.includes("達成5000積分，獲得免費票券")) {
+      newAchievements.push("達成5000積分，獲得免費票券");
+      newTickets.push({
+        id: newTickets.length + 1,
+        name: "九份老街美食之旅票券",
+        date: "2025-03-15",
+        status: "尚未使用",
+      });
+      rewardMessage = "恭喜您達成5000積分，已獲得免費票券！";
+    }
+
+    // 更新積分與獎勳
+    setRewards({ ...rewardsData, achievements: newAchievements });
+    setTickets(newTickets);
+
+    // 顯示成功提示訊息
+    if (rewardMessage) {
+      Swal.fire({
+        title: "獲得新獎勳！",
+        text: rewardMessage,
+        icon: "success",
+        confirmButtonText: "確認"
+      });
+    }
+
+    // 更新後端資料
+    await updatedRewards({ points: rewards.points, achievements: newAchievements });
+
+    newTickets.forEach(ticket => {
+      updatedVouchers(ticket.id, ticket);
+    });
+  }
+  
+
 
   return (
     <div className="page-container">
-      <div className="container mt-4">
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-12">
           {/* 我的行程 */}
           <div className="card shadow-sm mb-4">
             <div className="card-body">
               <h5 className="card-title">我的行程</h5>
-              <table className="table table-bordered">
+              <table className="table table-bordered table-responsive">
                 <thead>
                   <tr>
                     <th>行程名稱</th>
@@ -53,141 +116,91 @@ const Center = () => {
                 <tbody>
                   {trips.map((trip) => (
                     <tr key={trip.id}>
-                      <td>{trip.name}</td>
-                      <td>{trip.date}</td>
-                      <td>{trip.status}</td>
+                      <td>{trip.activityName}</td>
+                      <td>{trip.activityPeriod.startDate} - {trip.activityPeriod.endDate}</td>
+                      <td>{trip.reservedStatus === "reserved" ? "已預約" : trip.reservedStatus === "in_progress" ? "進行中" : trip.reservedStatus === "cancel" ? "已取消" : "未知的狀態"}</td>
                       <td>
-                        <button className="btn btn-info btn-sm">查看</button>
+                        <Link to={`/member-center/order-management/detail/${trip.id}`} className="btn btn-custom-primary btn-sm">查看詳情</Link>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-          </div>
-
-          {/* 積分與獎勳 */}
-          <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              <h5 className="card-title">積分與獎勳</h5>
-              <p>積分：{rewards.points} 點</p>
-              <h6>已獲得的獎勳</h6>
-              <ul className="list-group">
-                {rewards.achievements.map((achievement, index) => (
-                  <li key={index} className="list-group-item">
-                    {achievement}
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
 
           {/* 我的票券 */}
           <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              <h5 className="card-title">我的票券</h5>
-              <table className="table table-bordered">
+              <div className="card-body">
+                <h5 className="card-title">我的票券</h5>
+                <table className="table table-bordered table-responsive">
+                  
                 <thead>
                   <tr>
-                    <th>票券名稱</th>
-                    <th>日期</th>
+                    <th>行程名稱</th>
+                    <th>使用期限</th>
                     <th>狀態</th>
-                    <th>操作</th>
                   </tr>
                 </thead>
+                {/* 檢查是否有票券資料 */}
                 <tbody>
+                {tickets && tickets.length > 0 ? (
+                  <>
                   {tickets.map((ticket) => (
                     <tr key={ticket.id}>
                       <td>{ticket.name}</td>
                       <td>{ticket.date}</td>
                       <td>{ticket.status}</td>
-                      <td>
-                        <button className="btn btn-success btn-sm">查看票券</button>
-                      </td>
                     </tr>
                   ))}
+                  </>
+                ) : (
+                  <tr><td colSpan="3" className="text-center">目前沒有票券。</td></tr>
+                )}
                 </tbody>
               </table>
+
+         
             </div>
           </div>
+          {/* 積分與獎勳 */}
+          {rewards.achievements.length > 0 && (
+            <div className="card shadow-sm mb-4">
+              <div className="card-body">
+                <h5 className="card-title">我的獎勳</h5>
+                {/* 積分顯示 */}
+                <div className="d-flex align-items-center mb-4">
+                  <div className="me-3 w-100">
+                    <p className="mb-1">當前點數：{rewards.points} 點</p>
+                    <div className="progress" style={{ height: "10px" }}>
+                      <div
+                        className="progress-bar"
+                        role="progressbar"
+                        style={{ width: `${(rewards.points / 5000) * 100}%` }}
+                        aria-valuenow={rewards.points}
+                        aria-valuemin="0"
+                        aria-valuemax="5000"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
 
-          {/* 旅行日誌 */}
-          <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              <h5 className="card-title">旅行日誌</h5>
-              <ul className="list-group">
-                {entries.map((entry) => (
-                  <li key={entry.id} className="list-group-item">
-                    <h6>{entry.title}</h6>
-                    <small>{entry.date}</small>
-                    <p>{entry.content}</p>
-                    <button className="btn btn-info btn-sm">查看</button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* 訂閱與通知設定 */}
-          <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              <h5 className="card-title">訂閱與通知設定</h5>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="emailNotifications"
-                  checked={settings.email}
-                  onChange={() => setSettings({ ...settings, email: !settings.email })}
-                />
-                <label className="form-check-label" htmlFor="emailNotifications">
-                  接收電子郵件通知
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="smsNotifications"
-                  checked={settings.sms}
-                  onChange={() => setSettings({ ...settings, sms: !settings.sms })}
-                />
-                <label className="form-check-label" htmlFor="smsNotifications">
-                  接收短信通知
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="pushNotifications"
-                  checked={settings.push}
-                  onChange={() => setSettings({ ...settings, push: !settings.push })}
-                />
-                <label className="form-check-label" htmlFor="pushNotifications">
-                  接收推播通知
-                </label>
+                {/* 獎勳列表 */}
+                {rewards.achievements.length > 0 && (
+                  <>
+                    <h6>已獲得的獎勳</h6>
+                    <div className="d-flex flex-wrap">
+                      {rewards.achievements.map((achievement, index) => (
+                        <span key={index} className="badge badge-custom bg-custom-primary m-1">{achievement}</span>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
-          </div>
-
-          {/* 支付設定 */}
-          <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              <h5 className="card-title">支付設定</h5>
-              <ul className="list-group">
-                {cards.map((card) => (
-                  <li key={card.id} className="list-group-item">
-                    {card.type}: **** **** **** {card.last4Digits}
-                    <button className="btn btn-warning btn-sm ml-2">編輯</button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          )}
         </div>
       </div>
-    </div>
     </div>
   );
 };

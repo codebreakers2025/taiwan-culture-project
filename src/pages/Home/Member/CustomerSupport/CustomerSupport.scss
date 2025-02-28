@@ -14,3 +14,32 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.quick-reply-section .btn-outline-primary {
+  border: 1px solid #60B9BF;
+  color: #60B9BF;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.quick-reply-section .btn-outline-primary:hover, .quick-reply-section :not(.btn-check)+.btn:active {
+  color: white;
+  background-color: #60B9BF;
+  border-color: #60B9BF;
+}
+
+.quick-reply-section .btn:focus {
+  box-shadow: none;
+}
+
+.quick-reply-section .btn {
+  font-size: 16px;
+  padding: 10px 20px;
+  color: $primary-color-5;
+}
+
+.quick-reply-section .btn:first-child:active {
+  background-color: #60B9BF;
+  border-color: #60B9BF;
+  color: white;
+}

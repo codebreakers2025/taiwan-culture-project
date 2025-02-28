@@ -1,82 +1,116 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import {getUserStats, signIn } from "@/utils/api.js";
+import './Signin.scss';
 
 const SignIn = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [streak, setStreak] = useState(0);
-  const [signedDays, setSignedDays] = useState([]);
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const userId = Number(localStorage.getItem("userId"));
+
+  const today = new Date().toISOString().split("T")[0];
+  const hasSignedInToday = stats?.lastSignInDate === today;
+
+  const getDaysInMonth = (year, month) => new Date(year, month, 0).getDate();
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+  const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const totalCells = Math.ceil((daysInMonth + firstDayOfMonth) / 7) * 7;
 
   useEffect(() => {
-    // 取得本地存儲的簽到資料
-    const storedSignInData = JSON.parse(localStorage.getItem("signInData")) || {
-      isSignedIn: false,
-      streak: 0,
-      signedDays: [],
+    const fetchStats = async () => {
+      try {
+        const userStats = await getUserStats(userId);
+        if (userStats) {
+          setStats(userStats);
+        } else {
+          console.warn("首次簽到，初始化 stats...");
+          setStats({
+            availableRewards: 0,
+            claimedRewards: 0,
+            currentStreak: 0,
+            lastSignInDate: null,
+            longestStreak: 0,
+            totalSignIns: 0,
+            userId: userId,
+          });
+        }
+      } catch (error) {
+        console.error("無法獲取簽到數據", error);
+      }
+      setLoading(false);
+    };
+    fetchStats();
+  }, [userId]);
+
+  const handleSignIn = async () => {
+    if (!stats) return;
+    
+    const today = new Date().toISOString().split("T")[0];
+    const lastSignIn = stats.lastSignInDate ? new Date(stats.lastSignInDate) : null;
+    const diffDays = lastSignIn ? Math.floor((Date.parse(today) - lastSignIn.getTime()) / (1000 * 60 * 60 * 24)) : null;
+    
+    const newStreak = diffDays === 1 ? stats.currentStreak + 1 : 1;
+    const newTotalSignIns = stats.totalSignIns + 1;
+    const newLongestStreak = Math.max(stats.longestStreak, newStreak);
+
+    const updatedStats = {
+      currentStreak: newStreak,
+      totalSignIns: newTotalSignIns,
+      longestStreak: newLongestStreak,
+      lastSignInDate: today,
     };
 
-    setIsSignedIn(storedSignInData.isSignedIn);
-    setStreak(storedSignInData.streak);
-    setSignedDays(storedSignInData.signedDays);
-  }, []);
+    try {
+      await signIn(userId, updatedStats);
+      setStats((prevStats) => ({ ...prevStats, ...updatedStats }));
 
-  // 獲取當月總天數
-  const getDaysInMonth = (year, month) => new Date(year, month, 0).getDate();
-
-  // 取得當前日期
-  const today = new Date().toISOString().split("T")[0];
-
-  const handleSignIn = () => {
-    if (isSignedIn) return;
-
-    const newSignedDays = [...signedDays, today];
-    const newStreak = streak + 1;
-
-    setIsSignedIn(true);
-    setStreak(newStreak);
-    setSignedDays(newSignedDays);
-
-    localStorage.setItem(
-      "signInData",
-      JSON.stringify({ isSignedIn: true, streak: newStreak, signedDays: newSignedDays })
-    );
-
-    Swal.fire({
-      title: "簽到成功！",
-      text: `你已連續簽到 ${newStreak} 天`,
-      icon: "success",
-    });
+      Swal.fire({
+        icon: "success",
+        title: "簽到成功！",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "簽到失敗，請稍後再試！",
+      });
+      console.error(error.message);
+    }
   };
 
   return (
-    <div className="container mt-4">
+    <div className="page-container">
       <h2 className="text-center">每日簽到</h2>
-
-      {/* 簽到按鈕 */}
       <div className="text-center my-3">
-        <button className={`btn ${isSignedIn ? "btn-secondary" : "btn-primary"}`} onClick={handleSignIn} disabled={isSignedIn}>
-          {isSignedIn ? "今日已簽到" : "立即簽到"}
+        <button
+          className={`btn ${hasSignedInToday ? "btn-secondary" : "btn-custom-primary"}`}
+          onClick={handleSignIn}
+          disabled={hasSignedInToday}
+        >
+          {hasSignedInToday ? "今日已簽到" : "立即簽到"}
         </button>
       </div>
-
-      {/* 連續簽到進度條 */}
       <div className="text-center">
-        <p>連續簽到：{streak} 天</p>
+        {stats && <p>連續簽到：{stats.currentStreak} 天</p>}
         <div className="progress" style={{ height: "25px" }}>
           <div
             className="progress-bar progress-bar-striped progress-bar-animated"
             role="progressbar"
-            style={{ width: `${(streak % 7) * 14.28}%` }}
+            style={{ width: `${(stats?.currentStreak % 7) * 14.28}%` }}
           >
-            {streak % 7} / 7
+            {stats?.currentStreak % 7} / 7
           </div>
         </div>
-        {streak % 7 === 0 && streak !== 0 && <p className="text-success mt-2">🎉 恭喜獲得獎勵！</p>}
+        {stats?.currentStreak % 7 === 0 && stats?.currentStreak !== 0 && (
+          <p className="text-success mt-2">🎉 恭喜獲得獎勳！</p>
+        )}
       </div>
-
-      {/* 簽到日曆 */}
-      <h4 className="mt-4 text-center">{currentYear} 年 {currentMonth} 月 簽到記錄</h4>
+      <h4 className="mt-4 text-center">
+        {currentYear} 年 {currentMonth} 月 簽到記錄
+      </h4>
       <div className="table-responsive">
         <table className="table table-bordered text-center">
           <thead>
@@ -91,31 +125,24 @@ const SignIn = () => {
             </tr>
           </thead>
           <tbody>
-            {(() => {
-              const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-              const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1).getDay();
-              const totalCells = Math.ceil((daysInMonth + firstDayOfMonth) / 7) * 7;
-              const daysArray = [];
-
-              for (let i = 0; i < totalCells; i++) {
-                const dayNum = i - firstDayOfMonth + 1;
-                const dateStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(dayNum).padStart(2, "0")}`;
-
-                daysArray.push(
-                  dayNum > 0 && dayNum <= daysInMonth ? (
-                    <td key={i} className={signedDays.includes(dateStr) ? "bg-success text-white" : ""}>
+            {[...Array(totalCells / 7)].map((_, weekIndex) => (
+              <tr key={weekIndex}>
+                {[...Array(7)].map((_, dayIndex) => {
+                  const dayNum = weekIndex * 7 + dayIndex - firstDayOfMonth + 1;
+                  const dateStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(dayNum).padStart(2, "0")}`;
+                  return dayNum > 0 && dayNum <= daysInMonth ? (
+                    <td
+                      key={dayIndex}
+                      className={dateStr === today ? "bg-custom-primary text-white" : ""}
+                    >
                       {dayNum}
                     </td>
                   ) : (
-                    <td key={i} className="bg-light"></td>
-                  )
-                );
-              }
-
-              return [...Array(totalCells / 7)].map((_, weekIndex) => (
-                <tr key={weekIndex}>{daysArray.slice(weekIndex * 7, (weekIndex + 1) * 7)}</tr>
-              ));
-            })()}
+                    <td key={dayIndex} className="bg-light"></td>
+                  );
+                })}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

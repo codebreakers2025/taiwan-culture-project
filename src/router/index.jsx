@@ -18,7 +18,6 @@ import SignIn from '@/pages/Home/Member/SignIn';
 import ActivityPoints from '@/pages/Home/Member/ActivityPoints';
 import CustomerSupport from '@/pages/Home/Member/CustomerSupport';
 import Center from '@/pages/Home/Member/Center';
-import Preferences from '@/pages/Home/Member/Preferences';
 
 import Login from '@/pages/Admin/Login';
 import Dashboard from '@/pages/Admin/Dashboard';
@@ -112,10 +111,6 @@ const router = createHashRouter(
         {
           path: 'center',
           element: <Center />,
-        },
-        {
-          path: 'settings',
-          element: <Preferences />,
         }
       ]
     },

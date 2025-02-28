@@ -15,6 +15,7 @@ export const register = async (data) => {
         role: "Member",
         avatar: "https://mighty.tools/mockmind-api/content/human/119.jpg"
     });
+    
     return response.data; 
 };
 
@@ -22,7 +23,8 @@ export const register = async (data) => {
 export const login = async (data) => {
 const response = await axios.post(`/api/signin`, data);
 if (response.data.accessToken) {
-    localStorage.setItem('token', response.data.accessToken);
+    localStorage.setItem('token', response.data.accessToken); // 存 Token
+    // localStorage.setItem('user', JSON.stringify(response.data.user)); // 存 User
 }
 return response.data; 
 };
@@ -308,6 +310,84 @@ export const uploadImageToCloudinary = async(file) => {
 
 
 
+
+// 取得用戶簽到資料
+export const getUserStats = async (userId) => {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`api/userStats?userId=${userId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return res.data[0]; // 取第一筆
+    } catch (error) {
+        console.error('獲取簽到數據失敗', error);
+        throw error;
+    }
+};
+
+
+// 執行簽到
+export const signIn = async (userId, data) => {
+    try {
+        const token = localStorage.getItem('token');
+        const today = new Date().toISOString().split('T')[0]; // 取得今天日期 (YYYY-MM-DD)
+        
+        // 先檢查今天是否已簽到
+        const checkRes = await axios.get(`api/signIns?userId=${userId}&date=${today}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (checkRes.data.length > 0) {
+            throw new Error('今天已簽到');
+        }
+
+        // 更新簽到資料到 localStorage
+        checkRes.data.push({
+            userId: userId,
+            date: today,
+            signInTime: new Date().toISOString()
+        });
+
+        // 儲存簽到資料到 localStorage
+        localStorage.setItem('signInData', JSON.stringify(checkRes.data));
+        console.log('簽到成功，數據已儲存。', data);
+
+        return { success: true, message: '簽到成功' };
+
+    } catch (error) {
+        console.error('簽到失敗', error);
+        throw error;
+    }
+};
+
+// 票券
+export const getVouchers = async () => {
+    const response = await axios.get(`/api/vouchers`);
+    return response.data; 
+};
+
+// 更新票券
+export const updatedVouchers = async (ticket) => {
+    const response = await axios.put(`/api/vouchers/${ticket.id}`, ticket);
+    return response.data; 
+};
+
+// 獎勵
+export const getRewards = async () => {
+    const response = await axios.get(`/api/rewards`);
+    return response.data; 
+};
+
+// 更新票獎勵
+export const updatedRewards = async (data) => {
+    const response = await axios.put(`/api/rewards`, data);
+    return response.data; 
+};
+
+
+
+
+
 //後台
 export const getMemberAll = async () => {
     const response = await axios.get(`/api/users`);
@@ -324,9 +404,3 @@ export const updatedMembers = async (id, data) => {
     return response.data; 
 };
 
-
-
-// export const updatedUsers = async (id) => {
-//     const response = await axios.patch(`/api/users/${id}`);
-//     return response.data; 
-// };
