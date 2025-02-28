@@ -127,51 +127,7 @@ const Step1 = () => {
                 </OverlayTrigger>
               </div>
               {errors.adultCount && <div className="invalid-feedback d-block text-start">{errors.adultCount?.message}</div>}
-              {/* 人數調整按鈕 */}
-              <div className="people-counter mt-3">
-                <div className="counter-item">
-                  <span className="label">成人 (12 歲以上)</span>
-                  <span className="price">NT$150 / 每人</span>
-                  <div className="counter-control">
-                    <Button
-                      variant="outline-dark"
-                      className="circle-btn"
-                      onClick={() => setAdultCount(Math.max(adultCount - 1, 0))}
-                    >
-                      −
-                    </Button>
-                    <span className="count">{adultCount}</span>
-                    <Button
-                      variant="outline-dark"
-                      className="circle-btn"
-                      onClick={() => setAdultCount(adultCount + 1)}
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-                <div className="counter-item">
-                  <span className="label">兒童 (6-11 歲)</span>
-                  <span className="price">NT$120 / 每人</span>
-                  <div className="counter-control">
-                    <Button
-                      variant="outline-dark"
-                      className="circle-btn"
-                      onClick={() => setChildCount(Math.max(childCount - 1, 0))}
-                    >
-                      −
-                    </Button>
-                    <span className="count">{childCount}</span>
-                    <Button
-                      variant="outline-dark"
-                      className="circle-btn"
-                      onClick={() => setChildCount(childCount + 1)}
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-              </div>
+
 
               {/* 確認按鈕 */}
               <div className="mt-4 text-center">
