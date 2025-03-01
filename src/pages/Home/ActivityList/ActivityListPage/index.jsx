@@ -350,40 +350,40 @@ const handleFavoriteClick =  async(id) => {
             </div>
             <div className="col-lg-9 col-12">
               <div className="right-content">
-              <div className="row">
-                  {/* Check if no search results and there are search criteria */}
-                  {(searchResultsData.length === 0 && searchingValue.length > 0) ? (
-                    <div className="col-12">
-                      <p>No activities found.</p>
-                    </div>
-                  ) : (
-                    // If there are search results, show them; otherwise, show all activities
-                    (searchResultsData.length > 0 ? searchResultsData : activityData).map((activity, index) => (
-                      <div className="col-md-6 col-lg-4" key={index}>
-                        <div className="card mb-3">
-                          <img src={activity.images} className="card-img-top" alt="activity" />
-                          <div className="card-body">
-                            <div className="d-flex justify-content-between align-items-center">
-                              <p className="card-text">{activity.startDate}·{activity.eventType}</p>
-                              <span className="rating">★ {(() => {
-                                const filteredReviews = reviewData.filter(item => item.activityId === activity.id);
-                                if (filteredReviews.length === 0) return 0;
-                                const totalRating = filteredReviews.reduce((sum, item) => sum + item.rating, 0);
-                                return (totalRating / filteredReviews.length).toFixed(1);
-                              })()}</span>
+                <div className="row">
+                    {/* Check if no search results and there are search criteria */}
+                    {(searchResultsData.length === 0 && searchingValue.length > 0) ? (
+                      <div className="col-12">
+                        <p>No activities found.</p>
+                      </div>
+                    ) : (
+                      // If there are search results, show them; otherwise, show all activities
+                      (searchResultsData.length > 0 ? searchResultsData : activityData).map((activity, index) => (
+                        <div className="col-md-6 col-lg-4" key={index}>
+                          <div className="card mb-3">
+                            <img src={activity.images} className="card-img-top" alt="activity" />
+                            <div className="card-body">
+                              <div className="d-flex justify-content-between align-items-center">
+                                <p className="card-text">{activity.startDate}·{activity.eventType}</p>
+                                <span className="rating">★ {(() => {
+                                  const filteredReviews = reviewData.filter(item => item.activityId === activity.id);
+                                  if (filteredReviews.length === 0) return 0;
+                                  const totalRating = filteredReviews.reduce((sum, item) => sum + item.rating, 0);
+                                  return (totalRating / filteredReviews.length).toFixed(1);
+                                })()}</span>
+                              </div>
+                              <h5 className="card-title">{activity.content?.title}</h5>
+                              <p className="card-text">{activity.content?.description}</p>
+                              <span className={`material-icons favorite-icon ${favorite ? "favorite" : "favorite_border"} ${loading ? 'disabled' : ''}`}
+                              onClick={(e)=>handleFavoriteClick(activity.id)}
+                              style={{ cursor: loading ? 'default' : 'pointer' }}>{favorite ? "favorite" : "favorite_border"}</span>
+                              <span className="paid mt-1">{activity.price}</span>
+                              <button className="btn btn-primary activity-btn" onClick={(e) => handleNavigate(e, activity)}>查看更多</button>
                             </div>
-                            <h5 className="card-title">{activity.content?.title}</h5>
-                            <p className="card-text">{activity.content?.description}</p>
-                            <span className={`material-icons favorite-icon ${favorite ? "favorite" : "favorite_border"} ${loading ? 'disabled' : ''}`}
-                            onClick={(e)=>handleFavoriteClick(activity.id)}
-                            style={{ cursor: loading ? 'default' : 'pointer' }}>{favorite ? "favorite" : "favorite_border"}</span>
-                            <span className="paid mt-1">{activity.price}</span>
-                            <button className="btn btn-primary activity-btn" onClick={(e) => handleNavigate(e, activity)}>查看更多</button>
                           </div>
                         </div>
-                      </div>
-                    ))
-                  )}
+                      ))
+                    )}
                 </div>
                 <div className="row">
                     {/* Check if no search results and there are search criteria */}
@@ -400,8 +400,7 @@ const handleFavoriteClick =  async(id) => {
                         />
                       </div>
                     )}
-                  </div>
-
+                </div>
               </div>
             </div>
           </div>
