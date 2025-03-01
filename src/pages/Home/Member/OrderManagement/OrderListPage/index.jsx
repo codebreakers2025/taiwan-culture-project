@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getOrderAll, getActivityAll } from '@/utils/api';
+import { getOrderAll, getActivityAll, updateOrder } from '@/utils/api';
 import './OderListPage.scss';
+import Swal from 'sweetalert2';
 
 const OrderListPage = () => {
   const [orders, setOrders] = useState([]);
@@ -13,19 +14,33 @@ const OrderListPage = () => {
     setActiveTab(tab);
   };
 
+  const isOngoing = (activityPeriod, timeSlot) => {
+    const [startTime, endTime] = timeSlot.split("-");
+    const now = new Date();
+    const startDateTime = new Date(`${activityPeriod.startDate}T${startTime}`);
+    const endDateTime = new Date(`${activityPeriod.endDate}T${endTime}`);
+    return now >= startDateTime && now <= endDateTime;
+  };
+
 
   // 根據標籤篩選訂單
   const filterOrdersByTab = (orders) => {
-    switch (activeTab) {
-      case '已預約':
-        return orders.filter(order => order.reservedStatus === 'reserved');
-      case '進行中':
-        return orders.filter(order => order.reservedStatus === 'in_progress');
-      case '已取消':
-        return orders.filter(order => order.reservedStatus === 'cancel');
-      default:
-        return orders;
-    }
+    return orders.map(order =>
+      isOngoing(order.activityPeriod, order.timeSlot)
+        ? { ...order, reservedStatus: "in_progress" }
+        : order
+    ).filter(order => {
+      switch (activeTab) {
+        case "已預約":
+          return order.reservedStatus === "reserved";
+        case "進行中":
+          return order.reservedStatus === "in_progress";
+        case "已取消":
+          return order.reservedStatus === "cancel";
+        default:
+          return true;
+      }
+    });
   };
 
 
@@ -34,6 +49,19 @@ const OrderListPage = () => {
     const date = new Date(dateString);
     return date.toLocaleDateString('zh-TW');
   };
+
+  const handleCancel = async(orderId) => {
+    await updateOrder(orderId, {reservedStatus: "cancel"});
+    Swal.fire({
+        title: "取消訂單成功",
+        icon: "success"
+      })
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.id === orderId ? { ...order, reservedStatus: "cancel" } : order
+      )
+    );
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +109,7 @@ const OrderListPage = () => {
       <div className="row">
         {filterOrdersByTab(orders).length > 0 ? (
           filterOrdersByTab(orders).map(order => (
+           
             <div className="col-lg-12 mb-4" key={order.id}>
               <div className="card h-100 shadow-sm">
                 <div className="row g-0">
@@ -93,7 +122,6 @@ const OrderListPage = () => {
                         className="card-img"
                       />
                     )}
-                      {/* <span className="text-white fw-bold">{order.activityName.substring(0, 2)}</span> */}
                     </div>
                   </div>
                   <div className="col-lg-7">
@@ -103,6 +131,9 @@ const OrderListPage = () => {
                       <p className="card-text mb-2">訂單編號: {order.id}</p>
                       <div className="mt-auto text-end">
                         <Link to={`/member-center/order-management/detail/${order.id}`} className="btn btn-sm custom-btn">查看詳情</Link>
+                        {order.reservedStatus !== "cancel" && (
+                          <button className="btn btn-danger" onClick={() => handleCancel(order.id)}>取消訂單</button>
+                        )}
                       </div>
                     </div>
                   </div>

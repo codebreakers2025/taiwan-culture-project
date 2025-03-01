@@ -82,7 +82,6 @@ const AdminMenu = () => {
                             {sidebarOpen && <span className="ms-2">評價管理</span>}
                             </Link>
                         </li>
-                        
                     </ul>
                 </div>
                 </div>

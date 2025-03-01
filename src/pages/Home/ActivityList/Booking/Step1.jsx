@@ -15,6 +15,7 @@ const Step1 = () => {
 
   const location = useLocation();
   const submitData = location.state || {}; 
+  console.log(submitData);
 
   const navigate = useNavigate();
   const [adultCount, setAdultCount] = useState(2);
@@ -90,7 +91,7 @@ const Step1 = () => {
               
               <Row>
                 <Col md={4}>
-                  <div className="img-placeholder"><img src="" alt="" /></div>
+                  <div className="img-placeholder"><img src={submitData.images} alt="" /></div>
                 </Col>
                 <Col md={8}>
                   <p><strong>{submitData.activityName}</strong></p>

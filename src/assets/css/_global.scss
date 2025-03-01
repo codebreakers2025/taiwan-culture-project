@@ -229,6 +229,17 @@ a {
 //   color: #616161 !important;
 // }
 
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+  color: #fff !important;
+  background-color: #60B9BF !important;
+  border-color: #60B9BF !important;
+}
+
+.btn:first-child:active:focus-visible {
+  box-shadow: none;
+}
+
+
 .page-section {
   padding: 16px 12px 40px;
   background-color: #FAFAFA;

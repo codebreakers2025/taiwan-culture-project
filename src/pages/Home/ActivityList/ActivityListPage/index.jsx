@@ -73,7 +73,7 @@ const ActivityList = () => {
   const [favorite, setFavorite] = useState(false);
   const [totalPage , setTotalPage] = useState(0)
   const [page, setPage] = useState(1); // 頁數狀態
-  const limit = 2;
+  const limit = 6;
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -360,11 +360,11 @@ const handleFavoriteClick =  async(id) => {
                     // If there are search results, show them; otherwise, show all activities
                     (searchResultsData.length > 0 ? searchResultsData : activityData).map((activity, index) => (
                       <div className="col-md-6 col-lg-4" key={index}>
-                        <div className="card mb-3">
+                        <div className="card mb-3" onClick={(e) => handleNavigate(e, activity)} style={{cursor:'pointer'}}>
                           <img src={activity.images} className="card-img-top" alt="activity" />
                           <div className="card-body">
                             <div className="d-flex justify-content-between align-items-center">
-                              <p className="card-text">{activity.startDate}·{activity.eventType}</p>
+                              <p className="card-text">{activity.eventType}</p>
                               <span className="rating">★ {(() => {
                                 const filteredReviews = reviewData.filter(item => item.activityId === activity.id);
                                 if (filteredReviews.length === 0) return 0;
@@ -378,7 +378,6 @@ const handleFavoriteClick =  async(id) => {
                             onClick={(e)=>handleFavoriteClick(activity.id)}
                             style={{ cursor: loading ? 'default' : 'pointer' }}>{favorite ? "favorite" : "favorite_border"}</span>
                             <span className="paid mt-1">{activity.price}</span>
-                            <button className="btn btn-primary activity-btn" onClick={(e) => handleNavigate(e, activity)}>查看更多</button>
                           </div>
                         </div>
                       </div>

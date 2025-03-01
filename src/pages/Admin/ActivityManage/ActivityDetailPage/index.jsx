@@ -16,7 +16,7 @@ const EventDetail = () => {
     const { id } = useParams();
     const [initData ,setInitData] = useState({});
 
-    const [activityData, setActivityData] = useState({
+    const [activityData, setActivityData] = useState({  
       images: [],
       trip: { title: "", highlights: [] },
       map: { latitude: 0, longitude: 0, mapLink: "" },
@@ -39,7 +39,17 @@ const EventDetail = () => {
       // 更新資料時保持原有資料不被清空
       setActivityData(prevState => ({
         ...prevState, // 保留之前的資料
-        ...firstActivity // 只更新需要的資料
+        images: firstActivity.images.length ? firstActivity.images : prevState.images,
+        trip: {
+          title: firstActivity.trip.title || prevState.trip.title,
+          highlights: firstActivity.trip.highlights.length ? firstActivity.trip.highlights : prevState.trip.highlights
+        },
+        map: {
+          latitude: firstActivity.map.latitude || prevState.map.latitude,
+          longitude: firstActivity.map.longitude || prevState.map.longitude,
+          mapLink: firstActivity.map.mapLink || prevState.map.mapLink
+        },
+        sections: firstActivity.sections.length ? firstActivity.sections : prevState.sections
       }));
         } catch (err) {
         console.log("獲取資料錯誤:", err);
@@ -95,7 +105,10 @@ const EventDetail = () => {
     const addSection = () => {
       setActivityData((prev) => ({
         ...prev,
-        sections: [...prev.sections, { title: "", description: "" }]
+        sections: [
+          ...(prev.sections || []), // 確保 sections 是陣列
+          { image: "", imageCaption: "", description: "" }
+        ]
       }));
     };
 
@@ -103,7 +116,10 @@ const EventDetail = () => {
     const addTripHighlight = () => {
       setActivityData((prev) => ({
         ...prev,
-        trip: { ...prev.trip, highlights: [...prev.trip.highlights, ""] } // 保留原有資料，新增一個空字串
+        trip: {
+          ...prev.trip,
+          highlights: [...(prev.trip.highlights || []), ""] // 確保 highlights 是陣列
+        }
       }));
     };
     
@@ -111,7 +127,7 @@ const EventDetail = () => {
     const removeTripHighlight = (index) => {
       setActivityData((prev) => ({
         ...prev,
-        trip: { ...prev.trip, highlights: prev.trip.highlights.filter((_, i) => i !== index) }
+        trip: { ...prev?.trip, highlights: prev?.trip?.highlights.filter((_, i) => i !== index) }
       }));
     };
     
@@ -133,8 +149,8 @@ const EventDetail = () => {
 
       const submitData = {
         ...activityData, // 包含所有資料
-        trip: { title: activityData.trip.title, highlights: activityData.trip.highlights },
-        map: { latitude: activityData.map.latitude, longitude: activityData.map.longitude, mapLink: activityData.map.mapLink },
+        trip: { title: activityData.trip?.title, highlights: activityData.trip?.highlights },
+        map: { latitude: activityData.map?.latitude, longitude: activityData.map?.longitude, mapLink: activityData.map?.mapLink },
         sections: activityData.sections,
         images: activityData.images
       }
@@ -176,7 +192,10 @@ const EventDetail = () => {
     const handleMapChange = (e) => {
       setActivityData((prev) => ({
         ...prev,
-        map: { mapLink: e.target.value }
+        map: {
+          ...((prev.map && prev.map) || { latitude: 0, longitude: 0, mapLink: "" }),  // 確保 prev.map 是物件
+          mapLink: e.target.value,  // 更新 mapLink
+        },
       }));
     };
 
@@ -184,12 +203,15 @@ const EventDetail = () => {
     const handleTripChange = (e, index) => {
       const { value } = e.target;
       setActivityData((prev) => {
-        const newHighlights = [...prev.trip.highlights];
+        const newHighlights = [...(prev.trip?.highlights || [])]; // 避免 prev.trip 為 undefined
         newHighlights[index] = value; // 只更新對應索引的值
-    
+      
         return {
           ...prev,
-          trip: { ...prev.trip, highlights: newHighlights }
+          trip: { 
+            ...prev.trip, 
+            highlights: newHighlights 
+          },
         };
       });
     };
@@ -213,7 +235,7 @@ const EventDetail = () => {
               <Form.Control
                 type="text"
                 name="title"  // `name` 對應到 `trip.title`
-                value={activityData.trip.title}
+                value={activityData.trip?.title}
                 onChange={handleChange} // 使用修正後的 `handleChange`
               />
             </Form.Group>
@@ -225,7 +247,7 @@ const EventDetail = () => {
                 <Button variant="secondary" onClick={addTripHighlight}>新增行程特色</Button>
               </div>
               <ul>
-                {activityData.trip.highlights.map((highlight, index) => (
+                {activityData.trip?.highlights.map((highlight, index) => (
                   <li key={index} className="d-flex">
                     <Form.Control
                       name={`highlight-${index}`}
@@ -242,7 +264,7 @@ const EventDetail = () => {
             <Form.Group className="mb-4 trip-images">
               <div className="d-flex justify-content-between">
                 <Form.Label>封面圖片</Form.Label>
-                {activityData.images.length < 5 && ( // 限制最多 5 張圖片
+                {activityData.images?.length < 5 && ( // 限制最多 5 張圖片
                 <Button 
                   variant="secondary" 
                   onClick={addImage} 
@@ -253,7 +275,7 @@ const EventDetail = () => {
               </div>
 
               <div className="d-flex justify-content-start flex-wrap">
-                {activityData.images.map((img, index) => (
+                {activityData.images?.map((img, index) => (
                   <div key={index} className="position-relative mb-2 me-2 d-flex flex-column align-items-center">
                       {/* 圖片預覽區域 */}
                       <div 
@@ -299,7 +321,7 @@ const EventDetail = () => {
               <Form.Label>地圖連結</Form.Label>
               <Form.Control
                 type="text"
-                value={activityData.map.mapLink}
+                value={activityData.map?.mapLink}
                 onChange={handleMapChange}
               />
             </Form.Group>
@@ -310,7 +332,7 @@ const EventDetail = () => {
                 <Form.Label>活動介紹</Form.Label>
                 <Button variant="secondary" onClick={addSection}>新增活動介紹</Button>
               </div>
-              {activityData.sections.map((section, index) => (
+              {activityData.sections?.map((section, index) => (
                 <Card key={index} className=" shadow-sm p-3 mb-3 bg-body rounded">
                   <Form.Group className="mb-3">
                     <div className="d-flex align-items-center">

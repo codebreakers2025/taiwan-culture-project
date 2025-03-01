@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Button, Table, Modal, Form, Alert} from "react-bootstrap";
 import { useForm, Controller  } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
@@ -13,6 +13,9 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
 
   const [previewImages, setPreviewImages] = useState([]);
   const [mainImageFile, setMainImageFile] = useState(null);
+  const mainImageFileRef = useRef(null);
+const previewImagesRef = useRef([]);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -53,26 +56,34 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
   const handleMainImageChange = async(e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setMainImageFile(file);
+      mainImageFileRef.current = file;  // 不使用 useState，避免觸發重新渲染
+      // setMainImageFile(file);
 
       // 預覽圖片
       const reader = new FileReader();
       reader.onload = (event) => {
-        setPreviewImages([event.target.result]);
+        previewImagesRef.current = [event.target.result]; 
+        // setPreviewImages([event.target.result]);
       };
       reader.readAsDataURL(file);
       
-      // 上傳圖片
-      const imageUrl = await uploadImageToCloudinary(file);
-      setCurrentEvent((prev) => ({
-        ...prev,
-        images: imageUrl,
-      }));
-      setValue("images", imageUrl);
+      try {
+        // 上傳圖片
+        const imageUrl = await uploadImageToCloudinary(file);
+        setCurrentEvent((prev) => ({
+          ...prev,
+          images: imageUrl || prev.images,
+        }));
+        setValue("images", imageUrl);
+      } catch (error) {
+        console.error("上傳圖片失敗", error);
+      }
+      
     }
   };
 
   const onSubmit = async(data) => {
+    console.log(data);
     try {
     const updatedEvent = {
       ...data,
@@ -80,8 +91,10 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
       endDate: format(new Date(data.endDate), 'yyyy-MM-dd'),
       rating: Number(data.rating),
       id: currentEvent ? currentEvent?.id : null, // 保留 ID
+      images: currentEvent.images,
       activityDetails: []
     };
+    console.log(updatedEvent);
     // setCurrentEvent(updatedEvent); // 更新 currentEvent
     await handleSave(updatedEvent);
 
@@ -226,7 +239,7 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
               onChange={handleMainImageChange}
               placeholder="活動主圖"
             />
-            {previewImages.length > 0 && (
+           {previewImages.length > 0 && (
               <div className="mt-3">
                 <img
                   src={previewImages[0]}
@@ -235,9 +248,6 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
                   style={{ width: "75%", objectFit: "cover" }}
                 />
               </div>
-            )}
-            {errors.images && (
-              <p className="text-danger">{errors.images.message}</p>
             )}
           </Form.Group>
 

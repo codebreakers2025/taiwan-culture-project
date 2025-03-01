@@ -127,7 +127,7 @@ const ActivityDetailPage = () => {
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 2;
   const [submitdData, setSubmitData] = useState({
-      "id": "",
+      "id": null,
       "userId": 1,
       "activityId": 1,
       "createdAt": "2024-02-22 15:30:25",
@@ -206,10 +206,8 @@ useEffect(() => {
 const getReviews = async (id , page = 1, limit = 2) => {
   const response = await axios.get(`/api/reviews?activityId=${id}&_page=${page}&_limit=${limit}`);
   return response.data;
-
 };
   
-
 
   useEffect(() => {
     fetchGetActivity(id);
@@ -287,14 +285,16 @@ const handleDateClick = (date) => {
 
   setSelectedDate(date);
   const dateData = getReservationData[date];
+  console.log(activityData);
   setSelectedData(dateData);
   setSubmitData((preData) => ({
     ...preData,
     userId: userId,
-    activityId: id,
+    activityId: Number(id),
     activityName: activityData.content?.title,
     activityLocation: activityData.city,
     last_bookable_date: date, // 更新最後可預約日期
+    images: activityData.images
   }));
 };
 
@@ -513,14 +513,12 @@ return (
                                 
                               </div>
                               <div className="ratingImage">
-                                  <div className='imageBox'>
-                                    <img src="https://picsum.photos/200/300" alt=""  />
+                              { item.imageFiles.map((image,index) => 
+                                  <div className='imageBox' key={index}>
+                                    <img src={image} alt={`image-${index}`}  />
                                   </div>
-                                  <div className='imageBox'>
-                                    <img src="https://picsum.photos/200" alt=""  />
-                                  </div>
+                                )}
                                 </div>
-                                
                             </div>
                             
                             

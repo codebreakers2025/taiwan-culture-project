@@ -25,6 +25,7 @@ const EventManagement = () => {
   };
 
   const handleSave = async(currentEvent) => {
+    console.log(currentEvent);
     try {
       if (currentEvent.id) {
         await updatedActivitys(currentEvent.id, currentEvent);
@@ -36,6 +37,7 @@ const EventManagement = () => {
         Swal.fire({ title: "編輯成功", icon: "success" });
       } else {
         const newEvent  = await addActivitys(currentEvent);
+        console.log(newEvent);
         setEvents((prevEvents) => [...prevEvents, newEvent ]);
         Swal.fire({ title: "新增成功", icon: "success" });
       }

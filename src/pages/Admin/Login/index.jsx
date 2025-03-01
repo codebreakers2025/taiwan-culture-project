@@ -29,8 +29,10 @@ const LoginPage = () => {
     // 模擬登入請求
     try {
       const response = await login(credentials);
-      localStorage.setItem("userName", response.user.name);
       localStorage.setItem("userAvator", response.user.avatar);
+      localStorage.setItem("userId", response.user.id);
+      localStorage.setItem("userName", response.user.name);
+      localStorage.setItem("userRole", response.user.role);
 
       if(response.user.role === "Member"){
         Swal.fire({

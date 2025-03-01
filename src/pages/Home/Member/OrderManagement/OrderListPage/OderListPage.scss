@@ -15,3 +15,13 @@
     color: $primary-color-5;
   }
 }
+
+
+.order-list-page .card-body {
+  button {
+    margin-left: 8px;
+    border-radius: 100px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}

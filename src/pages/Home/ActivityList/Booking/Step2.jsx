@@ -49,7 +49,7 @@ const Step2 = () => {
                       <p>報名人數: {submitData.adultCount} 位成人, {submitData.childCount} 位兒童</p>
                       <p>日期: {formattedDate}</p>
                       <p>票價: 大人 150 / 張，兒童 120 / 張</p>
-                      <p>時間: 10:00 - 17:00</p>
+                      <p>時間: {submitData.timeSlot}</p>
                     </Card.Body>
                   </Card>
                 </Col>
