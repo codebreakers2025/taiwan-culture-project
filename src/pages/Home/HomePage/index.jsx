@@ -54,8 +54,8 @@ const HomePage = () => {
     const [price, setPrice] = useState("");
     const [keyword, setKeyword] = useState("");
     const [filteredData, setFilteredData] = useState([]); // 篩選後的資料
-    const [loading, setLoading] = useState(false);
-
+    const [loading, setLoading] = useState(false);  
+    
     // dropdown
     const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false); // 控制地區下拉選單
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false); // 控制類型下拉選單

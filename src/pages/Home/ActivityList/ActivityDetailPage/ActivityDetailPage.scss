@@ -1,5 +1,6 @@
 .activity-detail-page{
   .showContainer{
+    margin-top: 48px;
     width: 1296px;
   }
   
@@ -155,6 +156,7 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
+    color: #616161;
   
   }
   //評論區塊
@@ -215,9 +217,15 @@
     justify-content: center;
     margin-left: 4px;
   }
+  .ratingName{
+    font-weight: 700;
+    font-size: 18px;
+    font-weight: "Noto Sans TC";
+  }
   .ratingContext{
     width: 496px !important;
     padding: 0px !important;
+    color: #616161;
   }
   .ratingImage{
     width: 216px !important;
