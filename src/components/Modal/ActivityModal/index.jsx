@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Button, Table, Modal, Form, Alert} from "react-bootstrap";
 import { useForm, Controller  } from "react-hook-form";
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
@@ -9,34 +9,35 @@ import { uploadImageToCloudinary } from '@/utils/api.js';
 
 
 const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCurrentEvent }) => {
-  const { control, watch, register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
+  const { control, watch, register, handleSubmit, formState: { errors }, setValue, setError, clearErrors, reset } = useForm();
 
   const [previewImages, setPreviewImages] = useState([]);
   const [mainImageFile, setMainImageFile] = useState(null);
-  const mainImageFileRef = useRef(null);
-const previewImagesRef = useRef([]);
+
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  // const [error, setError] = useState('');
 
   const cities = ["台北", "台中", "高雄"]; 
   const eventTypes = ["一日行程", "特色體驗", "戶外探索"]; 
 
-  // 監聽 `eventType、citie` 的值，讓它受控
+  // 監聽 `eventType、citie` 的值
   const selectedEventType = watch("eventType", ""); // 預設值為空
   const selectedCity = watch("city", ""); // 預設值為空
 
   useEffect(() => {
     if (currentEvent && currentEvent.content) {
-      setValue("content.title", currentEvent.content?.title || "");
-      setValue("content.description", currentEvent.content?.description || "");
+      setValue("content", {
+        title: currentEvent.content?.title || "",
+        description: currentEvent.content?.description || ""
+      });
       setValue("city", currentEvent.city || "");
       setValue("startDate", currentEvent.startDate || null);
       setValue("endDate", currentEvent.endDate || null);
       setValue("images", currentEvent.images || "");
       setValue("eventType", currentEvent.eventType || "");
-      setValue("rating", currentEvent.rating || 0);
-      setValue("price", currentEvent.price || 0);
+      setValue("rating", Number(currentEvent.rating) || 0);
+      setValue("price", Number(currentEvent.price) || 0);
 
       if (currentEvent && typeof currentEvent.images) {
         const imageString = typeof currentEvent.images === "string"
@@ -56,46 +57,66 @@ const previewImagesRef = useRef([]);
   const handleMainImageChange = async(e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      mainImageFileRef.current = file;  // 不使用 useState，避免觸發重新渲染
-      // setMainImageFile(file);
+      setMainImageFile(file); // 記錄檔案
+
+      // 清除錯誤提示
+      clearErrors("images");
 
       // 預覽圖片
       const reader = new FileReader();
       reader.onload = (event) => {
-        previewImagesRef.current = [event.target.result]; 
-        // setPreviewImages([event.target.result]);
+        setPreviewImages([event.target.result]);
       };
       reader.readAsDataURL(file);
-      
-      try {
-        // 上傳圖片
-        const imageUrl = await uploadImageToCloudinary(file);
-        setCurrentEvent((prev) => ({
-          ...prev,
-          images: imageUrl || prev.images,
-        }));
-        setValue("images", imageUrl);
-      } catch (error) {
-        console.error("上傳圖片失敗", error);
-      }
-      
+
+      // 更新表單數據，確保 react-hook-form 能夠驗證
+      setValue("images", file);
+    } else {
+      // 如果使用者未選擇圖片，則顯示錯誤訊息
+      setError("images", { type: "manual", message: "圖片是必填的" });
     }
   };
 
+  const handleUploadImage = async(file) => {
+    try {
+      // 上傳圖片
+      const imageUrl = await uploadImageToCloudinary(file);
+      setCurrentEvent((prev) => ({
+        ...prev,
+        images: imageUrl || prev.images,
+      }));
+      setValue("images", imageUrl, { shouldValidate: true });
+      return imageUrl;
+    } catch (error) {
+      console.error("上傳圖片失敗", error);
+    }
+  }
+
+
+
   const onSubmit = async(data) => {
     console.log(data);
+
+    if (!mainImageFile) {
+      // console.error("沒有選擇圖片");
+      setError("images", { type: "manual", message: "圖片是必填的" });
+      return;
+    }
+
     try {
-    const updatedEvent = {
-      ...data,
-      startDate: format(new Date(data.startDate), 'yyyy-MM-dd'),
-      endDate: format(new Date(data.endDate), 'yyyy-MM-dd'),
-      rating: Number(data.rating),
-      id: currentEvent ? currentEvent?.id : null, // 保留 ID
-      images: currentEvent.images,
-      activityDetails: []
-    };
+      const imageUrl = await handleUploadImage(mainImageFile);
+      // console.log("上傳成功:", imageUrl);
+
+      const updatedEvent = {
+        ...data,
+        startDate: format(new Date(data.startDate), 'yyyy-MM-dd'),
+        endDate: format(new Date(data.endDate), 'yyyy-MM-dd'),
+        rating: Number(data.rating),
+        id: currentEvent ? currentEvent?.id : null, // 保留 ID
+        images: imageUrl,
+        activityDetails: []
+      };
     console.log(updatedEvent);
-    // setCurrentEvent(updatedEvent); // 更新 currentEvent
     await handleSave(updatedEvent);
 
   } catch (error) {
@@ -103,7 +124,7 @@ const previewImagesRef = useRef([]);
   }
   };
 
-  {error && <Alert variant="danger">{error}</Alert>}
+  // {error && <Alert variant="danger">{error}</Alert>}
   return (
     <Modal size="lg" show={showModal} onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -117,10 +138,10 @@ const previewImagesRef = useRef([]);
             <Form.Control
               type="text"
               placeholder="活動名稱"
-              {...register("content.title", { required: "活動名稱是必填的" })}
+              {...register("content[title]", { required: "活動名稱是必填的" })}
             />
-            {errors["content.title"] && (
-              <p className="text-danger">{errors["content.title"].message}</p>
+            {errors?.content?.title && (
+              <p className="text-danger">{errors.content.title.message}</p>
             )}
           </Form.Group>
 
@@ -130,13 +151,13 @@ const previewImagesRef = useRef([]);
               as="textarea"
               placeholder="活動內容"
               rows={3}
-              {...register("content.description", {
+              {...register("content[description]", {
                 required: "描述是必填的",
               })}
             />
-            {errors["content.description"] && (
+            {errors?.content?.description && (
               <p className="text-danger">
-                {errors["content.description"].message}
+                {errors.content.description.message}
               </p>
             )}
           </Form.Group>
@@ -185,6 +206,8 @@ const previewImagesRef = useRef([]);
             <Controller
             name="startDate"
             control={control}
+            rules={{ required: "開始日期是必填的" }}
+            // {...register("startDate", { required: "開始日期是必填的" })}
             render={({ field }) => (
               <DatePicker
                 {...field}
@@ -205,6 +228,9 @@ const previewImagesRef = useRef([]);
             <Controller
             name="endDate"
             control={control}
+            rules={{ required: "結束日期是必填的" }}
+
+            // {...register("endDate", { required: "結束日期是必填的" })}
             render={({ field }) => (
               <DatePicker
                 {...field}
@@ -213,7 +239,6 @@ const previewImagesRef = useRef([]);
                 dateFormat="yyyy/MM/dd"
                 className="form-control"
                 placeholderText="選擇結束日期"
-                showDateSelect
               />
             )}
           />
@@ -249,6 +274,7 @@ const previewImagesRef = useRef([]);
                 />
               </div>
             )}
+            {errors.images && <p className="text-danger">{errors.images.message}</p>}
           </Form.Group>
 
           <Form.Group className="mb-3">

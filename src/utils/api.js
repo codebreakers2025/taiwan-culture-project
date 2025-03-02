@@ -58,10 +58,12 @@ export const deleteActivitys = async (id) => {
 
 
 // 部落格管理
-export const getJournal = async () => {
-    const response = await axios.get(`/api/journal`);
+export const getJournal = async (page, limit) => {
+    const response = await axios.get(`/api/journal?_page=${page}&_limit=${limit}`);
     return response.data; 
 };
+
+
 
 export const createdJournal = async (data) => {
     const response = await axios.post(`/api/journal`, data);

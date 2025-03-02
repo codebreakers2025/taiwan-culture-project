@@ -4,7 +4,8 @@ import "./Breadcrumb.scss";
 import { getActivitys } from "@/utils/api"; // 假設有 API 可查詢活動名稱
 
 const pathNameMap = {
-  "activity-list": "活動列表",
+  "activity-list": "所有活動",
+  "journal-list": "慢活日誌",
 };
 
 const Breadcrumb = () => {

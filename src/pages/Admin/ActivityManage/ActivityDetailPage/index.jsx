@@ -77,6 +77,7 @@ const EventDetail = () => {
       if(file){
         // 上傳圖片
         const imageUrl = await uploadImageToCloudinary(file);
+
         const newImages = [...activityData.images]; // 更新 images 陣列
         newImages[index].url = imageUrl; // 更新對應的 url
         setActivityData((prev) => ({ ...prev, images: newImages })); // 更新 images 屬性
@@ -89,6 +90,7 @@ const EventDetail = () => {
       if(file){
          // 上傳圖片
         const imageUrl = await uploadImageToCloudinary(file);
+
         const newSections = [...activityData.sections]; // 更新 sections 陣列
         newSections[index].image = imageUrl; // 更新對應的 image
         setActivityData((prev) => ({ ...prev, sections: newSections })); // 更新 sections 屬性

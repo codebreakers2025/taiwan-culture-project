@@ -15,7 +15,6 @@ const ActivityDetailModal = ({ showModal, handleClose, onSave, currentEvent, set
   });
 
 
-
   // 取得 API 資料
   useEffect(() => {
     if (showModal) {
@@ -218,14 +217,3 @@ ActivityDetailModal.propTypes = {
 };
 
 export default ActivityDetailModal;
-
-
-
-
-{/* <ActivityDetailModal 
-showModal={showModal}
-handleClose={handleClose}
-onSave={handleSave}
-currentEvent={currentEvent}
-setCurrentEvent={setCurrentEvent}
-/> */}

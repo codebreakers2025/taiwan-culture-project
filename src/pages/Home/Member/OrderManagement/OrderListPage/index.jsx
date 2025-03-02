@@ -37,17 +37,33 @@ const OrderListPage = () => {
           return order.reservedStatus === "in_progress";
         case "已取消":
           return order.reservedStatus === "cancel";
+        case "已結束":
+          return order.reservedStatus === "ended";
         default:
           return true;
       }
     });
   };
 
-
     // 時間格式化
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('zh-TW');
+  };
+
+  const isEnded = (activityPeriod, timeSlot) => {
+    const [_, endTime] = timeSlot.split("-");
+    const now = new Date();
+    const endDateTime = new Date(`${activityPeriod.endDate}T${endTime}`);
+    return now > endDateTime;
+  };
+
+  const updateOrder = async (orderId, data) => {
+    try {
+      await updateOrder(orderId, data);
+    } catch (error) {
+      console.error("更新訂單狀態失敗", error);
+    }
   };
 
   const handleCancel = async(orderId) => {
@@ -86,6 +102,27 @@ const OrderListPage = () => {
   fetchData();
   }, []);
 
+  useEffect(() => {
+    const updateOrderStatus = async() => {
+      await fetchData(); // 取得最新訂單
+      setOrders((prevOrders) =>
+        prevOrders.map((order) => {
+          if (isOngoing(order.activityPeriod, order.timeSlot)) {
+            return { ...order, reservedStatus: "in_progress" };
+          } else if (isEnded(order.activityPeriod, order.timeSlot)) {
+            updateOrder(order.id, { reservedStatus: "ended" });
+            return { ...order, reservedStatus: "ended" };
+          }
+          return order;
+        })
+      );
+    };
+    
+    updateOrderStatus();
+    const interval = setInterval(updateOrderStatus, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="page-container order-list-page">
         <div className="container py-4">
@@ -109,7 +146,6 @@ const OrderListPage = () => {
       <div className="row">
         {filterOrdersByTab(orders).length > 0 ? (
           filterOrdersByTab(orders).map(order => (
-           
             <div className="col-lg-12 mb-4" key={order.id}>
               <div className="card h-100 shadow-sm">
                 <div className="row g-0">

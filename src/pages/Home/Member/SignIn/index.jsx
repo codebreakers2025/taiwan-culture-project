@@ -63,7 +63,7 @@ const SignIn = () => {
     };
 
     try {
-      await signIn(userId, updatedStats);
+      // await signIn(userId, updatedStats);
       setStats((prevStats) => ({ ...prevStats, ...updatedStats }));
 
       Swal.fire({
