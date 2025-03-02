@@ -20,8 +20,6 @@ const Step1 = () => {
   const [selectValue , setSelectValue] = useState('')
   const [selectTimeSolt , setSelectTimeSolt] = useState('')
   
-
-  console.log(submitData);
   
   
   //react-hook-form

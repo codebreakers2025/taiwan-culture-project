@@ -72,16 +72,16 @@ const About = () => {
            
           
           </div>
-          <div class="pagenation">
+          <div className="pagenation">
             <button disabled="">
-              <span class="material-icons">chevron_left</span>
+              <span className="material-icons">chevron_left</span>
             </button>
-            <div class="currentPage">
+            <div className="currentPage">
               <button disabled>1</button>
               <button>2</button>
             </div>
             <button>
-              <span class="material-icons">navigate_next</span>
+              <span className="material-icons">navigate_next</span>
             </button>
           </div>
         </div>
