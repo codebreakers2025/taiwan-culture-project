@@ -7,13 +7,49 @@ import { addFavorites, getFavorites } from '@/utils/api';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss";
-import { getActivityAll, getReviews } from '@/utils/api';
+import { getJournal } from '@/utils/api';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
+axios.defaults.baseURL = process.env.NODE_ENV === 'production'
+ ? 'https://taiwancultureproject.onrender.com'
+ : 'http://localhost:3002'
+
 const About = () => {
+
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [getJournalDataaAll , setGetJournalDataAll] = useState([])
+  const [totalPage , setTotalPage] = useState(0)
+  const [page, setPage] = useState(1); // 頁數狀態
+  const limit = 16;
+
+   const navigate = useNavigate();
+    const handleNavigate = (e , item) => {
+        e.preventDefault();
+        navigate(`/journal-list/${item.id}`);
+        window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
+    };
+
+  const getJournalData = async() => {
+    setLoading(true)
+    try{
+      const response = await axios.get(`/api/journal?_page=${page}&_limit=${limit}`);
+      setGetJournalDataAll(response.data)
+    }catch(error){
+  
+    }
+  }
+  
+  useEffect(()=>{
+    getJournalData();
+  },[])
+
+  console.log(getJournalDataaAll);
+  
+
   return (
     <div className="test-container">
       <div className="content">
@@ -21,86 +57,20 @@ const About = () => {
           {/* 麵包屑 */}
           <Breadcrumb />
           <div className="row">
-            <div className="col-md-6 col-lg-3">
-              <div className="card mb-3">
-                <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" alt="activity" />
-                <div className="card-body">
-                  <p className="card-date">2024-08-01</p>
-                  <h5 className="card-title">喚醒感官的茶道體驗之旅</h5>
-                  <p className="card-text">在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感受茶葉的細膩風味與製茶過程中的文化傳承。讓每一口茶都喚醒你的感官，為生活增添一抹悠然的禪意。</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="card mb-3">
-                <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" alt="activity" />
-                <div className="card-body">
-                  <p className="card-date">2024-08-01</p>
-                  <h5 className="card-title">喚醒感官的茶道體驗之旅</h5>
-                  <p className="card-text">在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感受茶葉的細膩風味與製茶過程中的文化傳承。讓每一口茶都喚醒你的感官，為生活增添一抹悠然的禪意。</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="card mb-3">
-                <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" alt="activity" />
-                <div className="card-body">
-                  <p className="card-date">2024-08-01</p>
-                  <h5 className="card-title">喚醒感官的茶道體驗之旅</h5>
-                  <p className="card-text">在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感受茶葉的細膩風味與製茶過程中的文化傳承。讓每一口茶都喚醒你的感官，為生活增添一抹悠然的禪意。</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="card mb-3">
-                <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" alt="activity" />
-                <div className="card-body">
-                  <p className="card-date">2024-08-01</p>
-                  <h5 className="card-title">喚醒感官的茶道體驗之旅</h5>
-                  <p className="card-text">在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感受茶葉的細膩風味與製茶過程中的文化傳承。讓每一口茶都喚醒你的感官，為生活增添一抹悠然的禪意。</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="card mb-3">
-                <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" alt="activity" />
-                <div className="card-body">
-                  <p className="card-date">2024-08-01</p>
-                  <h5 className="card-title">喚醒感官的茶道體驗之旅</h5>
-                  <p className="card-text">在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感受茶葉的細膩風味與製茶過程中的文化傳承。讓每一口茶都喚醒你的感官，為生活增添一抹悠然的禪意。</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="card mb-3">
-                <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" alt="activity" />
-                <div className="card-body">
-                  <p className="card-date">2024-08-01</p>
-                  <h5 className="card-title">喚醒感官的茶道體驗之旅</h5>
-                  <p className="card-text">在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感受茶葉的細膩風味與製茶過程中的文化傳承。讓每一口茶都喚醒你的感官，為生活增添一抹悠然的禪意。</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="card mb-3">
-                <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" alt="activity" />
-                <div className="card-body">
-                  <p className="card-date">2024-08-01</p>
-                  <h5 className="card-title">喚醒感官的茶道體驗之旅</h5>
-                  <p className="card-text">在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感受茶葉的細膩風味與製茶過程中的文化傳承。讓每一口茶都喚醒你的感官，為生活增添一抹悠然的禪意。</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="card mb-3">
-                <img src="https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png" className="card-img-top" alt="activity" />
-                <div className="card-body">
-                  <p className="card-date">2024-08-01</p>
-                  <h5 className="card-title">喚醒感官的茶道體驗之旅</h5>
-                  <p className="card-text">在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感受茶葉的細膩風味與製茶過程中的文化傳承。讓每一口茶都喚醒你的感官，為生活增添一抹悠然的禪意。</p>
-                </div>
-              </div>
-            </div>
+            {loading ===true ? ( 
+               getJournalDataaAll.map((item , index)=>
+                <div className="col-md-6 col-lg-3" key={index} onClick={(e) => handleNavigate(e, item)}>
+                  <div className="card mb-3">
+                    <img src={item.images} className="card-img-top" alt="activity" />
+                    <div className="card-body">
+                      <p className="card-date">{item.date}</p>
+                      <h5 className="card-title">{item.title}</h5>
+                      <p className="card-text">{item.content}</p>
+                    </div>
+                  </div>
+                </div>)) : (<div>日誌載入中</div>) }
+           
+          
           </div>
           <div class="pagenation">
             <button disabled="">

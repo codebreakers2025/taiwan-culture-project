@@ -58,7 +58,7 @@ const Step2 = () => {
                     <Card.Body>
                       <h5>行程訂單</h5>
                       <p>地點: {submitData.activityLocation}</p>
-                      <p>時間: {submitData.last_bookable_date}</p>
+                      <p>時間: {submitData.timeSlot}</p>
                       <p><strong>NT$ {submitData.totalAmount}</strong></p>
                     </Card.Body>
                   </Card>

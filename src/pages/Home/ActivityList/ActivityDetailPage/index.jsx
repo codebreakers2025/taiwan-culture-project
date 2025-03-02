@@ -170,7 +170,8 @@ const ActivityDetailPage = () => {
       "type": "CHILD",
       "status": "VALID",
       "reservedStatus": "reserved",
-      "qrCode": "https://example.com/qr/TKT202402220003"
+      "qrCode": "https://example.com/qr/TKT202402220003",
+      "actImage" : ""
   });
 
   const [error, setError] = useState(null);
@@ -355,6 +356,7 @@ const renderStars = (rating) => {
   );
 };
 
+
 const handleDateClick = (date) => {
 
   setSelectedDate(date);
@@ -367,6 +369,8 @@ const handleDateClick = (date) => {
     activityName: activityData.content?.title,
     activityLocation: activityData.city,
     last_bookable_date: date, // 更新最後可預約日期
+    actImage : activityData.images,
+    adultPrice : activityData.price
   }));
 };
 
