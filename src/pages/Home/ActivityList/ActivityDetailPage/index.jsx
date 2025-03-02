@@ -15,40 +15,59 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  : 'http://localhost:3002'
 
 
-const MapComponent = ({activityDetailData , loading}) => {
+ const MapComponent = ({ activityDetailData, loading }) => {
+  // Ref for the map container and the map instance
+  const mapContainerRef = useRef(null);
+  const mapInstanceRef = useRef(null);
 
+  // Always call hooks regardless of conditions
+  useEffect(() => {
+    // Ensure that we have the necessary data before proceeding
+    if (activityDetailData && activityDetailData.length > 0) {
+      const { map } = activityDetailData[0] || {};
+
+      if (map && map.latitude && map.longitude) {
+        // Initialize the map only if it hasn't been initialized already
+        if (!mapInstanceRef.current) {
+          mapInstanceRef.current = L.map(mapContainerRef.current).setView([map.latitude, map.longitude], 13);
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(mapInstanceRef.current);
+
+          L.marker([map.latitude, map.longitude]).addTo(mapInstanceRef.current)
+            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+            .openPopup();
+        }
+      }
+    }
+
+    // Cleanup function to remove the map on unmount or before running the effect again
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [activityDetailData]); // Run when activityDetailData changes
+
+  // Conditional rendering for loading and missing data
   if (loading) {
-    return <p style={{marginLeft:'auto'}}>找不到活動資訊</p>; // ✅ 這樣才對
-  }
-  
-  if (!activityDetailData || activityDetailData.length === 0) {
-    return <p style={{ marginLeft: 'auto' }}>找不到活動資訊</p>;  // ✅ 當資料為空時，顯示錯誤訊息
+    return <p style={{ marginLeft: 'auto' }}>找不到活動資訊</p>;
   }
 
-  // ✅ 確保 activityDetailData[0] 存在，才解構 map
+  if (!activityDetailData || activityDetailData.length === 0) {
+    return <p style={{ marginLeft: 'auto' }}>找不到活動資訊</p>;
+  }
+
   const { map } = activityDetailData[0] || {};
-  if (!map) {
+  if (!map || !map.latitude || !map.longitude) {
     return <p style={{ marginLeft: 'auto' }}>地圖資訊不可用</p>;
   }
 
-  const { latitude, longitude } = map;
-
-  useEffect(() => {
-    if (!document.getElementById("map")._leaflet_id) {
-    const map = L.map('map').setView([latitude, longitude], 13);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    L.marker([latitude, longitude]).addTo(map)
-      .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-      .openPopup();
-    }
-  }, [latitude, longitude]);
-
-  return <div id="map" style={{ height: '500px' }}></div>;
+  return <div ref={mapContainerRef} style={{ height: '500px' }}></div>;
 };
+
 
   
 const ReviewBars = ({ reviewData }) => {
@@ -125,6 +144,7 @@ const ActivityDetailPage = () => {
   const [avgRatingstar , setAvgRatingStar] = useState(0)
   const [totalPage , setTotalPage] = useState(0)
   const [page, setPage] = useState(1); // 頁數狀態
+  const [isFirstEffectDone, setIsFirstEffectDone] = useState(false);
   const limit = 2;
   const [submitdData, setSubmitData] = useState({
       "id": null,
@@ -150,17 +170,59 @@ const ActivityDetailPage = () => {
       "type": "CHILD",
       "status": "VALID",
       "reservedStatus": "reserved",
-      "qrCode": "https://example.com/qr/TKT202402220003"
+      "qrCode": "https://example.com/qr/TKT202402220003",
+      "actImage" : ""
   });
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const  param  = useParams();
   const { id } = param
   
+
+  const getReservationDate = async(activityData) => {
+    
+    const result = { id: activityData.id };
+    const startDate = new Date(activityData.startDate);
+    const endDate = new Date(activityData.endDate);
+    const price = Number(activityData.price); // 確保 price 是數字
+
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+        const formattedDate = currentDate.toISOString().split('T')[0];
+
+        // 這裡的價格可以改成你的計算方式，目前是隨機價格
+        result[formattedDate] = { price: price };
+
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+      
+    try {
+      const existingResponse = await axios.get(`/api/reservations/${activityData.id}`, {
+        validateStatus: (status) => status === 200 // 只在 200 時視為成功，其他狀況不拋出錯誤
+    });
+      if (existingResponse.data && Object.keys(existingResponse.data).length > 0) {
+          return;
+      }
+      } catch (error) {
+          if (error.response && error.response.status === 404) {
+          }
+      }
+      
+      // 發送 POST 請求
+      try {
+          const response = await axios.post(`/api/reservations`, result);
+      } catch (postError) {
+      }
+  }
   
-  const navigate = useNavigate();
+  
+  
+
 
   const getReverseData = async() => {
     try{
@@ -210,11 +272,21 @@ const getReviews = async (id , page = 1, limit = 2) => {
   
 
   useEffect(() => {
-    fetchGetActivity(id);
-    fetchGetReview(id);
-    getReviewsAll(id);
-    getReverseData(id)
-  }, [id]); 
+    async function fetchData() {
+      await fetchGetActivity(id);
+      await fetchGetReview(id);
+      await getReviewsAll(id);
+      setIsFirstEffectDone(true); // 標記第一個 useEffect 已完成
+    }
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    if (isFirstEffectDone) {
+      getReverseData(id);
+    }
+  }, [id, isFirstEffectDone]);
+
 
 
   const fetchGetReview = async (id, page = 1, limit) => {
@@ -249,6 +321,7 @@ useEffect(()=>{
           response?.activityDetails?.[0]?.images?.length > 0 
           ? response.activityDetails[0].images[0].url  // 取得第一張圖片
           : "Loading" )
+          getReservationDate(response)
     } catch (error) {
         console.error("Error fetching activity:", error);
         setError('Error fetching activity:', error);
@@ -281,6 +354,7 @@ const renderStars = (rating) => {
   );
 };
 
+
 const handleDateClick = (date) => {
 
   setSelectedDate(date);
@@ -294,7 +368,8 @@ const handleDateClick = (date) => {
     activityName: activityData.content?.title,
     activityLocation: activityData.city,
     last_bookable_date: date, // 更新最後可預約日期
-    images: activityData.images
+    actImage : activityData.images,
+    adultPrice : activityData.price
   }));
 };
 
@@ -321,11 +396,17 @@ const submitDateClick = () => {
       navigate("/activity-list/booking1" ,{ state: submitdData }); // 跳轉到預約頁面
     }, 300); // 帶著資料跳轉到預約頁面
 };
-const renderDay = (day) => {
 
-  const date = `2025-01-${day < 10 ? `0${day}` : day}`;
+const date = new Date(activityData.startDate);
+
+const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2)}月`;
+const formattedMonth = `${(date.getMonth() + 1).toString().padStart(2,"0")}`;
+const renderDay = (day) => {
+  
+  const date = `2025-${formattedMonth}-${day < 10 ? `0${day}` : day}`;
   if (!getReservationData) return null; // 確保有資料
   const reservation = getReservationData[date];
+  
   const isAvailable = !!reservation; 
   return (
     <div className="day" key={day} >
@@ -345,8 +426,7 @@ const renderDay = (day) => {
         {day}
         {reservation && (
           <div style={{color:selectedDate === date ? 'white' : '#616161'}}>
-            <small>價格 :666</small>
-            <small>剩餘 :{reservation.remaining}</small>
+            <small>價格 :{reservation.price}</small>
           </div>
         )}
       </button>
@@ -580,7 +660,7 @@ return (
               <div className="getActDate" >
                       <div className="calendar">
                         <div className="calendar-header">
-                            <p>2025年1月</p>
+                            <p>{formattedDate}</p>
                         </div>
                         <div className="week-days">
                             <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
