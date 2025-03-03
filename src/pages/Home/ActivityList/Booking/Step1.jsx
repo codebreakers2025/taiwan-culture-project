@@ -17,9 +17,10 @@ const Step1 = () => {
   const submitData = location.state || {}; 
 
   const navigate = useNavigate();
-  const [adultCount, setAdultCount] = useState(2);
-  const [childCount, setChildCount] = useState(1);
   const [selectValue , setSelectValue] = useState('')
+  const [selectTimeSolt , setSelectTimeSolt] = useState('')
+  
+  
   
   //react-hook-form
   const {
@@ -32,6 +33,7 @@ const Step1 = () => {
   } = useForm({
     defaultValues: {
       adultCount: selectValue || "",  // 預設為空，讓選項顯示 "請選擇報名人數"
+      timeSlot: selectTimeSolt || ""
     },
     mode: "onTouched"
   });
@@ -41,6 +43,7 @@ const Step1 = () => {
       reset({
         ...submitData,
         adultCount: selectValue || "", // 確保 `adultCount` 預設為 ""
+        timeSlot: selectTimeSolt || ""
       });
     }
   }, [submitData, reset]);
@@ -97,7 +100,7 @@ const Step1 = () => {
                   <p><i className="bi bi-calendar"></i>{formattedDate}</p>
                   <p><i className="bi bi-ticket"></i> 景點/票券</p>
                   <p><i className="bi bi-clock"></i> 票券當日有效</p>
-                  <p><i className="bi bi-cash"></i> 大人 150 / 張，兒童 120 / 張</p>
+                  <p><i className="bi bi-cash"></i> 每人 {submitData.adultPrice} / 張</p>
                 </Col>
               </Row>
               
@@ -127,6 +130,31 @@ const Step1 = () => {
                 </OverlayTrigger>
               </div>
               {errors.adultCount && <div className="invalid-feedback d-block text-start">{errors.adultCount?.message}</div>}
+
+              <div className="mt-3">
+                <label>預約時間：</label>
+                <OverlayTrigger placement="top" overlay={renderTooltip}>
+                  <Form.Select 
+                    className={`form-control ${errors.timeSlot ? "is-invalid" : ""}`}
+                    {...register("timeSlot", { 
+                      validate: (value) => value ? true : "請選擇時段",
+                      onChange: (e) => {
+                      const value = e.target.value;
+                      setSelectTimeSolt(value); // 更新 selectValue
+                      setValue("timeSlot", value, { shouldValidate: true }); // 更新表單值並觸發驗證
+                    },
+                  })} 
+                  value={selectTimeSolt}  >
+                    <option value="">請選擇時段</option>
+                    <option value="09:00-12:00">09:00-12:00</option>
+                    <option value="14:00-17:00">14:00-17:00</option>
+                    <option value="09:00-17:00">09:00-17:00</option>
+                    <option value="18:00-21:00">18:00-21:00</option>
+                  </Form.Select>
+                </OverlayTrigger>
+              </div>
+              {errors.timeSlot && <div className="invalid-feedback d-block text-start">{errors.timeSlot?.message}</div>}
+
 
 
               {/* 確認按鈕 */}

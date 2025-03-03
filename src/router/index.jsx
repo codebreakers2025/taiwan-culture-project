@@ -8,6 +8,7 @@ import BookingPage2 from '@/pages/Home/ActivityList/Booking/Step2.jsx';
 import BookingPage3 from '@/pages/Home/ActivityList/Booking/Step3.jsx';
 import BookingPage4 from '@/pages/Home/ActivityList/Booking/Step4.jsx';
 import JournalList from '@/pages/Home/Journal/JournalListPage';
+import JournalDetail from '@/pages/Home/Journal/JournalDetailPage';
 
 import CollectionList from '@/pages/Home/Member/CollectionList';
 import PersonalData from '@/pages/Home/Member/PersonalData';
@@ -69,6 +70,10 @@ const router = createHashRouter(
         {
           path: '/journal-list',
           element: <JournalList />,
+        },
+        {
+          path: '/journal-list/:id',
+          element: <JournalDetail />,
         }
       ],
     },

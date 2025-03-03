@@ -484,7 +484,7 @@ const handleFavoriteClick =  async(id) => {
                   </div>
                 </div>
                 <div className="footer">
-                  <button type="button" className="btn btn-primary" onClick={searchBtn}>搜尋</button>
+                  <button type="button" className="btn btn-primary" onClick={searchBtn} data-bs-dismiss="modal">搜尋</button>
                 </div>
               </div>
           </div>

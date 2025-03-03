@@ -76,7 +76,9 @@
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
       "isFavorited": false,
       "rating": 4.8,
-      "date": "2025-01-25",
+      "startDate": "2025-01-1",
+      "endDate": "2025-01-11",
+      "price": "666",
       "eventType": "特色體驗",
       "content": {
         "title": "沉浸式 DIY 調製香水",
@@ -90,7 +92,9 @@
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
       "isFavorited": false,
       "rating": 4.7,
-      "date": "2025-01-26",
+      "startDate": "2025-02-21",
+      "endDate": "2025-02-30",
+      "price": "666",
       "eventType": "特色體驗",
       "content": {
         "title": "天送埤火車站 | 高空繩索體驗 ",
@@ -299,67 +303,207 @@
       "birthday": "2025-02-12",
       "country": "台灣",
       "countryCode": "+886",
-      "phoneNumber": "988123456",
-      "phone": "+886 ",
-      "userId": 3,
-      "user": {
-        "email": "aaa123@gmail.com",
-        "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
-        "id": 3
+      "phoneNumber": "988000000",
+      "userId": 2
+    }
+  ],
+  "tickets": [
+    {
+      "id": "TKT202402220001",
+      "orderId": "ORD202402220001",
+      "type": "ADULT",
+      "status": "VALID",
+      "qrCode": "https://example.com/qr/TKT202402220001"
+    },
+    {
+      "id": "TKT202402220002",
+      "orderId": "ORD202402220001",
+      "type": "ADULT",
+      "status": "VALID",
+      "qrCode": "https://example.com/qr/TKT202402220002"
+    }
+  ],
+  "reservations": [
+    {
+      "id": 1,
+      "2025-01-21": {
+        "price": 666
+      },
+      "2025-01-22": {
+        "price": 666
+      },
+      "2025-01-23": {
+        "price": 666
+      },
+      "2025-01-24": {
+        "price": 666
+      },
+      "2025-01-25": {
+        "price": 666
+      },
+      "2025-01-26": {
+        "price": 666
+      },
+      "2025-01-27": {
+        "price": 666
+      },
+      "2025-01-28": {
+        "price": 666
+      },
+      "2025-01-29": {
+        "price": 666
+      },
+      "2025-01-30": {
+        "price": 666
+      },
+      "2025-01-31": {
+        "price": 666
+      },
+      "2025-02-01": {
+        "price": 666
+      },
+      "2025-02-02": {
+        "price": 666
+      },
+      "2025-02-03": {
+        "price": 666
+      },
+      "2025-02-04": {
+        "price": 666
+      },
+      "2025-02-05": {
+        "price": 666
+      },
+      "2025-02-06": {
+        "price": 666
+      },
+      "2025-02-07": {
+        "price": 666
+      },
+      "2025-02-08": {
+        "price": 666
+      },
+      "2025-02-09": {
+        "price": 666
+      },
+      "2025-02-10": {
+        "price": 666
+      },
+      "2025-02-11": {
+        "price": 666
+      },
+      "2025-02-12": {
+        "price": 666
+      },
+      "2025-02-13": {
+        "price": 666
+      },
+      "2025-02-14": {
+        "price": 666
+      },
+      "2025-02-15": {
+        "price": 666
+      },
+      "2025-02-16": {
+        "price": 666
+      },
+      "2025-02-17": {
+        "price": 666
+      },
+      "2025-02-18": {
+        "price": 666
+      },
+      "2025-02-19": {
+        "price": 666
+      },
+      "2025-02-20": {
+        "price": 666
+      },
+      "2025-02-21": {
+        "price": 666
+      }
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD202402220001",
+      "userId": 1,
+      "activityId": 1,
+      "createdAt": "2024-02-22 15:30:25",
+      "contactName": "王小明",
+      "activityName": "台北一日遊",
+      "last_bookable_date": "",
+      "activityLocation": "台北市信義區信義路五段7號",
+      "activityPeriod": {
+        "startDate": "2024-03-15",
+        "endDate": "2024-03-23"
+      },
+      "adultCount": 4,
+      "childCount": 3,
+      "adultPrice": 150,
+      "childPrice": 120,
+      "timeSlot": "09:00-17:00",
+      "totalAmount": 960,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202402220001",
+      "type": "CHILD",
+      "status": "VALID",
+      "reservedStatus": "reserved",
+      "qrCode": "https://example.com/qr/TKT202402220003",
+      "paymentData": {
+        "contactName": "123",
+        "cardNumber": "233",
+        "expiryDate": "333",
+        "cvv": "433"
       }
     },
     {
-      "lastName": "a",
-      "firstName": "b",
-      "nickName": "CC",
-      "gender": "男生",
-      "birthday": "2025-02-11",
-      "country": "韓國",
-      "countryCode": "+886",
-      "phoneNumber": "966123456",
-      "userId": 2,
-      "id": 2,
-      "user": {
-        "email": "sean@gmail.com",
-        "password": "$2a$10$dINa1L84l2xa8/qHp/ZGN.KPfRcMJMGyXHfpZfJp8VLZuq/jjIS12",
-        "id": 2
+      "id": "ORD202503020003",
+      "userId": 5,
+      "activityId": "1",
+      "createdAt": "2025-03-02 02:06:18",
+      "contactName": "王小明",
+      "activityName": "經典行程＆高美濕地一日遊",
+      "last_bookable_date": "2025-01-26",
+      "activityLocation": "台中",
+      "activityPeriod": {
+        "startDate": "2024-03-15",
+        "endDate": "2024-03-23"
       },
-      "": "sean@gmail.com"
-    },
+      "adultCount": 2,
+      "childCount": 3,
+      "adultPrice": "666",
+      "childPrice": 120,
+      "timeSlot": [
+        "09:00-12:00",
+        "14:00-17:00",
+        "09:00-17:00",
+        "18:00-21:00"
+      ],
+      "totalAmount": 1332,
+      "paymentStatus": "PAID",
+      "orderId": "ORD202503020003",
+      "type": "CHILD",
+      "status": "VALID",
+      "reservedStatus": "reserved",
+      "qrCode": "https://example.com/qr/TKT202402220003",
+      "actImage": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+      "paymentData": {
+        "contactName": "123",
+        "cardNumber": "123",
+        "expiryDate": "12/28",
+        "cvv": "123"
+      }
+    }
+  ],
+  "payments": [
     {
-      "id": 3,
-      "lastName": "Hong",
-      "firstName": "ssss",
-      "nickName": "uu",
-      "gender": "女生",
-      "birthday": "2025-02-03",
-      "country": "韓國",
-      "countryCode": "+82",
-      "phoneNumber": "966123456"
-    },
-    {
-      "id": 4,
-      "lastName": "hong",
-      "firstName": "uuu",
-      "nickName": "ss",
-      "gender": "男生",
-      "birthday": "2025-02-14",
-      "country": "日本",
-      "countryCode": "+1",
-      "phoneNumber": "99123456",
-      "userId": 4
-    },
-    {
-      "id": 5,
-      "lastName": "Hong",
-      "firstName": "Emaily",
-      "nickName": "漠漠",
-      "gender": "女生",
-      "birthday": "2025-02-10",
-      "country": "台灣",
-      "countryCode": "+886",
-      "phoneNumber": "988123456",
-      "userId": 8
+      "id": "PAY202402220001",
+      "orderId": "ORD202402220001",
+      "amount": 960,
+      "method": "CREDIT_CARD",
+      "paymentTime": "2024-02-22T14:35:00+08:00",
+      "status": "SUCCESS"
     }
   ]
 }
