@@ -3,7 +3,6 @@ const fs = require('fs');
 const jsonServer = require("json-server");
 const auth = require("json-server-auth");
 const express = require('express');
-const multer = require('multer');
 const jwt_decode = require("jwt-decode");
 const cors = require("cors");
 const cloudinary = require('cloudinary').v2;
@@ -29,87 +28,15 @@ const port = process.env.PORT || 3002;
 const server = jsonServer.create();
 const router = jsonServer.router("src/json/db.json");
 const middlewares = jsonServer.defaults();
-const routes = require("./routes.json");
-const customMiddleware = require("./middleware");
+// const customMiddleware = require("./middleware");
+// const routes = require("./routes.json");
 
-// 設定multer 檔案儲存方式，儲存圖片檔案到 uploads 資料夾
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  }
-});
-
-// 設定 multer
-const upload = multer({ 
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5 // 限制 5MB
-  }
-});
 
 // 使用 json-server middlewares
 app.use(middlewares);
 
 // 允許 json 解析
 app.use(express.json());
-
-// 設定上傳資料夾
-const uploadDir = path.join(__dirname, '../../public/uploads');
-
-// 設定靜態檔案路徑
-app.use('/uploads', express.static(uploadDir));
-
-// 上傳 API
-app.post('/api/upload', upload.single('image'), (req, res) => {
-
-  // const { image } = req.body; // Base64 字串
-  
-  // if (!image) {
-  //   return res.status(400).json({ error: '沒有上傳檔案' });
-  // }
-
-  if (!req.file) {
-    return res.status(400).json({ error: "未選擇文件" });
-  }
-  res.json({ 
-    message: "圖片上傳成功",
-    imageUrl: `/uploads/${req.file.filename}`,
-  });
-
-  // 解析 Base64 格式
-  // const matches = image.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);
-  // if (!matches || matches.length !== 3) {
-  //   return res.status(400).json({ error: '無效的 Base64 圖片格式' });
-  // }
-
-  // const extension = matches[1];  // 取得副檔名 (png, jpg, etc.)
-  // const base64Data = matches[2]; // 取得 Base64 純數據
-  // const buffer = Buffer.from(base64Data, 'base64');
-
-  
-
-  // 確保上傳資料夾存在
-  // if (!fs.existsSync(uploadDir)) {
-  //   fs.mkdirSync(uploadDir, { recursive: true });
-  // }
-
-  // 儲存圖片
-  // const fileName = `image_${Date.now()}.${extension}`;
-  // const filePath = path.join(uploadDir, fileName);
-
-  // 回傳圖片 URL
-  // fs.writeFile(filePath, buffer, (err) => {
-  //   if (err) {
-  //     return res.status(500).json({ error: '無法儲存圖片' });
-  //   }
-  //   res.json({ imageUrl: `/uploads/${fileName}` });
-  // });
-
-});
-
 
 // 獲取上傳簽名的端點
 server.get('/get-signature', (req, res) => {
@@ -128,16 +55,14 @@ server.get('/get-signature', (req, res) => {
   });
 });
 
-
 server.get('/', (req, res) => {
   res.send('Welcome to the JSON Server!');
 });
 
 const rules = auth.rewriter({
   // Permission rules
-  // users: 600,
-  users: 640,
-  posts: 664,
+  users: 664,
+  posts: 666,
 
   // Other rules
   // '/posts/:category': '/posts?category=:category',
@@ -165,7 +90,7 @@ server.use((req, res, next) => {
         // console.log({ token, JWT_SECRET_KEY, decoded }); // 輸出解碼後的 JWT 資料
         const intSub = Number(decoded.sub);
         req.body.userId = intSub;
-
+        return next();
       } catch (err) {
         console.error("Invalid Token:", err.message);
         return res.status(401).json({ error: "Unauthorized" });
@@ -186,10 +111,10 @@ server.use(rules);
 server.use(auth);
 
 
-server.use(jsonServer.rewriter(routes));
+// server.use(jsonServer.rewriter(routes));
 
 // api/admin 路徑的後端 API，需要驗證權限
-server.use("/api/admin", customMiddleware);
+// server.use("/api/admin", customMiddleware);
 
 // Use default router
 server.use("/api", router);
