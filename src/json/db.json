@@ -1,44 +1,58 @@
 {
   "users": [
     {
-      "email": "admin@gmail.com",
-      "password": "$2a$10$Wg2B6ggBSZILbvyOnwWnluNtrC8.Dv4ClUSe.9L7WQUFfhA.Q/XoC",
-      "name": "系統管理員",
-      "role": "ADMIN",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "email": "admin123@gmail.com",
+      "password": "$2a$10$8MB.qmmUwep2EqNPFoLRqOkMPKq8OjVP8t8zeCdhLNIys1/najo.S",
+      "role": "admin",
       "id": 1
     },
     {
-      "email": "admin123@gmail.com",
-      "password": "$2a$10$v85Pxn1Cex.VTQi8NKJkgOF1FT3zB3m8vEPGugTvboIoeW10D8j3q",
-      "name": "活動管理者",
-      "role": "ACTIVITY_MANAGER",
-      "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1740111558/abqxa84kdmokplslyrov.jpg",
+      "email": "sean@gmail.com",
+      "password": "$2a$10$dINa1L84l2xa8/qHp/ZGN.KPfRcMJMGyXHfpZfJp8VLZuq/jjIS12",
       "id": 2
     },
     {
-      "email": "test@gmail.com",
-      "password": "$2a$10$WXnPLhTNYh5ds.cAGZ.vo.08rt1Xy1ZrG3E6VrGtwehwQ0/pXCi4u",
-      "name": "測試",
-      "role": "會員",
-      "avatar": "",
+      "email": "aaa123@gmail.com",
+      "password": "$2a$10$zw1Msv3ddcjMSU53rqdJAON2DTMI1FWUkSwzQ8fpoCdL8a55.4uW2",
       "id": 3
     },
     {
-      "email": "test123@gmail.com",
-      "password": "$2a$10$xhJ/IgkgRuv1aJpsxA5gLeH7hAKSQgmqXFYJceN8z2kof80KgYSBy",
-      "name": "測試123",
-      "role": "會員",
-      "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
+      "email": "user123@gmail.com",
+      "password": "$2a$10$0siyi9fEacpZgBpp6qT2MutY9c1zyXsm5Vpy1UtGT6J/1sfm3EYY6",
       "id": 4
     },
     {
+      "email": "test@gmail.com",
+      "password": "$2a$10$xG4CnGorWQF/Ujc8XGtRTeJtB15WrdzRJ6Hc9bLOu394twqEhbTUC",
+      "id": 5
+    },
+    {
+      "email": "test123@gmail.com",
+      "password": "$2a$10$JouLWUzd55kHWimADe2Fp./1X/RnVuQ1mA30ybqPgrDB5p9C.TqUO",
+      "id": 6
+    },
+    {
       "email": "abc@gmail.com",
-      "password": "$2a$10$Pdb1d/JN85cTMHAbU7hY6OrXlEFI7XPmAmeQhaUgxQqZEf7Cfpu/G",
-      "name": "abc123",
+      "password": "$2a$10$FZOV8DjnMrP6Is/LjTd3Cec8JVyZszBP04YNhIm0YTwjC8DP.jUA6",
+      "id": 7
+    },
+    {
+      "email": "qqq@gmail.com",
+      "password": "$2a$10$dVkRZP/HgXHz8EfpVLMg9e5gdP4Amo8JU1ySdqYc5zU1P/l5gy3Kq",
+      "id": 8
+    },
+    {
+      "email": "siangjyun0926@gmail.com",
+      "password": "$2a$10$laUh3bHiAOTDemE2IlqoaO0KvbfueZOjRSls0.2BSghQOHoCP9a0y",
+      "id": 9
+    },
+    {
+      "email": "pencil@gmail.com",
+      "password": "$2a$10$87g/GSnQHUG9Ci3VHfvhiuKZONcjpH7pHhKBv1r/noTQ/li9zMIhS",
+      "name": "鉛筆",
       "role": "會員",
       "avatar": "https://mighty.tools/mockmind-api/content/human/119.jpg",
-      "id": 5
+      "id": 10
     }
   ],
   "activity": [
@@ -56,65 +70,7 @@
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
       },
-      "detailsId": 1,
-      "activityDetails": [
-        {
-          "images": [
-            {
-              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
-              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "風車、天空與濕地構成一幅迷人的畫面"
-            }
-          ],
-          "trip": {
-            "title": "台北 101 觀景台門票",
-            "highlights": [
-              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
-              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
-              "俯瞰大台北城市夜景，盡享全視野景觀！",
-              "【限時特展活動】",
-              "101 x 大谷翔平「50/50紀念球」",
-              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
-              "1. 大谷翔平「50/50紀念球」",
-              "2. Team Taiwan全員簽名球",
-              "3. 冠軍隊簽名球衣",
-              "4. 比賽實戰壘包"
-            ]
-          },
-          "map": {
-            "latitude": 24.1947,
-            "longitude": 120.6354,
-            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
-          },
-          "sections": [
-            {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
-              "imageCaption": "高空﻿咖啡廳與紀念品店",
-              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
-            },
-            {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
-              "imageCaption": "夜景﻿時光的浪漫與感動",
-              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
-            }
-          ]
-        }
-      ]
+      "detailsId": 1
     },
     {
       "id": 2,
@@ -128,66 +84,9 @@
       "eventType": "特色體驗",
       "content": {
         "title": "沉浸式 DIY 調製香水",
-        "description": "在繁華的台北，體驗獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
+        "description": "在繁華的台北，體驗一場獨特的嗅覺之旅！透過沉浸式DIY調製香水，您將化身調香師，探索香氛的奧秘，打造屬於自己的專屬香氣，留下一段難忘的回憶。"
       },
-      "activityDetails": [
-        {
-          "images": [
-            {
-              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
-              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "風車、天空與濕地構成一幅迷人的畫面"
-            }
-          ],
-          "trip": {
-            "title": "台北 101 觀景台門票",
-            "highlights": [
-              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
-              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
-              "俯瞰大台北城市夜景，盡享全視野景觀！",
-              "【限時特展活動】",
-              "101 x 大谷翔平「50/50紀念球」",
-              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
-              "1. 大谷翔平「50/50紀念球」",
-              "2. Team Taiwan全員簽名球",
-              "3. 冠軍隊簽名球衣",
-              "4. 比賽實戰壘包"
-            ]
-          },
-          "map": {
-            "latitude": 24.1947,
-            "longitude": 120.6354,
-            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
-          },
-          "sections": [
-            {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
-              "imageCaption": "高空﻿咖啡廳與紀念品店",
-              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
-            },
-            {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
-              "imageCaption": "夜景﻿時光的浪漫與感動",
-              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
-            }
-          ]
-        }
-      ]
+      "detailsId": 2
     },
     {
       "id": 3,
@@ -203,128 +102,107 @@
         "title": "天送埤火車站 | 高空繩索體驗 ",
         "description": "來宜蘭天送埤火車站，挑戰您的膽量！體驗刺激的高空繩索，在安全防護下享受高空漫步的刺激感，並俯瞰周圍壯麗的自然景觀，感受心跳加速的快感。"
       },
-      "detailsId": 1,
-      "activityDetails": [
-        {
-          "images": [
-            {
-              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
-              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "風車、天空與濕地構成一幅迷人的畫面"
-            }
-          ],
-          "trip": {
-            "title": "台北 101 觀景台門票",
-            "highlights": [
-              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
-              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
-              "俯瞰大台北城市夜景，盡享全視野景觀！",
-              "【限時特展活動】",
-              "101 x 大谷翔平「50/50紀念球」",
-              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
-              "1. 大谷翔平「50/50紀念球」",
-              "2. Team Taiwan全員簽名球",
-              "3. 冠軍隊簽名球衣",
-              "4. 比賽實戰壘包"
-            ]
-          },
-          "map": {
-            "latitude": 24.1947,
-            "longitude": 120.6354,
-            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
-          },
-          "sections": [
-            {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
-              "imageCaption": "高空﻿咖啡廳與紀念品店",
-              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
-            },
-            {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
-              "imageCaption": "夜景﻿時光的浪漫與感動",
-              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
-            }
-          ]
-        }
-      ]
+      "detailsId": 3
+    }
+  ],
+  "activityDetails": [
+    {
+      "id": 1,
+      "activityId": 1,
+      "images": [
+        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
+        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-2.png",
+        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-3.png",
+        "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-4.png"
+      ],
+      "features": [
+        "彩虹眷村的繽紛色彩",
+        "高美濕地的夕陽美景",
+        "探索台中老兵的童心"
+      ],
+      "location": {
+        "latitude": 24.1947,
+        "longitude": 120.6354,
+        "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
+      },
+      "sectionOne": {
+        "title": "經典行程",
+        "description": "介紹彩虹眷村，帶您進入五光十色的世界，並聆聽這些繽紛牆壁背後的故事。"
+      },
+      "sectionTwo": {
+        "title": "高美濕地夕陽",
+        "description": "在這裡，您可以漫步於大自然之間，感受與夕陽交織的美麗時光。"
+      }
     }
   ],
   "journal": [
     {
+      "id": 1,
+      "title": "注入創新泉源的職人手做工作坊",
+      "body": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
+      "date": "2025-01-21",
+      "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-1.png"
+    },
+    {
       "id": 2,
       "title": "喚醒感官的茶道體驗之旅",
-      "content": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
+      "body": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
       "date": "2025-01-22",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-2.png"
     },
     {
       "id": 3,
       "title": "編織時光的草編藝術課程",
-      "content": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
+      "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
       "date": "2025-01-23",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
     },
     {
       "id": 4,
       "title": "尋找味覺記憶的手作醬料體驗",
-      "content": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
+      "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
       "date": "2025-01-24",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
     },
     {
       "id": 5,
       "title": "染上屬於你的藍：靛藍染布體驗",
-      "content": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
+      "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
       "date": "2025-01-25",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
     },
     {
       "id": 6,
       "title": "注入創新泉源的職人手做工作坊",
-      "content": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
+      "body": "走進充滿創意與溫度的手作工作坊，體驗由台灣職人親自指導的手作課程。不論是陶藝拉坯、木工...",
       "date": "2025-01-21",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-1.png"
     },
     {
       "id": 7,
       "title": "喚醒感官的茶道體驗之旅",
-      "content": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
+      "body": "在茶香縈繞的氛圍中，體驗台灣傳統茶道的魅力。由專業茶師帶領，親手泡製一壺好茶，學習如何感...",
       "date": "2025-01-22",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-2.png"
     },
     {
       "id": 8,
       "title": "編織時光的草編藝術課程",
-      "content": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
+      "body": "用一雙手感受大自然的觸感，學習傳統草編技術，創作出實用且充滿美感的生活用品。在這片屬於手...",
       "date": "2025-01-23",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-3.png"
     },
     {
       "id": 9,
       "title": "尋找味覺記憶的手作醬料體驗",
-      "content": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
+      "body": "參加由職人主理的醬料工作坊，親手製作屬於自己的道地台灣風味。從選材到調味，感受每一步驟的...",
       "date": "2025-01-24",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-4.png"
     },
     {
       "id": 10,
       "title": "染上屬於你的藍：靛藍染布體驗",
-      "content": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
+      "body": "在傳統染布工作坊中，學習靛藍染的技藝，親手設計獨特的布藝作品。看著布料在染液中漸漸變色...",
       "date": "2025-01-25",
       "images": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/blog/image-5.png"
     }
@@ -332,11 +210,13 @@
   "reviews": [
     {
       "id": 1,
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
-      "name": "漩渦鳴人",
+      "user": {
+        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-1.png",
+        "name": "漩渦鳴人"
+      },
       "rating": 4.5,
-      "activityTitle": "沉浸式 DIY 調製香水",
-      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！!",
+      "activityTitle": "經典行程＆高美濕地一日遊",
+      "reviewContent": "從高空俯瞰宜蘭的美景，真的超級震撼！挑戰極限的高空繩索讓人既緊張又興奮，還會再來挑戰！",
       "activityId": 1
     },
     {
@@ -345,10 +225,8 @@
         "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
         "name": "奇犽"
       },
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-2.png",
-      "name": "奇犽",
       "rating": 4.5,
-      "activityTitle": "天送埤火車站 | 高空繩索體驗 ",
+      "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "高美濕地的夕陽景色美得像畫一樣！導遊也很貼心，行程安排很輕鬆，讓我們感受到台中的自然之美。",
       "activityId": 1
     },
@@ -358,8 +236,6 @@
         "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
         "name": "酷拉皮卡"
       },
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-3.png",
-      "name": "酷拉皮卡",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "自己動手調香水的過程非常有趣！每一步都很講究，最後帶回屬於自己的專屬香味，真的很滿足！",
@@ -371,10 +247,8 @@
         "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
         "name": "宇智波佐助"
       },
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-4.png",
-      "name": "宇智波佐助",
       "rating": 4.5,
-      "activityTitle": "天送埤火車站 | 高空繩索體驗 ",
+      "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "親手製作蛋黃酥真的超有趣！師傅很熱情，教得也很詳細，吃到自己做的酥香蛋黃酥更是有滿滿的成就感！",
       "activityId": 1
     },
@@ -384,8 +258,6 @@
         "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
         "name": "艾連·葉卡"
       },
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-5.png",
-      "name": "艾連·葉卡",
       "rating": 4.5,
       "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "一早看到阿里山壯麗的日出景色，真的讓人震撼！森林鐵路的懷舊感也超棒，整個行程都令人陶醉~",
@@ -397,49 +269,40 @@
         "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
         "name": "米卡莎"
       },
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
-      "name": "米卡莎",
-      "rating": 4,
-      "activityTitle": "沉浸式 DIY 調製香水",
+      "rating": 4.5,
+      "activityTitle": "經典行程＆高美濕地一日遊",
       "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
       "activityId": 1
-    },
-    {
-      "id": 6,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
-        "name": "555"
-      },
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
-      "name": "332",
-      "rating": 3,
-      "activityTitle": "沉浸式 DIY 調製香水",
-      "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
-      "activityId": 2
-    },
-    {
-      "id": 6,
-      "user": {
-        "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
-        "name": "555"
-      },
-      "avatar": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/avatar/image-6.png",
-      "name": "332",
-      "rating": 4,
-      "activityTitle": "沉浸式 DIY 調製香水",
-      "reviewContent": "安平老街的小吃超豐富！邊逛古蹟邊吃美食，完全是一場味蕾與文化的雙重盛宴，感覺很充實。",
-      "activityId": 2
     }
   ],
-  "favorites": [],
-  "profiles": [
+  "favorites": [
+    {
+      "activityId": 1,
+      "userId": 3,
+      "isFavorited": true,
+      "id": 1
+    },
+    {
+      "activityId": 2,
+      "userId": 3,
+      "isFavorited": true,
+      "id": 2
+    },
+    {
+      "activityId": 3,
+      "userId": 3,
+      "isFavorited": true,
+      "id": 3
+    }
+  ],
+  "settings": [
     {
       "id": 1,
-      "lastName": "AB",
-      "firstName": "ABC",
-      "nickName": "AA",
-      "gender": "女生",
-      "birthday": "2025-02-09",
+      "lastName": "Emily",
+      "firstName": "Hong",
+      "nickName": "CC",
+      "gender": "女",
+      "birthday": "2025-02-12",
       "country": "台灣",
       "countryCode": "+886",
       "phoneNumber": "988000000",
