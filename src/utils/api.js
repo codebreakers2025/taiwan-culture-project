@@ -60,6 +60,11 @@ export const getJournal = async () => {
     return response.data; 
 };
 
+export const getJournalSingle = async (id) => {
+    const response = await axios.get(`/api/journal/${id}`);
+    return response.data; 
+};
+
 export const createdJournal = async (data) => {
     const response = await axios.post(`/api/journal`, data);
     return response.data; 
