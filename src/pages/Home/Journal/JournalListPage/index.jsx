@@ -1,17 +1,13 @@
 import React from "react";
 import './JournalList.scss';
 import Breadcrumb from "@/components/Breadcrumb"
-import { useTranslation } from 'react-i18next';
+import PageNation from "@/components/PageNation"
 import { useEffect, useState } from 'react';
-import { addFavorites, getFavorites } from '@/utils/api';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss";
-import { getJournal } from '@/utils/api';
-import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
 import axios from 'axios';
+
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwancultureproject.onrender.com'
@@ -21,7 +17,7 @@ const About = () => {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [getJournalDataaAll , setGetJournalDataAll] = useState([])
+  const [getJournalDataAll , setGetJournalDataAll] = useState([])
   const [totalPage , setTotalPage] = useState(0)
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 16;
@@ -33,21 +29,36 @@ const About = () => {
         window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
     };
 
+    const getJournalDataAllPage = async() => {
+      setLoading(true)
+      try{
+        const response = await axios.get(`/api/journal/`);
+        console.log(response.data);
+        setTotalPage(Math.ceil(response.data.length/limit))
+      }catch(error){
+    
+      }
+    }
+
   const getJournalData = async() => {
     setLoading(true)
     try{
       const response = await axios.get(`/api/journal?_page=${page}&_limit=${limit}`);
       setGetJournalDataAll(response.data)
+
     }catch(error){
   
     }
   }
+  useEffect(()=>{
+    getJournalDataAllPage();
+  },[])
   
   useEffect(()=>{
-    getJournalData();
-  },[])
+    getJournalData(page);
+  },[page])
 
-  console.log(getJournalDataaAll);
+  console.log(totalPage);
   
 
   return (
@@ -58,7 +69,7 @@ const About = () => {
           <Breadcrumb />
           <div className="row">
             {loading ===true ? ( 
-               getJournalDataaAll.map((item , index)=>
+               getJournalDataAll.map((item , index)=>
                 <div className="col-md-6 col-lg-3" key={index} onClick={(e) => handleNavigate(e, item)}>
                   <div className="card mb-3">
                     <img src={item.images} className="card-img-top" alt="activity" />
@@ -72,18 +83,22 @@ const About = () => {
            
           
           </div>
-          <div className="pagenation">
-            <button disabled="">
-              <span className="material-icons">chevron_left</span>
-            </button>
-            <div className="currentPage">
-              <button disabled>1</button>
-              <button>2</button>
-            </div>
-            <button>
-              <span className="material-icons">navigate_next</span>
-            </button>
-          </div>
+          <div className="row">
+                    {/* Check if no search results and there are search criteria */}
+                    {(getJournalDataAll.length === 0) ? (
+                      ""
+                    ) : (
+                      <div className="col-12">
+                        {/* Render Pagination only if there are results */}
+                        <PageNation 
+                          totalPage={totalPage} 
+                          setTotalPage={setTotalPage} 
+                          page={page} 
+                          setPage={setPage} 
+                        />
+                      </div>
+                    )}
+                </div>
         </div>
       </div>
     </div>

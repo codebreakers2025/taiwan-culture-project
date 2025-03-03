@@ -215,12 +215,7 @@ export const createOrder = async (orderData) => {
         id: orderId,
         orderId: orderId,
         createdAt: now.toISOString().replace('T', ' ').substring(0, 19),
-        timeSlot: [
-            '09:00-12:00',
-            '14:00-17:00',
-            '09:00-17:00',
-            '18:00-21:00'
-        ]
+        
         };
         const createResponse = await axios.post(`/api/orders`, newOrder);
         return createResponse.data;

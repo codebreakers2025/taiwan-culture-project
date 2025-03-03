@@ -188,12 +188,14 @@ const ActivityDetailPage = () => {
     const startDate = new Date(activityData.startDate);
     const endDate = new Date(activityData.endDate);
     const price = Number(activityData.price); // 確保 price 是數字
-
-    let currentDate = new Date(startDate);
+    console.log(endDate);
+    
+    let currentDate = new Date(startDate.getTime());
 
     while (currentDate <= endDate) {
         const formattedDate = currentDate.toISOString().split('T')[0];
-
+        console.log(formattedDate);
+        
         // 這裡的價格可以改成你的計算方式，目前是隨機價格
         result[formattedDate] = { price: price };
 
@@ -399,6 +401,10 @@ const submitDateClick = () => {
 };
 
 const date = new Date(activityData.startDate);
+const year = date.getFullYear();
+const month = date.getMonth() + 1; // getMonth() 從 0 開始，所以要 +1
+const daysInMonth = new Date(year, month, 0).getDate(); // 獲取該月份的天數
+console.log(daysInMonth);
 
 const formattedDate = `${date.getFullYear()}年${(date.getMonth() + 1).toString().padStart(2)}月`;
 const formattedMonth = `${(date.getMonth() + 1).toString().padStart(2,"0")}`;
@@ -669,7 +675,7 @@ return (
                             <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
                         </div>
                         <div className="days">
-                        {[...Array(31)].map((_, index) => renderDay(index + 1))}
+                          {daysInMonth ? [...Array(daysInMonth)].map((_, index) => renderDay(index + 1)) : null}
                         </div>
                       </div>      
               </div>

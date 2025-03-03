@@ -48,7 +48,7 @@ const PageNation = ({totalPage, setTotalPage, page, setPage}) => {
           </span>
           </button>
           <div className="currentPage">{renderPaginationButtons()}</div>
-          <button onClick={() => setPage((prev) => prev + 1)}>
+          <button onClick={() => setPage((prev) => prev + 1)} disabled={page === totalPage}>
             <span className="material-icons">
             navigate_next
             </span>
