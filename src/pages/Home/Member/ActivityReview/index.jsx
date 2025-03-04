@@ -84,14 +84,23 @@ const ActivityReview = () => {
     };
 
     const handleActivityChange = (e) => {
-        setSelectedActivity(e.target.value);
-        setNewReview((prev) => ({ ...prev, activityTitle: e.target.value }));
+        const selectedActivityTitle = e.target.value;
+        // 從 activities 陣列中找到選中的活動對應的物件
+        const selectedActivity = activities.find(activity => activity.content.title === selectedActivityTitle);
+    
+        // 更新 newReview 的 activityTitle 和 selectedActivity
+        setNewReview({
+            ...newReview,
+            activityTitle: selectedActivity ? selectedActivity.content.title : "",
+            activityId: selectedActivity ? Number(selectedActivity.id) : null, // 假設你需要活動的 ID
+        });
     };
 
     // 新增評論
     const addReview = async () => {
-        if (!newReview.reviewContent || !newReview.activityTitle) {
+        if (!newReview.reviewContent || !newReview.activityId) {
             Swal.fire({ title: "請輸入評價內容並選擇活動", icon: "warning" });
+            return; // 阻止提交
         }
 
         try {
@@ -132,14 +141,14 @@ const ActivityReview = () => {
                     <label className="form-label">活動名稱</label>
                     <select
                         className="form-select"
-                        value={newReview.id}
-                        onChange={(e) => setNewReview({ ...newReview, activityTitle: e.target.value })}
-                        disabled={!newReview.eventType}
+                        value={newReview.activityTitle}
+                        onChange={handleActivityChange}
+                        // disabled={!newReview.eventType}
                     >
                         <option value="">請選擇活動</option>
                         {activities.map((activity) => (
                             <option key={activity.id} value={activity.content.title}>
-                            { activity.content.title}
+                            {activity.content.title}
                             </option>
                         ))}
                     </select>

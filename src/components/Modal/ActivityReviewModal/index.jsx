@@ -44,6 +44,16 @@ useEffect(() => {
     }
 }, [newReview.id]);
 
+// 更新活動 Id
+const handleActivityChange = (e) => {
+  const selectedActivity = activities.find(activity => activity.content.title === e.target.value);
+  setNewReview((prev) => ({
+    ...prev,
+    activityTitle: e.target.value,
+    activityId: selectedActivity ? selectedActivity.id : null, // 儲存活動Id
+  }));
+};
+
   return (
     <Modal show={showModal} onHide={handleClose}>
           <Form onSubmit={handleSubmit(handleSave)}>
@@ -56,7 +66,7 @@ useEffect(() => {
               <Form.Select
                 {...register("activityTitle", { required: "請選擇活動" })}
                 value={newReview.activityTitle}
-                onChange={(e) => setNewReview({ ...newReview, activityTitle: e.target.value })}
+                onChange={handleActivityChange}
               >
                 <option value="">請選擇活動</option>
                     {activities.map((activity) => (

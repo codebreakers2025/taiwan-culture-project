@@ -52,7 +52,6 @@ useEffect(() => {
   };
 
   fetchActivities();
-  console.log(userData);
 }, []);
 
 

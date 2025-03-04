@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { Button, Table, Modal, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";  
+import './OrderModal.scss';
 
 
 const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurrentOrder }) => {
@@ -13,10 +14,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
       contactName: '',
       activityName: '',
       activityLocation: '',
-      activityPeriod: {
-        startDate: '',
-        endDate: ''
-      },
+      last_bookable_date: '',
       timeSlot: '',
       adultCount: 0,
       childCount: 0,
@@ -33,16 +31,8 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
           contactName: currentOrder.contactName || '',
           activityName: currentOrder.activityName || '',
           activityLocation: currentOrder.activityLocation || '',
-          activityPeriod: {
-            startDate: currentOrder.activityPeriod?.startDate || '',
-            endDate: currentOrder.activityPeriod?.endDate || ''
-          },
-          timeSlot: currentOrder.timeSlot || [
-            '09:00-12:00',
-            '14:00-17:00',
-            '09:00-17:00',
-            '18:00-21:00'
-          ],
+          last_bookable_date: currentOrder.last_bookable_date || '',
+          timeSlot: currentOrder.timeSlot || '',
           paymentStatus: currentOrder.paymentStatus || '',
           reservedStatus: currentOrder.reservedStatus || '',
           adultCount: currentOrder.adultCount || 0,
@@ -56,8 +46,8 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
 
 
   const calculateTotal = () => {
-    return formData.adultCount * formData.adultPrice +
-           formData.childCount * formData.childPrice;
+    return Number(formData.adultCount) * Number(formData.adultPrice) +
+    Number(formData.childCount) * Number(formData.childPrice);
   };
 
 
@@ -104,7 +94,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
 
   return (
     <Modal show={showModal} onHide={handleClose}>
-          <Form onSubmit={handleSubmit(handleClick)}>
+          <Form className="order-modal-form" onSubmit={handleSubmit(handleClick)}>
           <Modal.Header closeButton>
         <Modal.Title>{currentOrder ? "查看訂單" : "新增訂單"}</Modal.Title>
       </Modal.Header>
@@ -123,17 +113,12 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
             <Form.Control name="activityLocation" value={formData.activityLocation} onChange={handleChange} />
           </Form.Group>
           <Form.Group>
-            <Form.Label>開始日期</Form.Label>
-            <Form.Control type="date" name="activityPeriod.startDate" value={formData.activityPeriod.startDate} onChange={handleChange} />
+            <Form.Label>活動日期</Form.Label>
+            <Form.Control type="date" name="last_bookable_date" value={formData.last_bookable_date} onChange={handleChange} />
           </Form.Group>
-          <Form.Group>
-            <Form.Label>結束日期</Form.Label>
-            <Form.Control type="date" name="activityPeriod.endDate" value={formData.activityPeriod.endDate} onChange={handleChange} />
-          </Form.Group>
-
           <Form.Group>
           <Form.Label>活動時段</Form.Label>
-          <Form.Select name="timeSlot" value={selectedTimeSlot} onChange={handleChange}>
+          <Form.Select name="timeSlot" value={formData.timeSlot} onChange={handleChange}>
             <option disabled value="">
               請選擇時段
             </option>
@@ -191,8 +176,7 @@ OrderModal.propTypes = {
       activityName: PropTypes.string,
       activityLocation: PropTypes.string,
       timeSlot: PropTypes.string,
-      'activityPeriod.startDate': PropTypes.string,
-      'activityPeriod.endDate': PropTypes.string,
+      last_bookable_date: PropTypes.string,
       paymentStatus: PropTypes.string,
       reservedStatus: PropTypes.string,
       adultCount: PropTypes.number,

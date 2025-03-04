@@ -1,14 +1,21 @@
 // 評價管理組件
 import { useState, useEffect } from "react";
-import { getReviews, getActivityAll, addReviews, updateReviews, deleteReviews } from '@/utils/api';
+import { getReviewAll, getReviewPage, getActivityAll, addReviews, updateReviews, deleteReviews } from '@/utils/api';
 import ActivityReviewModal from '@/components/Modal/ActivityReviewModal';
 import './EvaluationManage.scss';
 import Swal from 'sweetalert2';
+import PageNation from "@/components/PageNation";
+
 
 const EvaluationManage = () => {
   const [reviews, setReviews] = useState([]);
   const [activities, setActivities] = useState([]);
   const userName = localStorage.getItem("userName");
+
+  const [totalPage , setTotalPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
+  const [page, setPage] = useState(1); // 頁數狀態
+  const limit = 10;
 
   const initialReviewState = {
     reviewContent: "",
@@ -20,15 +27,6 @@ const EvaluationManage = () => {
 
   const [newReview, setNewReview] = useState(initialReviewState);
 
-  const AdminReviewManagement = async() => {
-      try{
-          const getReview = await getReviews();
-          setReviews(getReview);
-      } catch(error){
-          console.log(error);
-      }
-  }
-  
   const [showModal, setShowModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({
     status: "進行中",
@@ -116,9 +114,34 @@ const EvaluationManage = () => {
     await AdminReviewManagement();
   }
 
+  const AdminReviewManagement = async() => {
+    try{
+      // 先獲取所有資料
+      const response  = await getReviewAll();
+      const totalItems = response.length; // 直接計算總筆數
+
+      // 設定總筆數
+      setTotalItems(totalItems);
+
+      // 計算總頁數
+      const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
+      setTotalPage(totalPages);
+
+      // 獲取當前頁面的資料
+      const responsePage  = await getReviewPage(page, limit);
+      setReviews(responsePage); 
+
+
+    } catch(error){
+        console.log(error);
+    }
+}
+
   useEffect(() => {
     AdminReviewManagement();
-}, []); 
+    // 每次換頁時，讓畫面回到頂部
+  window.scrollTo(0, 0);
+}, [page, limit]); 
 
 
 
@@ -173,7 +196,12 @@ const EvaluationManage = () => {
             activities= {activities}
             setActivities = {setActivities}
           />
-     
+      <div className="row">
+        <div className="col-12 mb-4">
+          {/* Render Pagination only if there are results */}
+          {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
+        </div>
+      </div>
     </div>
   );
 };

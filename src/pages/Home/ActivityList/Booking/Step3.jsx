@@ -39,9 +39,14 @@ const Step3 = () => {
       ...submitData, // 包含用户表单数据
       paymentData: data
     };
+
+
+
+ 
     
     
     try {
+      // const timeSlot = submitData.timeSlot;
       // 執行 POST 請求
       const createResponse = await createOrder(orderData);
       Swal.fire({
@@ -61,19 +66,17 @@ const Step3 = () => {
       {/* 頁面標題 */}
       <h2 className="text-center mb-4">付款資料</h2>
 
-      {/* 進度指示器 */}
-      <div className="progress-steps d-flex justify-content-center mb-4">
-        <Button variant="dark" className="me-2">
-          1. 行程資料
-        </Button>
-        <Button variant="dark" className="me-2">
-          2. 確認訂單
-        </Button>
-        <Button variant="dark" className="me-2">
-          3. 付款資料
-        </Button>
-        <Button variant="outline-dark">4. 完成預約</Button>
-      </div>
+       {/* 進度指示器 */}
+          <div className="progress-steps d-flex justify-content-center mb-5">
+            {['行程資料', '確認訂單', '付款資料', '完成預約'].map((step, index) => (
+              <Button
+                key={index}
+                className={`me-2 px-3 fw-semibold ${index === 2 ? "custom-btn" : "outline-custom-btn"}`}
+              >
+                {index + 3}. {step}
+              </Button>
+            ))}
+          </div>
 
       <Row className="justify-content-center">
         <Col md={8}>
@@ -126,7 +129,7 @@ const Step3 = () => {
                 
                 <div className="text-center mt-4">
                   <Button variant="secondary" className="me-2" onClick={() => navigate("/activity-list/booking2",{ state: submitData })}>返回上一頁</Button>
-                  <Button type="submit" variant="primary" className="px-4">提交</Button>
+                  <Button type="submit" variant="primary" className="px-4 custom-btn">提交</Button>
                 </div>
               </Form>
             </Card.Body>

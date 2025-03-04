@@ -36,6 +36,11 @@ export const getActivityAll = async () => {
     return response.data; 
 };
 
+export const getActivityPage = async (page, limit) => {
+    const response = await axios.get(`/api/activity?_page=${page}&_limit=${limit}`);
+    return response.data; 
+};
+
 export const getActivitys = async (id) => {
     const response = await axios.get(`/api/activity/${id}`);
     return response.data; 
@@ -58,7 +63,13 @@ export const deleteActivitys = async (id) => {
 
 
 // 部落格管理
-export const getJournal = async (page, limit) => {
+
+export const getJournalAll = async () => {
+    const response = await axios.get(`/api/journal`);
+    return response.data; 
+};
+
+export const getJournalPage = async (page, limit) => {
     const response = await axios.get(`/api/journal?_page=${page}&_limit=${limit}`);
     return response.data; 
 };
@@ -133,8 +144,18 @@ export const deleteFavorites  = async (id) => {
 
 
 // 評價管理
-export const getReviews = async () => {
+export const getReviewAll = async () => {
     const response = await axios.get(`/api/reviews`);
+    return response.data; 
+};
+
+export const getReviewPage = async (page, limit) => {
+    const response = await axios.get(`/api/reviews?_page=${page}&_limit=${limit}`);
+    return response.data; 
+};
+
+export const getReviews = async (id) => {
+    const response = await axios.get(`/api/reviews/${id}`);
     return response.data; 
 };
 
@@ -187,6 +208,11 @@ export const getOrderAll = async () => {
     return response.data; 
 };
 
+export const getOrderPage = async (page, limit) => {
+    const response = await axios.get(`/api/orders?_page=${page}&_limit=${limit}`);
+    return response.data; 
+};
+
 // 獲取單筆訂單
 export const getOrders = async (orderId) => {
     const response = await axios.get(`/api/orders/${orderId}`);
@@ -220,12 +246,7 @@ export const createOrder = async (orderData) => {
         id: orderId,
         orderId: orderId,
         createdAt: now.toISOString().replace('T', ' ').substring(0, 19),
-        timeSlot: [
-            '09:00-12:00',
-            '14:00-17:00',
-            '09:00-17:00',
-            '18:00-21:00'
-        ]
+        // timeSlot: timeSlot
         };
         const createResponse = await axios.post(`/api/orders`, newOrder);
         return createResponse.data;
@@ -351,7 +372,6 @@ export const signIn = async (userId, data) => {
 
         // 儲存簽到資料到 localStorage
         localStorage.setItem('signInData', JSON.stringify(checkRes.data));
-        console.log('簽到成功，數據已儲存。', data);
 
         return { success: true, message: '簽到成功' };
 
@@ -389,9 +409,14 @@ export const updatedRewards = async (data) => {
 
 
 
-//後台
+//用戶管理
 export const getMemberAll = async () => {
     const response = await axios.get(`/api/users`);
+    return response.data; 
+};
+
+export const getMemberPage = async (page, limit) => {
+    const response = await axios.get(`/api/users?_page=${page}&_limit=${limit}`);
     return response.data; 
 };
 

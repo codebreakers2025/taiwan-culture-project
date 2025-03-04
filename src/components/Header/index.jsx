@@ -25,11 +25,6 @@ const Header = () => {
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
-    // const handleGoogleSignIn = () => {
-    //     // 在這裡處理 Google 登入邏輯
-    //     console.log("Google Sign-In triggered");
-    // };
-
     // 登入註冊資料
     const [loginData, setLoginData] = useState(
         { 
@@ -64,7 +59,6 @@ const Header = () => {
             } else {
                 localStorage.setItem("userAvator", response.user.avatar);
             }
-            // console.log(response.user);
             updateUserData({
                 name: response.user.name,
                 image: response.user.avatar, 

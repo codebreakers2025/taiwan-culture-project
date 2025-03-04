@@ -5,6 +5,8 @@ import Swal from 'sweetalert2';
 import './Center.scss';
 
 const Center = () => {
+  const userId = Number(localStorage.getItem("userId"));
+
   const [settings, setSettings] = useState({
     email: true,
     sms: false,
@@ -117,7 +119,7 @@ const Center = () => {
                   {trips.map((trip) => (
                     <tr key={trip.id}>
                       <td>{trip.activityName}</td>
-                      <td>{trip.activityPeriod.startDate} - {trip.activityPeriod.endDate}</td>
+                      <td>{trip.last_bookable_date}</td>
                       <td>{trip.reservedStatus === "reserved" ? "已預約" : trip.reservedStatus === "in_progress" ? "進行中" : trip.reservedStatus === "cancel" ? "已取消" : "未知的狀態"}</td>
                       <td>
                         <Link to={`/member-center/order-management/detail/${trip.id}`} className="btn btn-custom-primary btn-sm">查看詳情</Link>

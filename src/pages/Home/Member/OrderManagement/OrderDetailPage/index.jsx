@@ -70,7 +70,7 @@ const OrderDetailPage = () => {
                         </tr>
                         <tr className="d-block mt-3 mb-3">
                             <td className="field-label-name">預約日期</td>
-                            <td className="ps-3">{order.activityPeriod.startDate} - {order.activityPeriod.endDate}</td>
+                            <td className="ps-3">{order.last_bookable_date}</td>
                         </tr>
                         <tr className="d-block mt-3 mb-3">
                             <td className="field-label-name">活動名稱</td>

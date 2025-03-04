@@ -1,22 +1,19 @@
 // 部落格管理組件
 import  { useState, useEffect } from "react";
-import { getJournal ,createdJournal,updatedJournal, deletedJournal } from '@/utils/api';
+import { getJournalAll, getJournalPage, createdJournal, updatedJournal, deletedJournal } from '@/utils/api';
 import './BlogManage.scss';
 import BlogModal from '@/components/Modal/BlogModal';
 import Swal from 'sweetalert2';
+import PageNation from "@/components/PageNation";
 
 
 const BlogManagement = () => {
   const [blogs, setBlogs] = useState([]);
 
-    const AdminBlogManagement = async() => {
-        try{
-            const getBlog = await getJournal();
-            setBlogs(getBlog);
-        } catch(error){
-            console.log(error);
-        }
-    }
+  const [totalPage , setTotalPage] = useState(1)
+  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
+  const [page, setPage] = useState(1); // 頁數狀態
+  const limit = 10;
 
   const [showModal, setShowModal] = useState(false);
 
@@ -57,9 +54,34 @@ const BlogManagement = () => {
     AdminBlogManagement();
   };
 
+  const AdminBlogManagement = async() => {
+    try{
+      // 先獲取所有資料
+      const response  = await getJournalAll();
+      const totalItems = response.length; // 直接計算總筆數
+
+      // 設定總筆數
+      setTotalItems(totalItems);
+
+      // 計算總頁數
+      const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
+      setTotalPage(totalPages);
+
+      // 獲取當前頁面的資料
+      const responsePage  = await getJournalPage(page, limit)
+      setBlogs(responsePage); 
+
+
+    } catch(error){
+        console.log(error);
+    }
+}
+
   useEffect(() => {
     AdminBlogManagement();
-}, []); 
+    // 每次換頁時，讓畫面回到頂部
+    window.scrollTo(0, 0);
+}, [page, limit]); 
 
   return (
     <div className="container mt-4">
@@ -104,6 +126,13 @@ const BlogManagement = () => {
         currentBlog={currentBlog}
         setCurrentBlog={setCurrentBlog}
       />
+
+      <div className="row">
+        <div className="col-12 mb-4">
+          {/* Render Pagination only if there are results */}
+          {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
+        </div>
+      </div>
     </div>
   );
 };

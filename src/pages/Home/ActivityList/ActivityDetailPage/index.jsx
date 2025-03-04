@@ -131,6 +131,7 @@ const ActivityDetailPage = () => {
 
   const token = localStorage.getItem('token');
   const userId = Number(localStorage.getItem("userId"));
+  const userName = localStorage.getItem("userName");
   const [activityData, setActivityData] = useState([]);
   const [reviewData, setReviewData] = useState([]);
   const [activityDetailDataSection, setActivityDetailDataSection] = useState([]);
@@ -147,30 +148,29 @@ const ActivityDetailPage = () => {
   const [isFirstEffectDone, setIsFirstEffectDone] = useState(false);
   const limit = 2;
   const [submitdData, setSubmitData] = useState({
-      "id": null,
-      "userId": 1,
-      "activityId": 1,
-      "createdAt": "2024-02-22 15:30:25",
-      "contactName": "王小明",
-      "activityName": "台北一日遊",
+      "userId": null,
+      "activityId": null,
+      "createdAt": "",
+      "contactName": "",
+      "activityName": "",
       "last_bookable_date": "",
-      "activityLocation": "台北市信義區信義路五段7號",
+      "activityLocation": "",
       "activityPeriod": {
-        "startDate": "2024-03-15",
-        "endDate": "2024-03-23"
+        "startDate": "",
+        "endDate": ""
       },
-      "adultCount": 4,
-      "childCount": 3,
+      "adultCount": null,
+      "childCount": null,
       "adultPrice": 150,
       "childPrice": 120,
-      "timeSlot": "09:00-17:00",
-      "totalAmount": 960,
+      "timeSlot": "",
+      "totalAmount": null,
       "paymentStatus": "PAID",
-      "orderId": "ORD202402220001",
-      "type": "CHILD",
-      "status": "VALID",
+      "orderId": "",
+      "type": "",
+      "status": "",
       "reservedStatus": "reserved",
-      "qrCode": "https://example.com/qr/TKT202402220003",
+      "qrCode": "",
       "actImage" : ""
   });
 
@@ -220,10 +220,6 @@ const ActivityDetailPage = () => {
       }
   }
   
-  
-  
-
-
   const getReverseData = async() => {
     try{
       const response = await axios.get(`/api/reservations/${id}`)
@@ -296,7 +292,6 @@ const getReviews = async (id , page = 1, limit = 2) => {
         const response = await getReviews(id, page, limit) // 傳入當前頁數與每頁顯示數量
         setReviewData(response);
     } catch (error) {
-        console.log(error);
         setError(error);
     } finally {
         setLoading(false);
@@ -359,17 +354,18 @@ const handleDateClick = (date) => {
 
   setSelectedDate(date);
   const dateData = getReservationData[date];
-  console.log(activityData);
   setSelectedData(dateData);
   setSubmitData((preData) => ({
     ...preData,
     userId: userId,
     activityId: Number(id),
+    contactName: userName,
     activityName: activityData.content?.title,
-    activityLocation: activityData.city,
+    activityLocation: activityData.eventAddress,
     last_bookable_date: date, // 更新最後可預約日期
     actImage : activityData.images,
-    adultPrice : activityData.price
+    adultPrice : activityData.price,
+    childPrice : (activityData.price) * 0.5
   }));
 };
 

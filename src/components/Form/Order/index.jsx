@@ -23,7 +23,6 @@ export const OrderForm = () => {
     e.preventDefault();
     try {
       const response = await orderService.createOrder(formData);
-      // console.log('Order created:', response);
     } catch (error) {
       console.error('Error:', error);
     }

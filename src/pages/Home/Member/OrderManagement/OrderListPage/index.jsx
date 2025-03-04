@@ -1,11 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getOrderAll, getActivityAll, updateOrder } from '@/utils/api';
+import { getOrderAll, getOrderPage, getActivityAll, updateOrder } from '@/utils/api';
 import './OderListPage.scss';
 import Swal from 'sweetalert2';
+import PageNation from "@/components/PageNation";
 
 const OrderListPage = () => {
   const [orders, setOrders] = useState([]);
+  const [userOrders, setUserOrders] = useState([]); // 用來存儲過濾後的使用者訂單
+
+  const [totalPage , setTotalPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
+  const [page, setPage] = useState(1); // 頁數狀態
+  const limit = 5;
+
+  const currentUserId = Number(localStorage.getItem("userId"));
+
+
 
    // 標籤狀態
   const [activeTab, setActiveTab] = useState('已預約');
@@ -15,11 +26,9 @@ const OrderListPage = () => {
   };
 
   const isOngoing = (activityPeriod, timeSlot) => {
-    const [startTime, endTime] = timeSlot.split("-");
     const now = new Date();
-    const startDateTime = new Date(`${activityPeriod.startDate}T${startTime}`);
-    const endDateTime = new Date(`${activityPeriod.endDate}T${endTime}`);
-    return now >= startDateTime && now <= endDateTime;
+    const dateTime = `${activityPeriod.startDate} ${timeSlot}`;
+    return now >= dateTime;
   };
 
 
@@ -58,13 +67,13 @@ const OrderListPage = () => {
     return now > endDateTime;
   };
 
-  const updateOrder = async (orderId, data) => {
-    try {
-      await updateOrder(orderId, data);
-    } catch (error) {
-      console.error("更新訂單狀態失敗", error);
-    }
-  };
+  // const updateOrder = async (orderId, data) => {
+  //   try {
+  //     await updateOrder(orderId, data);
+  //   } catch (error) {
+  //     console.error("更新訂單狀態失敗", error);
+  //   }
+  // };
 
   const handleCancel = async(orderId) => {
     await updateOrder(orderId, {reservedStatus: "cancel"});
@@ -82,11 +91,24 @@ const OrderListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // 獲取分頁訂單資料，並取得 totalItems
       const responseOrder = await getOrderAll();
+      const totalItems = responseOrder.length; // 計算總筆數
+
+      // 設定總筆數
+      setTotalItems(totalItems);
+      
+      // 計算總頁數
+      const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
+      setTotalPage(totalPages);
+      
+      // 獲取所有活動資料
       const responseActivity = await getActivityAll();
+      const responseOrderPage = await getOrderPage(page, limit);
+
 
       // 將活動資料和圖片合併到訂單資料
-      const updatedOrders = responseOrder.map(order => {
+      const updatedOrders = responseOrderPage.map(order => {
         const activity = responseActivity.find(
           activity => activity.id === order.activityId
         );
@@ -94,6 +116,12 @@ const OrderListPage = () => {
       });
 
       setOrders(updatedOrders);
+
+      // 根據 userId 過濾訂單
+      const userOrders = responseOrder.filter(order => order.userId === currentUserId);
+      // 設定過濾後的使用者訂單
+      setUserOrders(userOrders);
+
       } catch (err) {
       console.log("獲取活動資料錯誤:", err);
       } 
@@ -102,26 +130,26 @@ const OrderListPage = () => {
   fetchData();
   }, []);
 
-  useEffect(() => {
-    const updateOrderStatus = async() => {
-      await fetchData(); // 取得最新訂單
-      setOrders((prevOrders) =>
-        prevOrders.map((order) => {
-          if (isOngoing(order.activityPeriod, order.timeSlot)) {
-            return { ...order, reservedStatus: "in_progress" };
-          } else if (isEnded(order.activityPeriod, order.timeSlot)) {
-            updateOrder(order.id, { reservedStatus: "ended" });
-            return { ...order, reservedStatus: "ended" };
-          }
-          return order;
-        })
-      );
-    };
+  // useEffect(() => {
+  //   const updateOrderStatus = async() => {
+  //     await fetchData(); // 取得最新訂單
+  //     setOrders((prevOrders) =>
+  //       prevOrders.map((order) => {
+  //         if (isOngoing(order.activityPeriod, order.timeSlot)) {
+  //           return { ...order, reservedStatus: "in_progress" };
+  //         } else if (isEnded(order.activityPeriod, order.timeSlot)) {
+  //           updateOrder(order.id, { reservedStatus: "ended" });
+  //           return { ...order, reservedStatus: "ended" };
+  //         }
+  //         return order;
+  //       })
+  //     );
+  //   };
     
-    updateOrderStatus();
-    const interval = setInterval(updateOrderStatus, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  //   updateOrderStatus();
+  //   const interval = setInterval(updateOrderStatus, 60000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <div className="page-container order-list-page">
@@ -144,20 +172,18 @@ const OrderListPage = () => {
       
       {/* 訂單列表 */}
       <div className="row">
-        {filterOrdersByTab(orders).length > 0 ? (
-          filterOrdersByTab(orders).map(order => (
+        {filterOrdersByTab(userOrders).length > 0 ? (
+          filterOrdersByTab(userOrders).map(order => (
             <div className="col-lg-12 mb-4" key={order.id}>
               <div className="card h-100 shadow-sm">
                 <div className="row g-0">
                   <div className="col-lg-5">
                     <div className="h-100 d-flex align-items-center justify-content-center">
-                    {order.activity && order.activity.images && (
                       <img
-                        src={order.activity.images}
-                        alt={order.activity.name}
-                        className="card-img"
+                        src={order.actImage}
+                        // alt={order.activity.name}
+                        className="card-img order-img"
                       />
-                    )}
                     </div>
                   </div>
                   <div className="col-lg-7">
@@ -182,6 +208,12 @@ const OrderListPage = () => {
             <p className="text-muted">目前沒有{activeTab}的訂單</p>
           </div>
         )}
+      </div>
+      <div className="row">
+        <div className="col-12">
+          {/* Render Pagination only if there are results */}
+          {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
+        </div>
       </div>
     </div>
     </div>

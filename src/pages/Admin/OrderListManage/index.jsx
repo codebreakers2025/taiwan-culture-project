@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { getOrderAll, createOrder, updateOrder, deleteOrder } from '@/utils/api';
+import { getOrderAll, getOrderPage, createOrder, updateOrder, deleteOrder } from '@/utils/api';
 import { Button, Table, Modal, Form } from "react-bootstrap";
 import OrderModal from '@/components/Modal/OrderModal';
+import PageNation from "@/components/PageNation";
 
 
 const OrderManagement = () => {
@@ -10,13 +11,35 @@ const OrderManagement = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentOrder, setCurrentOrder] = useState(null);
 
+  const [totalPage , setTotalPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
+  const [page, setPage] = useState(1); // 頁數狀態
+  const limit = 10;
+
   useEffect(() => {
     getDataFetch();
-  }, []);
+     // 每次換頁時，讓畫面回到頂部
+  window.scrollTo(0, 0);
+  }, [page, limit]);
 
   const getDataFetch = async () => {
-    const response = await getOrderAll();
-    setOrders(response);
+     // 先獲取所有資料
+     const response  = await getOrderAll();
+     const totalItems = response.length; // 直接計算總筆數
+
+     // 設定總筆數
+     setTotalItems(totalItems);
+
+     // 計算總頁數
+     const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
+     setTotalPage(totalPages);
+
+     // 獲取當前頁面的資料
+     const responsePage  = await getOrderPage(page, limit);
+     setOrders(responsePage); 
+
+
+
   };
 
   const handleShow = (order = null) => {
@@ -102,7 +125,7 @@ const OrderManagement = () => {
               <td>{order.id}</td>
               <td>{order.createdAt}</td>
               <td>{order.activityName}</td>
-              <td>{order.activityPeriod.startDate} - {order.activityPeriod.endDate}</td>
+              <td>{order.last_bookable_date}</td>
               <td>{order.timeSlot}</td>
               <td>成人: {order.adultCount}, 兒童: {order.childCount}</td>
               <td>{order.reservedStatus === "reserved" ? "預約中" : order.reservedStatus === "in_progress" ? "進行中" : order.reservedStatus === "cancel" ? "已取消" : "未知的狀態"}</td>
@@ -123,6 +146,13 @@ const OrderManagement = () => {
         currentOrder={currentOrder}
         setCurrentOrder={setCurrentOrder}
         />
+
+      <div className="row">
+        <div className="col-12 mb-4">
+          {/* Render Pagination only if there are results */}
+          {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
+        </div>
+      </div>
     </div>
   );
   

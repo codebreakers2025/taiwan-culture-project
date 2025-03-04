@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
-import { getMemberAll, updatedMembers, register } from '@/utils/api';
+import { getMemberAll, getMemberPage, updatedMembers, register } from '@/utils/api';
 import './MemberManage.scss';
 import MemberModal from '@/components/Modal/MemberModal';
 import Swal from 'sweetalert2';
+import PageNation from "@/components/PageNation";
 
 const UserManagement = () => {
     const [members, setMembers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const [totalPage , setTotalPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
+    const [page, setPage] = useState(1); // 頁數狀態
+    const limit = 10;
 
  // 開啟 Modal
  const handleShow = (user = null) => {
@@ -47,8 +53,22 @@ handleClose();
 
 const AdminUsers = async() => {
     try{
-        const getUsers = await getMemberAll();
-        setMembers(getUsers);
+    // 先獲取所有資料
+    const response  = await getMemberAll();
+    const totalItems = response.length; // 直接計算總筆數
+
+    // 設定總筆數
+    setTotalItems(totalItems);
+
+    // 計算總頁數
+    const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
+    setTotalPage(totalPages);
+
+    // 獲取當前頁面的資料
+    const responsePage  = await getMemberPage(page, limit);
+    setMembers(responsePage); 
+
+
     } catch(error){
         console.log(error);
     }
@@ -109,6 +129,13 @@ return (
         editingUser={editingUser}
         loading={loading}
       />
+
+    <div className="row">
+        <div className="col-12 mb-4">
+            {/* Render Pagination only if there are results */}
+            {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
+        </div>
+    </div>
     </div>
     
 );

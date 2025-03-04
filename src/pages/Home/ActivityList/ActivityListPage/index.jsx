@@ -1,62 +1,16 @@
 import React from "react";
 import './ActivityList.scss';
 import Breadcrumb from "@/components/Breadcrumb"
-import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
-import { addFavorites, getFavorites } from '@/utils/api';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/components/DatePicker/DatePicker.scss";
-import { getActivityAll , getReviews } from '@/utils/api';
-import { Link } from 'react-router-dom';
+import { getActivityAll, getActivityPage } from '@/utils/api';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
-import axios from 'axios';
 import { ActivityCard } from '@/components/Card/ActivityCard';
+import PageNation from "@/components/PageNation";
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'
- ? 'https://taiwancultureproject.onrender.com'
- : 'http://localhost:3002'
-
-const PageNation = ({totalPage, setTotalPage, page, setPage}) => {
-    const handlePageChange = (page) => {
-      setPage(page);
-    };
-
-    const renderPaginationButtons = () => {
-      const pageNumbers = [];
-      for (let i = 1; i <= totalPage; i++) {
-        pageNumbers.push(i);
-      }
-      
-      return pageNumbers.map((pageNumber) => (
-        <button
-          key={pageNumber}
-          onClick={() => handlePageChange(pageNumber)}
-          disabled={page === pageNumber}
-        >
-          {pageNumber}
-        </button>
-));
-};
-
-
-    return(
-      <div className="pagenation" >
-          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
-          <span className="material-icons">
-          chevron_left
-          </span>
-          </button>
-          <div className="currentPage">{renderPaginationButtons()}</div>
-          <button onClick={() => setPage((prev) => prev + 1)}>
-            <span className="material-icons">
-            navigate_next
-            </span>
-          </button> 
-        </div>
-    )
-}
 
 const ActivityList = () => {
   const userId = Number(localStorage.getItem("userId"));
@@ -70,9 +24,9 @@ const ActivityList = () => {
   const [selectedType, setSelectedType] = useState('');
   const [selectedSite, setSelectedSite] = useState('');
   const [selectedPrice, setSelectedPrice] = useState('');
-  const [reviewData, setReviewData] = useState([]);
-  const [favorite, setFavorite] = useState(false);
-  const [totalPage , setTotalPage] = useState(0)
+
+ const [totalPage , setTotalPage] = useState(1);
+ const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
   const [page, setPage] = useState(1); // 頁數狀態
   const limit = 6;
 
@@ -91,39 +45,36 @@ const ActivityList = () => {
     setLoading(true);
     setError(null);
     try {
-        const response  = await getActivityAll();
-        
-        setSearchData(response)
-        setTotalPage(Math.ceil(response.length/limit))
+      // 先獲取所有資料
+      const response  = await getActivityAll();
+      const totalItems = response.length; // 直接計算總筆數
+
+      // 設定總筆數
+      setTotalItems(totalItems);
+
+      // 計算總頁數
+      const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
+      setTotalPage(totalPages);
+
+      // 獲取當前頁面的資料
+      const responsePage  = await getActivityPage(page, limit)
+      setActivityData(responsePage); 
+      setSearchData(responsePage)
+
     } catch (error) {
         setError('Error fetching activity:', error);
     } 
 };
 
-
-  const fetchGetActivity = async (page = 1 , limit) => {
-    setLoading(true);
-    setError(null);
-    try {
-        const response  = await axios.get(`/api/activity?_page=${page}&_limit=${limit}`);
-        setActivityData(response.data); 
-    } catch (error) {
-        setError('Error fetching activity:', error);
-    } 
-};
-  useEffect(()=>{
-    fetchGetActivity(page, limit)
-  },[page , limit])
-  
   useEffect(() => {
-    fetchGetActivityAll()
-    fetchGetReview();
-    checkExistingFavorite()
-}, []);
+  fetchGetActivityAll();
+  // 每次換頁時，讓畫面回到頂部
+  window.scrollTo(0, 0);
+}, [page , limit]);
+
 
   const getSearchInput = (value) => {
     setSearchInput(value)
-
   }
   
   const getSelectedStartDate = (e) => {
@@ -145,15 +96,13 @@ const ActivityList = () => {
   const getSelectedPrice = (e) => {
     setSelectedPrice(e.target.value);
   };
-  useEffect(()=>{
-    searchActivity()
-  },[page])
+
   
   const searchActivity = () => {
     if (!searchInput && !selectedStartDate && !selectedEndDate && !selectedType && !selectedSite && !selectedPrice) {
-      setSearchResultsData([])
-      setSearchingValue([])
-      fetchGetActivityAll()
+      setSearchResultsData([]);
+      setSearchingValue([]);
+      fetchGetActivityAll();
       return;
     }
     setSearchingValue([searchInput , selectedStartDate , selectedType, selectedEndDate, selectedSite, selectedPrice])
@@ -171,6 +120,7 @@ const ActivityList = () => {
       
       return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;
     });
+
     setTotalPage(Math.ceil(searchResults.length/limit))
     
     const startIdx = (page - 1) * limit;
@@ -182,80 +132,11 @@ const ActivityList = () => {
   };
 
   const searchBtn = () => {
-    setPage(1)
-    searchActivity()
-
+    setPage(1);
+    searchActivity();
   }
 
-  const fetchGetReview = async () => {
-    setLoading(true);
-    setError(null);
-    try{
-      const response  = await getReviews();
-      setReviewData(response)
-    }catch(error){
-      console.log(error);
-      
-    }
-  }
 
-  const checkExistingFavorite = async () => {
-    try {
-        const res = await getFavorites(userId);
-        // console.log("收藏列表:", res);
-        return res.some(item => item.isFavorited);
-    } catch (error) {
-        console.error("檢查收藏狀態出錯:", error);
-        return false; // 預設為未收藏
-    }
-  };
-
-  const handerAddFavorites = async () => {
-    try {
-        setLoading(true);
-
-        // 執行新增收藏
-        const favoriteData = {
-            activityId: id,
-            userId: userId,
-            isFavorited: true
-        };
-        await addFavorites(favoriteData);
-        setFavorite(true);
-
-        Swal.fire({
-            title: "新增成功! 已加入我的收藏",
-            icon: "success"
-        });
-
-    } catch (error) {
-        console.error("收藏操作出錯:", error);
-        Swal.fire({
-            title: "收藏操作失敗",
-            icon: "error"
-        });
-    } finally {
-        setLoading(false);
-    }
-}
-
-const handleFavoriteClick =  async(id) => {
-      const isAlreadyFavorited = await checkExistingFavorite();
-
-      if(isAlreadyFavorited) {
-        // 檢查是否已收藏
-        Swal.fire({
-            title: "已加入過收藏!",
-            text: "請勿重複收藏",
-            icon: "warning"
-        });
-    } else {
-        await handerAddFavorites();
-    }
-  };
-
-
-  
   return (
     <div className="test-container">
       <div className="content">
@@ -327,12 +208,20 @@ const handleFavoriteClick =  async(id) => {
                     <div className="list-content">
                       <span className="material-icons">location_on</span>
                       <div className="form-control-dropdown">
-                        {/* <div className="dropdown-selected ">地區</div> */}
                         <select name="" id="" className="dropdown-selected " value={selectedSite} onChange={getSelectedSite}>
                           <option value="">請選擇地區</option>
+                          <option value="宜蘭">宜蘭</option>
                           <option value="台北">台北</option>
+                          <option value="新竹">新竹</option>
+                          <option value="苗栗">苗栗</option>
                           <option value="台中">台中</option>
+                          <option value="雲林">雲林</option>
                           <option value="高雄">高雄</option>
+                          <option value="墾丁">墾丁</option>
+                          <option value="屏東">屏東</option>
+                          <option value="台東">台東</option>
+                          <option value="花蓮">花蓮</option>
+                          <option value="墾丁">墾丁</option>
                         </select>
                       </div>
                     </div>
@@ -379,12 +268,7 @@ const handleFavoriteClick =  async(id) => {
                     ) : (
                       <div className="col-12">
                         {/* Render Pagination only if there are results */}
-                        <PageNation 
-                          totalPage={totalPage} 
-                          setTotalPage={setTotalPage} 
-                          page={page} 
-                          setPage={setPage} 
-                        />
+                        {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
                       </div>
                     )}
                 </div>
@@ -459,7 +343,6 @@ const handleFavoriteClick =  async(id) => {
                     <div className="list-content">
                       <span className="material-icons">location_on</span>
                       <div className="form-control-dropdown">
-                        {/* <div className="dropdown-selected ">地區</div> */}
                         <select name="" id="" className="dropdown-selected " value={selectedSite} onChange={getSelectedSite}>
                           <option value="">請選擇地區</option>
                           <option value="台北">台北</option>

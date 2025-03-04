@@ -37,6 +37,11 @@
   }
   p{
     color: $text-color-9;
+    // 設定多行文字
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
   }
   span.card-price {
     font-size: $text-font-header-5;

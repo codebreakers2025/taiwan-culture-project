@@ -18,7 +18,7 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
   const [loading, setLoading] = useState(false);
   // const [error, setError] = useState('');
 
-  const cities = ["台北", "台中", "高雄"]; 
+  const cities = ["宜蘭", "台北", "新竹", "苗栗", "台中", "雲林", "高雄", "墾丁", "屏東", "台東", "花蓮"]; 
   const eventTypes = ["一日行程", "特色體驗", "戶外探索"]; 
 
   // 監聽 `eventType、citie` 的值
@@ -36,6 +36,7 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
       setValue("endDate", currentEvent.endDate || null);
       setValue("images", currentEvent.images || "");
       setValue("eventType", currentEvent.eventType || "");
+      setValue("eventAddress", currentEvent.eventAddress || "");
       setValue("rating", Number(currentEvent.rating) || 0);
       setValue("price", Number(currentEvent.price) || 0);
 
@@ -95,36 +96,31 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
 
 
   const onSubmit = async(data) => {
-    console.log(data);
-
-    if (!mainImageFile) {
-      // console.error("沒有選擇圖片");
-      setError("images", { type: "manual", message: "圖片是必填的" });
-      return;
-    }
-
     try {
-      const imageUrl = await handleUploadImage(mainImageFile);
-      // console.log("上傳成功:", imageUrl);
+        let updatedEvent = {
+          ...data,
+          startDate: format(new Date(data.startDate), 'yyyy-MM-dd'),
+          endDate: format(new Date(data.endDate), 'yyyy-MM-dd'),
+          rating: Number(data.rating),
+          id: currentEvent ? currentEvent?.id : null, // 保留 ID
+          activityDetails: []
+        };
 
-      const updatedEvent = {
-        ...data,
-        startDate: format(new Date(data.startDate), 'yyyy-MM-dd'),
-        endDate: format(new Date(data.endDate), 'yyyy-MM-dd'),
-        rating: Number(data.rating),
-        id: currentEvent ? currentEvent?.id : null, // 保留 ID
-        images: imageUrl,
-        activityDetails: []
-      };
-    console.log(updatedEvent);
-    await handleSave(updatedEvent);
+        // 只有當 mainImageFile 存在時才上傳新圖片，否則保留原資料
+        if (mainImageFile) {
+          const imageUrl = await handleUploadImage(mainImageFile);
+          updatedEvent.images = imageUrl;
+        } else {
+          updatedEvent.images = currentEvent ? currentEvent.images : null; // 保留 API 的原始圖片
+        }
+
+        await handleSave(updatedEvent);
 
   } catch (error) {
     console.error("Form submission error:", error);
   }
   };
 
-  // {error && <Alert variant="danger">{error}</Alert>}
   return (
     <Modal size="lg" show={showModal} onHide={handleClose}>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -198,6 +194,18 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
               ))}
             </Form.Select>
             {errors.city && <p className="text-danger">{errors.city.message}</p>}
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>活動地址</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="活動地址"
+              {...register("eventAddress", { required: "活動地址是必填的" })}
+            />
+            {errors.eventAddress && (
+              <p className="text-danger">{errors.eventAddress.message}</p>
+            )}
           </Form.Group>
 
           {/* Start Date Picker */}
@@ -316,6 +324,7 @@ ActivityModal.propTypes = {
     startDate: PropTypes.string,
     endDate: PropTypes.string,
     eventType: PropTypes.string,
+    eventAddress: PropTypes.string,
     content: PropTypes.shape({
       title: PropTypes.string,
       description: PropTypes.string,

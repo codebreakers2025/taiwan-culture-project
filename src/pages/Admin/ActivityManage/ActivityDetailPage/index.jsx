@@ -16,12 +16,19 @@ const EventDetail = () => {
     const { id } = useParams();
     const [initData ,setInitData] = useState({});
 
+    const [previewCoverImages, setPreviewCoverImages] = useState([]);
+    const [mainCoverImageFile, setMainCoverImageFile] = useState(null);
+    const [previewSectionImages, setPreviewSectionImages] = useState([]);
+    const [sectionImageFile, setSectionImageFile] = useState(null);
+
     const [activityData, setActivityData] = useState({  
       images: [],
       trip: { title: "", highlights: [] },
-      map: { latitude: 0, longitude: 0, mapLink: "" },
+      map: { latitude: 0, longitude: 0, mapLink: "https://maps.google.com" },
       sections: []
     });
+
+
 
     useEffect(() => {
       const fetchData = async () => {
@@ -35,7 +42,7 @@ const EventDetail = () => {
           map: { latitude: 0, longitude: 0, mapLink: "" },
           sections: []
         };
-
+  
       // 更新資料時保持原有資料不被清空
       setActivityData(prevState => ({
         ...prevState, // 保留之前的資料
@@ -58,6 +65,12 @@ const EventDetail = () => {
     fetchData();
     }, [id]);
 
+// 用於初始化預覽圖片
+useEffect(() => {
+ 
+}, [activityData]); // 監聽 activityData 變化
+    
+
     // 新增圖片
     const addImage = () => {
       if (activityData.images.length >= 5) {
@@ -65,43 +78,79 @@ const EventDetail = () => {
         return;
       }
 
-      setActivityData((prev) => ({
-        ...prev.images,
-        images: [...prev.images, { url: "" }]
+      setActivityData((prevData) => ({
+        ...prevData, // 保持其他資料
+        images: [...prevData.images, null], // 新增一個空的圖片欄位
       }));
+    
+      setPreviewCoverImages((prev) => [...prev, ""]); // 確保新增預覽圖片的陣列
     };
   
-    // 更新圖片
-    const updateImage = async(index, value) => {
-      const file = value?.target?.files[0]; // 確保取得檔案
-      if(file){
-        // 上傳圖片
-        const imageUrl = await uploadImageToCloudinary(file);
+    // 更新封面圖片
+    const updateImage = (index, event) => {
+      const file = event?.target?.files[0];
+      if (!file) return;
+    
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewCoverImages((prevPreviews) => {
+          const updatedPreviews = [...prevPreviews];
+          updatedPreviews[index] = reader.result || ""; // ✅ 確保不是 undefined
+          return updatedPreviews;
+        });
 
-        const newImages = [...activityData.images]; // 更新 images 陣列
-        newImages[index].url = imageUrl; // 更新對應的 url
-        setActivityData((prev) => ({ ...prev, images: newImages })); // 更新 images 屬性
-      }
+       
+    
+        setActivityData((prevState) => {
+          const updatedImages = [...prevState.images];
+          updatedImages[index] = file; // 🚀 暫存 File，不馬上上傳
+          return { ...prevState, images: updatedImages };
+        });
+      };
+      reader.readAsDataURL(file);
     };
 
     // 更新活動圖片
-    const updateImageInfo = async(index, value) => {
-      const file = value?.target?.files[0]; // 確保取得檔案
-      if(file){
-         // 上傳圖片
-        const imageUrl = await uploadImageToCloudinary(file);
+    const updateSectionImage = (index, event) => {
+      const file = event?.target?.files[0];
+      if (!file) return;
 
-        const newSections = [...activityData.sections]; // 更新 sections 陣列
-        newSections[index].image = imageUrl; // 更新對應的 image
-        setActivityData((prev) => ({ ...prev, sections: newSections })); // 更新 sections 屬性
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewSectionImages((prev) => {
+          const newPreviews = [...prev];
+          newPreviews[index] = reader.result; // ✅ 預覽圖片
+
+          return newPreviews;
+        });
+
+        setActivityData((prev) => {
+          const updatedSections = [...prev.sections];
+          updatedSections[index] = { ...updatedSections[index], image: file }; // ✅ 存 File
+          return { ...prev, sections: updatedSections };
+        });
+
+        
+      };
+      reader.readAsDataURL(file);
+    };
+
+    // 上傳圖片
+    const handleUploadImage = async(file, index = null) => {
+      try {
+        const imageUrl = await uploadImageToCloudinary(file);
+        if (!imageUrl) {
+          console.error("圖片上傳失敗，無法取得圖片網址");
+          return null;
+        }
+    
+    
+        return imageUrl;
+      } catch (error) {
+        console.error("上傳圖片失敗", error);
+        return null;
       }
-    };
-  
-    // 移除圖片
-    const removeImage = (index) => {
-      const newImages = activityData.images.filter((_, i) => i !== index);
-      setActivityData((prev) => ({ ...prev, images: newImages }));
-    };
+    }
   
     // 新增活動介紹
     const addSection = () => {
@@ -149,13 +198,39 @@ const EventDetail = () => {
     // 儲存變更
     const handleSave = async() => {
 
-      const submitData = {
+      let submitData = {
         ...activityData, // 包含所有資料
         trip: { title: activityData.trip?.title, highlights: activityData.trip?.highlights },
         map: { latitude: activityData.map?.latitude, longitude: activityData.map?.longitude, mapLink: activityData.map?.mapLink },
-        sections: activityData.sections,
-        images: activityData.images
+        images: [...activityData.images], // 複製 images 陣列
+        sections: [...activityData.sections] // 複製 sections
       }
+
+      // 🔄 **上傳 `images[]`**
+      for (let i = 0; i < submitData.images.length; i++) {
+        if (submitData.images[i] instanceof File) {
+          const uploadedImageUrl = await handleUploadImage(submitData.images[i]);
+          if (uploadedImageUrl) {
+            submitData.images[i].url = uploadedImageUrl; // ✅ 替換 `File` → `URL`
+          }
+        }
+      }
+
+      // 🔄 **上傳 `sections[].image`**
+      for (let i = 0; i < submitData.sections.length; i++) {
+        if (submitData.sections[i].image instanceof File) {
+          const uploadedImageUrl = await handleUploadImage(submitData.sections[i].image);
+          if (uploadedImageUrl) {
+            submitData.sections[i].image = uploadedImageUrl; // ✅ 替換 `File` → `URL`
+          }
+        }
+      }
+
+    
+      // **更新 activityData 狀態**
+      setActivityData(submitData);
+
+
 
       if(initData.activityDetails){
         await updatedActivitys(id, {
@@ -192,14 +267,16 @@ const EventDetail = () => {
 
     // 更新地圖連結
     const handleMapChange = (e) => {
+      const { name, value } = e.target; // 取得 input 的 name 和 value
       setActivityData((prev) => ({
         ...prev,
         map: {
-          ...((prev.map && prev.map) || { latitude: 0, longitude: 0, mapLink: "" }),  // 確保 prev.map 是物件
-          mapLink: e.target.value,  // 更新 mapLink
+          ...(prev.map || { latitude: 0, longitude: 0, mapLink: "https://maps.google.com" }), // 確保 map 存在
+          [name]: value, // 動態更新 latitude 或 longitude
         },
       }));
     };
+    
 
     // 更新 行程特色
     const handleTripChange = (e, index) => {
@@ -291,17 +368,12 @@ const EventDetail = () => {
                         onClick={() => document.getElementById(`file-input-${index}`).click()} // 點擊圖片觸發 file input
                       >
                         {/* 圖片預覽 */}
-                        {img.url && (
-                          <img
-                            src={img.url}
-                            alt={`預覽圖片 ${index + 1}`}
-                            className="img-fluid"
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              objectFit: "cover"
-                            }}
-                          />
+                        {previewCoverImages[index] && (
+                           <img
+                           src={previewCoverImages[index]}
+                           alt={`圖片 ${index + 1}`}
+                           className="img-thumbnail"
+                         />
                         )}
                         {/* 隱藏的 file input */}
                         <input
@@ -320,12 +392,37 @@ const EventDetail = () => {
 
             {/* 地圖連結 */}
             <Form.Group className="mb-4 trip-map">
-              <Form.Label>地圖連結</Form.Label>
-              <Form.Control
-                type="text"
-                value={activityData.map?.mapLink}
-                onChange={handleMapChange}
-              />
+              <Form.Label>地圖座標</Form.Label>
+
+              <div className="d-flex gap-3">
+                {/* 緯度 Latitude */}
+                <div className="flex-grow-1">
+                  <Form.Label className="small text-muted">緯度 (Latitude)</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="latitude"
+                    value={activityData.map?.latitude || ""}
+                    onChange={handleMapChange}
+                    placeholder="輸入緯度，如 24.1947"
+                  />
+                </div>
+
+                {/* 經度 Longitude */}
+                <div className="flex-grow-1">
+                  <Form.Label className="small text-muted">經度 (Longitude)</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="longitude"
+                    value={activityData.map?.longitude || ""}
+                    onChange={handleMapChange}
+                    placeholder="輸入經度，如 120.6354"
+                  />
+                </div>
+              </div>
+
+              <Form.Text className="text-muted">
+                輸入地圖座標，格式：緯度 (Latitude) / 經度 (Longitude)
+              </Form.Text>
             </Form.Group>
 
             {/* 活動介紹 */}
@@ -342,15 +439,15 @@ const EventDetail = () => {
                       <Form.Control
                         type="file"
                         accept="image/*"
-                        onChange={(e) => updateImageInfo(index, e)}
+                        onChange={(e) => updateSectionImage(index, e)}
                       />
                     </div>
 
                   {/* 預覽區域 */}
-                    {section.image && (
+                    {previewSectionImages.length > 0 && (
                       <div className="mt-3">
                         <img
-                          src={section.image}
+                          src={previewSectionImages[0]}
                           alt="預覽圖片"
                           className="img-thumbnail"
                           style={{ maxWidth: "300px", maxHeight: "200px", objectFit: "contain" }}

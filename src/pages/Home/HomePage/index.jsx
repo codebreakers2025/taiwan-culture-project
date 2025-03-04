@@ -3,7 +3,7 @@ import { BlogCard } from '@/components/Card/BlogCard';
 import { ActivityCard } from '@/components/Card/ActivityCard';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
-import { getActivityAll, getJournal, getReviews } from '@/utils/api';
+import { getActivityAll, getJournalAll, getReviewAll } from '@/utils/api';
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -75,7 +75,7 @@ const HomePage = () => {
 
     useEffect(() => {
         fetchGetActivity();
-        fetchGetJournal();
+        fetchgetJournalAll();
         fetchReviews();
 
         const handleScroll = () => {
@@ -110,10 +110,10 @@ const HomePage = () => {
             setError('Error fetching activity:', error);
         } 
     };
-    const fetchGetJournal = async () => {
+    const fetchgetJournalAll = async () => {
         setLoading(true);
         try {
-            const response  = await getJournal(); 
+            const response  = await getJournalAll(); 
             setJournalData(response); 
         } catch (error) {
             setError('Error fetching journal:', error);
@@ -124,7 +124,7 @@ const HomePage = () => {
     const fetchReviews = async () => {
         setLoading(true);
         try {
-            const response = await getReviews();
+            const response = await getReviewAll();
             const result = response.slice(0, 6); // 只取前六筆
             setReviews(result); 
         } catch (error) {
