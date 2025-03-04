@@ -64,6 +64,15 @@ a {
   background: #aaa; /* 滑鼠懸停時變色 */
 }
 
+.btn-custom-primary, .bg-custom-primary {
+  color: #fff !important;
+  background-color: #60B9BF !important;
+}
+
+.custom-primary {
+  color: #60B9BF;
+}
+
 
 
 .page-container {
@@ -92,17 +101,47 @@ a {
   }
 }
 
-.custom-btn {
+.custom-btn, .btn-primary {
   background: var(--color-primary);
   color: #fff;
   border-radius: 100px;
   padding: 12px 20px;
+  border: 1px solid #60B9BF;
   &:hover {
     background: #60B9BF;
     color: #fff;
     border: 1px solid #60B9BF;
     transition: all .3s;
   }
+}
+
+.btn-secondary, .custom-cancel-button {
+  border-radius: 100px;
+  padding: 12px 20px;
+  background-color: #6c757d;
+  color: #fff;
+  border: 1px solid #6c757d;
+}
+
+.outline-custom-btn {
+  background: transparent;
+  color: var(--color-primary);
+  border-radius: 100px;
+  padding: 12px 20px;
+  border: 1px solid #60B9BF;
+  &:hover {
+    background: #60B9BF;
+    color: #fff;
+    border: 1px solid #60B9BF;
+    transition: all .3s;
+  }
+}
+
+:not(.custom-btn.btn-check)+.custom-btn.btn:active {
+  background: #60B9BF;
+  color: #fff;
+  border: 1px solid #60B9BF;
+  transition: all 0.3s;
 }
 
 .input-group-field {
@@ -206,15 +245,71 @@ a {
   box-shadow: 0 0 0 3px rgba(96, 185, 191, .5) !important;
 }
 
-// .custom-cancel-button {
-//   background-color: transparent !important; 
-//   border: 1px solid #60B9BF;
-//   color: #616161 !important;
-// }
+.btn-check:checked+.btn, .btn.active, :not(.btn-check)+.btn:active {
+  color: #fff !important;
+  background-color: #60B9BF !important;
+  border-color: #60B9BF !important;
+}
+
+.btn:first-child:active:focus-visible {
+  box-shadow: none;
+}
+
 
 .page-section {
   padding: 16px 12px 40px;
   background-color: #FAFAFA;
+}
+
+.breadcrumb {
+  .breadcrumb-item {
+    a {
+      color: var(--bs-breadcrumb-item-active-color);
+      &:hover {
+        transition: all .3s;
+        opacity: 0.7;
+      }
+    }
+
+    &.active {
+      color: var(--color-primary);
+    }
+
+    &+.breadcrumb-item {
+      &::before {
+        content: ">";
+        color: var(--color-primary);
+      }
+    }
+  }
+
+}
+
+.page-item {
+  .page-link {
+    margin: 0 var(--spacing-small);
+    color: var(--bs-breadcrumb-item-active-color);
+    background-color: transparent;
+    border-radius: 8px;
+
+    &:hover {
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+      transition: all .3s;
+    }
+
+    span.material-icons {
+      display: block;
+    }
+  }
+
+  &.active {
+    .page-link {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-background);
+    }
+  }
 }
 
 

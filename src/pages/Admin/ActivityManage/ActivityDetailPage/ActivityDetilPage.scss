@@ -1,0 +1,45 @@
+.activity-detail-page{
+  .card-title.h5 {
+    margin-bottom: 0;
+  }
+  .form-label {
+    font-size: $text-font-header-5;
+  }
+  
+}
+
+.trip-title{}
+  .trip-highlights{
+    div .form-label {
+      margin-bottom: 0;
+    }
+    ul {
+      padding: 0;
+      li {
+        margin-bottom: 12px;
+        button {
+          margin-left: 12px;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+  .trip-images{
+    .img-thumbnail {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      // border: none;
+      object-fit: cover;
+    }
+  }
+  .trip-map{}
+  .trip-section{
+    .card {
+      padding: 24px;
+      button {
+        width: fit-content;
+        margin-left: auto;
+      }
+    }
+  }
