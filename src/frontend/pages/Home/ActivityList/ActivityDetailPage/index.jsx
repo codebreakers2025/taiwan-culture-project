@@ -167,10 +167,7 @@ const ActivityDetailPage = () => {
       "totalAmount": null,
       "paymentStatus": "PAID",
       "orderId": "",
-      "type": "",
-      "status": "",
       "reservedStatus": "reserved",
-      "qrCode": "",
       "actImage" : ""
   });
 
@@ -511,7 +508,7 @@ return (
                       </div>
                         {Array.isArray(activityDetailDataSection) ? (
                             activityDetailDataSection.map((item, index) => (
-                                <div key={index}>
+                                <div className="mb-4" key={index}>
                                   <div className="actPic">
                                       <img src={item.image} 
                                         alt="" 

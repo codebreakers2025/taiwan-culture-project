@@ -118,6 +118,8 @@
     align-items: center; /* 垂直方向對齊 */
     margin-bottom: 12px;
   }
+ 
+
   .actPic{
     margin-bottom: 10px;
     border-top: 24px;
@@ -150,7 +152,7 @@
     margin-bottom: 5.5px;
   }
   .contentText{
-    height: 76px;
+    height: auto;
   }
   .contentDescribute{
     font-size: 16px;

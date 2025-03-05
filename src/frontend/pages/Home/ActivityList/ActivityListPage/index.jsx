@@ -6,7 +6,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/frontend/components/DatePicker/DatePicker.scss";
 import { getActivityAll, getActivityPage } from '@/frontend/utils/api';
-import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { ActivityCard } from '@/frontend/components/Card/ActivityCard';
 import PageNation from "@/frontend/components/PageNation";
@@ -32,14 +31,6 @@ const ActivityList = () => {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // 轉址功能
-  const navigate = useNavigate();
-  const handleNavigate = (e , activity) => {
-      e.preventDefault();
-      navigate(`/activity-list/${activity.id}`);
-      window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
-  };
 
   const fetchGetActivityAll = async () => {
     setLoading(true);
@@ -250,7 +241,7 @@ const ActivityList = () => {
                     ) : (
                       // If there are search results, show them; otherwise, show all activities
                       (searchResultsData.length > 0 ? searchResultsData : activityData).map((activity, index) => (
-                        <div className="col-md-6 col-lg-4" key={index} onClick={(e) => handleNavigate(e, activity)} style={{cursor:'pointer'}}>
+                        <div className="col-md-6 col-lg-4" key={index}>
                           <ActivityCard
                               activity={activity}
                               userId={userId}

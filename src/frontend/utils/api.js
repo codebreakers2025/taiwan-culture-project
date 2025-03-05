@@ -295,6 +295,8 @@ export const uploadImageToCloudinary = async(file) => {
         formData.append('signature', signature);
         formData.append('timestamp', timestamp);
         formData.append('api_key', apiKey);
+        formData.append('upload_preset', 'bennyhong');
+        formData.append('folder', 'uploads');  // 設定 asset_folder 為 'uploads'
 
         // 3. 上傳到 Cloudinary
         const cloudinaryResponse = await axios.post(`/upload-to-cloudinary`, formData);

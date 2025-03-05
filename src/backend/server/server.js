@@ -50,7 +50,20 @@ if (!fs.existsSync(uploadDir)) {
 
 // 創建 Express 應用
 const app = express();
-const upload = multer({ storage: storage }); //配置 multer 來處理文件
+// 設定 Multer 存儲配置（記憶體存儲）
+const upload = multer({
+  storage: multer.memoryStorage(), // 存儲在記憶體中，不存到磁碟
+  limits: {
+    fileSize: 500 * 1024, // 限制 500 KB
+  },
+  fileFilter: (req, file, cb) => {
+    // 限制圖片格式
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+  },
+});
 app.use(cors()); // 允許跨域請求
 app.use(express.json()); // 允許 json 解析
 
@@ -105,7 +118,7 @@ app.post('/upload-to-cloudinary', upload.single('file'), async (req, res) => {
     
           res.json(cloudinaryResponse.data);
         } else {
-          res.status(400).json({ error: 'No file found in request' });
+          res.status(400).json({ error: 'No file uploaded or file size exceeds 500 KB' });
         }
   } catch (error) {
       console.error("Error during Cloudinary upload:", error);

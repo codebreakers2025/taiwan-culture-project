@@ -3,9 +3,12 @@ import './Activity.scss';
 import { addFavorites, getFavorites, deleteFavorites } from '@/frontend/utils/api';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
+import { useNavigate  } from 'react-router-dom';
+
 
 export const ActivityCard = ({ activity, isCollectedPage, onToggleFavorite, userId }) => {
-
+const navigate = useNavigate();
+const token = localStorage.getItem('token');
 const [isFavorite, setIsFavorite] = useState(activity.isFavorited);
 const [loading, setLoading] = useState(false);
 
@@ -26,6 +29,14 @@ const handleFavoriteClickAdd = async() => {
         const favResponse = await getFavorites(userId);
         const repeat = favResponse.some((fav) => fav.activityId === activity.id);
 
+        if(token===null){
+            Swal.fire({
+                title: "請先登入會員，才能進行收藏!",
+                icon: "warning"
+            })
+            return
+        }
+
         if (repeat) {
             // 如果已經收藏過，顯示警告
             Swal.fire({
@@ -41,14 +52,12 @@ const handleFavoriteClickAdd = async() => {
                 userId: userId,
                 isFavorited: true
             };
-
             await addFavorites(favoriteData);
             setIsFavorite(true);
             Swal.fire({
                 title: "新增成功! 已加入我的收藏",
                 icon: "success"
             });
-        
         } 
     
 
@@ -94,27 +103,34 @@ const handleFavoriteClickRemove = async() => {
 }
 
 return (
-        <div className="activity-card card mb-3" key={activity.id}>
-        <img src={activity.images} className="card-img-top" />
-        <div className="activity-card-body card-body">
-            <div className="d-flex justify-content-between align-items-center">
-            <p className="card-text">{activity.eventType}</p>
-            <span className="rating">★ {activity.rating}</span>
+        <div className="activity-card card mb-3" key={activity.id} 
+        onClick={(e) => {
+            if (!e.target.closest(".favorite-icon")) {
+              // 只有當點擊的不是收藏按鈕時，才導航到內頁
+              navigate(`/activity-list/${activity.id}`);
+              window.scrollTo({ top: 0, behavior: "smooth" }); // 滑動到最上方
+            }
+          }}>
+            <img src={activity.images} className="card-img-top" />
+            <div className="activity-card-body card-body">
+                <div className="d-flex justify-content-between align-items-center">
+                <p className="card-text">{activity.eventType}</p>
+                <span className="rating">★ {activity.rating}</span>
+                </div>
+                <h5 className="card-title">{activity.city}: {activity.content.title}</h5>
+                <p className="card-text">{activity.content.description}</p>
+                <span className='card-price'>{activity.price}</span>    
+            
+            {isCollectedPage ? (
+                <span className={`material-icons favorite-icon ${isFavorite ? "favorite_border" : "favorite"}`} onClick={handleFavoriteClickRemove}>
+                {isFavorite ? 'favorite_border' : 'favorite'}
+                </span>
+            ) : (
+                <span className={`material-icons favorite-icon ${isFavorite ? "favorite" : "favorite_border"}`} onClick={handleFavoriteClickAdd}>
+                {isFavorite ? 'favorite' : 'favorite_border'}   
+                </span>
+            )}
             </div>
-            <h5 className="card-title">{activity.city}: {activity.content.title}</h5>
-            <p className="card-text">{activity.content.description}</p>
-            <span className='card-price'>{activity.price}</span>    
-        
-        {isCollectedPage ? (
-            <span className={`material-icons favorite-icon ${isFavorite ? "favorite_border" : "favorite"}`} onClick={handleFavoriteClickRemove}>
-            {isFavorite ? 'favorite_border' : 'favorite'}
-            </span>
-        ) : (
-            <span className={`material-icons favorite-icon ${isFavorite ? "favorite" : "favorite_border"}`} onClick={handleFavoriteClickAdd}>
-            {isFavorite ? 'favorite' : 'favorite_border'}   
-            </span>
-        )}
-        </div>
         </div>
     );
 };

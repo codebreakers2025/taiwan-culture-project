@@ -94,24 +94,28 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
   }
 
 
-
   const onSubmit = async(data) => {
     try {
+
         let updatedEvent = {
-          ...data,
-          startDate: format(new Date(data.startDate), 'yyyy-MM-dd'),
-          endDate: format(new Date(data.endDate), 'yyyy-MM-dd'),
-          rating: Number(data.rating),
-          id: currentEvent ? currentEvent?.id : null, // 保留 ID
-          activityDetails: []
+          ...data, // 保留原來的值
+          startDate: data.startDate !== currentEvent?.startDate ? format(new Date(data.startDate), 'yyyy-MM-dd') : currentEvent?.startDate,
+          endDate: data.endDate !== currentEvent?.endDate ? format(new Date(data.endDate), 'yyyy-MM-dd') : currentEvent?.endDate,
+          rating: data.rating !== currentEvent?.rating ? Number(data.rating) : currentEvent?.rating,
+          id: currentEvent?.id, // 保留 ID
+          activityDetails: currentEvent?.activityDetails || [] // 保留原活動詳情
         };
 
-        // 只有當 mainImageFile 存在時才上傳新圖片，否則保留原資料
+        // 只有當 mainImageFile 存在且圖片變動時才上傳新圖片，否則保留原資料
         if (mainImageFile) {
-          const imageUrl = await handleUploadImage(mainImageFile);
-          updatedEvent.images = imageUrl;
+          if (!currentEvent?.images || currentEvent.images !== mainImageFile) {
+            const imageUrl = await handleUploadImage(mainImageFile);
+            updatedEvent.images = imageUrl;
+          } else {
+            updatedEvent.images = currentEvent.images; // 沒變動則保留
+          }
         } else {
-          updatedEvent.images = currentEvent ? currentEvent.images : null; // 保留 API 的原始圖片
+          updatedEvent.images = currentEvent?.images ?? null; // 保留 API 的原始圖片
         }
 
         await handleSave(updatedEvent);
