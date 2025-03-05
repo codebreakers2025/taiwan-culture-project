@@ -1,11 +1,12 @@
 {
   "name": "vite-taiwan-culture-project",
+  "homepage": "https://codebreakers2025.github.io/taiwan-culture-project",
   "private": true,
   "version": "0.0.0",
-  "type": "commonjs",
-  "main": "node src/server/server.js",
+  "type": "module",
+  "main": "node src/backend/server/server.js",
   "scripts": {
-    "start": "node src/server/server.js",
+    "server": "node src/backend/server/server.js",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
