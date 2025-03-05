@@ -54,7 +54,6 @@ const Menu = () => {
           name: userName
         }));
 
-        localStorage.setItem("userAvator", imageUrl);
         await getUsersAvatar();
         window.location.reload();
       } catch (error) {
