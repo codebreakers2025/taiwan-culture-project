@@ -6,7 +6,12 @@ import jsonServerAuth from 'json-server-auth';
 import express from 'express';
 import * as jwtDecode from 'jwt-decode';
 import cors from 'cors';
+import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
+import axios from 'axios';
+import FormData from 'form-data';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 // 讀取 .env 檔案
 dotenv.config();
@@ -18,8 +23,34 @@ cloudinary.config({
   api_secret: process.env.API_SECRET
 });
 
+// 設定 multer 儲存檔案的路徑
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadPath = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath); // 儲存到 uploads 目錄
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // 使用 Date.now() 作為檔名
+  }
+});
+
+// 使用 import.meta.url 來獲取當前檔案的 URL
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);  // 獲取檔案所在的目錄
+
+// 確保 uploads 目錄存在，如果不存在則創建
+const uploadDir = join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+
 // 創建 Express 應用
 const app = express();
+const upload = multer({ storage: storage }); //配置 multer 來處理文件
 app.use(cors()); // 允許跨域請求
 app.use(express.json()); // 允許 json 解析
 
@@ -35,7 +66,6 @@ app.use("/api", router);
 
 // 取得上傳簽名
 app.get('/get-signature', (req, res) => {
-
   const timestamp = Math.round(new Date().getTime() / 1000);
   const signature = cloudinary.utils.api_sign_request(
     { timestamp },
@@ -49,11 +79,44 @@ app.get('/get-signature', (req, res) => {
   });
 });
 
+// 上傳圖片到 Cloudinary
+app.post('/upload-to-cloudinary', upload.single('file'), async (req, res) => {
+  try {
+        if (req.file) {
+          const formData = new FormData();
+          
+          // 傳遞文件路徑
+          formData.append('file', fs.createReadStream(req.file.path)); // 使用 fs.createReadStream 處理文件路徑
+          formData.append('upload_preset', 'bennyhong');
+          formData.append('folder', 'uploads');  // 設定 asset_folder 為 'uploads'
+
+          // 上傳到 Cloudinary
+          const cloudinaryResponse = await axios.post(
+            'https://api.cloudinary.com/v1_1/dwjbzadev/image/upload', formData,
+            {
+              headers: {
+                ...formData.getHeaders(),  // 確保 headers 包含 multipart/form-data
+              },
+            }
+          );
+    
+          // 上傳成功後刪除臨時檔案
+          fs.unlinkSync(req.file.path);
+    
+          res.json(cloudinaryResponse.data);
+        } else {
+          res.status(400).json({ error: 'No file found in request' });
+        }
+  } catch (error) {
+      console.error("Error during Cloudinary upload:", error);
+      res.status(500).json({ error: error.message });
+  }
+});
+
 // json-server 網站首頁
 app.get('/', (req, res) => {
   res.send('Welcome to the JSON Server!');
 });
-
 
 // 設定權限
 const rules = jsonServerAuth.rewriter({

@@ -297,7 +297,7 @@ export const uploadImageToCloudinary = async(file) => {
         formData.append('api_key', apiKey);
 
         // 3. 上傳到 Cloudinary
-        const cloudinaryResponse = await axios.post(`https://api.cloudinary.com/v1_1/dwjbzadev/image/upload`, formData);
+        const cloudinaryResponse = await axios.post(`/upload-to-cloudinary`, formData);
 
         const imageData = cloudinaryResponse.data;
         const imageUrl = imageData.secure_url;

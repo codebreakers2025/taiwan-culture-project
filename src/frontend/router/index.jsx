@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 
 import HomePage from '@/frontend/pages/Home/HomePage';
 import ActivityList from '@/frontend/pages/Home/ActivityList/ActivityListPage';
@@ -33,7 +33,7 @@ import AdminLayout from '@/frontend/layouts/AdminLayout';
 import FrontendLayout from '@/frontend/layouts/FrontendLayout';
 import MemberCenterLayout from '@/frontend/layouts/MemberCenterLayout';
 
-const router = createBrowserRouter(
+const router = createHashRouter(
   [
     {
       path: '/',

@@ -55,6 +55,7 @@ const Menu = () => {
         }));
 
         await getUsersAvatar();
+        localStorage.setItem("userAvator", imageUrl);
         window.location.reload();
       } catch (error) {
         setError('Upload failed:', error);
