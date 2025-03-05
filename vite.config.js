@@ -23,7 +23,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/assets/css/variables.scss" as *;`, // 引入全局變數文件
+        additionalData: `@use "@/frontend/assets/css/variables.scss" as *;`, // 引入全局變數文件
       },
     },
   }
