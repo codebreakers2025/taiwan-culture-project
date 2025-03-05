@@ -468,71 +468,15 @@
       "rating": 4.8,
       "startDate": "2025-01-21",
       "endDate": "2025-02-21",
-      "price": "666",
+      "price": 666,
       "eventType": "特色體驗",
       "content": {
         "title": "經典行程＆高美濕地一日遊",
         "description": "探索台中之美，從經典出發！一日遊帶您走訪彩虹眷村的繽紛色彩，感受老兵的童心，最後漫步於高美濕地，欣賞夕陽與自然交織的絕美景色。"
       },
       "detailsId": 1,
-      "activityDetails": [
-        {
-          "images": [
-            {
-              "url": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/image-1.png",
-              "caption": "高聳的白色風車成為高美濕地的標誌，為這片自然景觀增添獨特風情"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1692295479292-7421debf1ea8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "遊客沿著木棧道走向濕地，欣賞生態美景"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1613021056297-7f3fb761afc4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "夕陽下的高美濕地，天空與水面交相輝映"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1601489311534-5ff2bb2d8c64?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "生態豐富的濕地，適合觀察鳥類與自然生態"
-            },
-            {
-              "url": "https://images.unsplash.com/photo-1601489311515-6a4d9be58731?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              "caption": "風車、天空與濕地構成一幅迷人的畫面"
-            }
-          ],
-          "trip": {
-            "title": "台北 101 觀景台門票",
-            "highlights": [
-              "即訂即出台北101觀景台門票，掃 QR-Code 快速入場！",
-              "搭乘世界超快速度電梯，抵達觀景台，登上台灣第一高樓。",
-              "俯瞰大台北城市夜景，盡享全視野景觀！",
-              "【限時特展活動】",
-              "101 x 大谷翔平「50/50紀念球」",
-              "夢想高飛特展 ⚾ 89樓觀景台｜即日起至2025/3/2 必看亮點：",
-              "1. 大谷翔平「50/50紀念球」",
-              "2. Team Taiwan全員簽名球",
-              "3. 冠軍隊簽名球衣",
-              "4. 比賽實戰壘包"
-            ]
-          },
-          "map": {
-            "latitude": 24.1947,
-            "longitude": 120.6354,
-            "mapLink": "https://maps.google.com/?q=24.1947,120.6354"
-          },
-          "sections": [
-            {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
-              "imageCaption": "高空﻿咖啡廳與紀念品店",
-              "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
-            },
-            {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
-              "imageCaption": "夜景﻿時光的浪漫與感動",
-              "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
-            }
-          ]
-        }
-      ]
+      "activityDetails": [],
+      "eventAddress": "台中"
     },
     {
       "id": 12,

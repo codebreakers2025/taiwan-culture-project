@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "commonjs",
-  "main": "src/server/server.js",
+  "main": "node src/server/server.js",
   "scripts": {
     "start": "node src/server/server.js",
     "dev": "vite",

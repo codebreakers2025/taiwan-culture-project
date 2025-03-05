@@ -212,7 +212,7 @@ const OrderListPage = () => {
       <div className="row">
         <div className="col-12">
           {/* Render Pagination only if there are results */}
-          {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
+          {totalPage > 0 && userOrders.length >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
         </div>
       </div>
     </div>

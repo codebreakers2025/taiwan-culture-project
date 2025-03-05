@@ -61,7 +61,7 @@ const Step4 = () => {
 
               {/* 返回按鈕 */}
               <div className="mt-4">
-                <Button className="px-4 me-2 custom-btn" onClick={() => navigate("/member-center/personal-data")}>前往會員中心</Button>
+                <Button className="px-4 me-2 custom-btn" onClick={() => navigate("/member-center/center")}>前往會員中心</Button>
                 <Button className="px-4 btn btn-secondary" onClick={() => navigate("/")}>回到首頁</Button>
               </div>
             </Card.Body>

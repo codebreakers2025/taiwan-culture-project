@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '../../.env' });
 const path = require("path");
 const fs = require('fs');
 const jsonServer = require("json-server");
@@ -7,9 +8,7 @@ const jwt_decode = require("jwt-decode");
 const cors = require("cors");
 const cloudinary = require('cloudinary').v2;
 
-
-// require('dotenv').config(); // 引入 dotenv 庫來讀取 .env 檔案
-const JWT_SECRET_KEY = require("json-server-auth/dist/constants").JWT_SECRET_KEY;
+require("json-server-auth/dist/constants").JWT_SECRET_KEY;
 
 // Cloudinary 設定
 cloudinary.config({
@@ -48,6 +47,7 @@ server.get('/get-signature', (req, res) => {
     cloudinary.config().api_secret
   );
 
+  // 返回簽名、時間戳和 API 金鑰
   res.json({
     signature,
     timestamp,
@@ -89,7 +89,6 @@ server.use((req, res, next) => {
     if (token) {
       try {
         const decoded = jwt_decode(token); // 解碼 JWT
-        // console.log({ token, JWT_SECRET_KEY, decoded }); // 輸出解碼後的 JWT 資料
         const intSub = Number(decoded.sub);
         req.body.userId = intSub;
         return next();

@@ -218,7 +218,7 @@ const Header = () => {
                     </button>
                     <ul className={`navbar-nav ms-auto ${isLoggedIn ? "user-member-menu" : ""}`}>
                         <li className="nav-item member-item">
-                            <Link className="nav-link" to="/member-center/personal-data" onClick={closeMenu}>{t('member.center')}</Link>
+                            <Link className="nav-link" to="/member-center/center" onClick={closeMenu}>{t('member.center')}</Link>
                         </li>
                         <li className="nav-item member-item">
                             <Link className="nav-link" to="/member-center/order-management/list" onClick={closeMenu}>{t('member.orderList')}</Link>
@@ -278,7 +278,7 @@ const Header = () => {
                                     </button>
                                     <ul className="dropdown-menu user-member-menu" aria-labelledby="user-dropdown-circle">
                                         <li>
-                                            <Link className="dropdown-item" to="/member-center/personal-data">{t('member.center')}</Link>
+                                            <Link className="dropdown-item" to="/member-center/center">{t('member.center')}</Link>
                                         </li>
                                         <li>
                                             <Link className="dropdown-item" to="/member-center/order-management/list">{t('member.orderList')}</Link>
