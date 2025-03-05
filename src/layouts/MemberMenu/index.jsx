@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef  } from 'react'
 import { NavLink } from 'react-router-dom';
 import './Menu.scss';
-import { getMembers, updatedMembers } from '@/utils/api';
-// import { useUser } from "@/components/UserContext";
+import { getMembers, updatedMembers, uploadImageToCloudinary } from '@/utils/api';
+
 
 const Menu = () => {
       const userId = Number(localStorage.getItem("userId")); // 取得 userId
@@ -41,36 +41,12 @@ const Menu = () => {
       }
 
       try {
-        // 1. 獲取 Cloudinary 簽名
-        const signResponse = await fetch('api/get-signature', {
-          method: 'GET'
-        });
-        const { signature, timestamp, apiKey } = await signResponse.json();
-    
-        // 2. 準備 FormData
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('signature', signature);
-        formData.append('timestamp', timestamp);
-        formData.append('api_key', apiKey);
-        // formData.append('upload_preset', 'Bennyhong');
-        // formData.append('folder', 'avatars');  
-    
-        // 3. 上傳到 Cloudinary
-        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/dwjbzadev/image/upload`,
-          {
-            method: 'POST',
-            body: formData
-          }
-        );
-        const imageData = await cloudinaryResponse.json();
-        const imageUrl = imageData.secure_url;
+        const imageUrl = await uploadImageToCloudinary(file);
 
         if (!imageUrl) setError('無法取得圖片 URL');
         
         await updatedMembers(userId, {avatar: imageUrl});
 
-        // setUserData(updatedUser);
         setUserData((prev) => ({
           ...prev,
           avatar: imageUrl, // 更新的圖片

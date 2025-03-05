@@ -143,8 +143,6 @@ useEffect(() => {
           console.error("圖片上傳失敗，無法取得圖片網址");
           return null;
         }
-    
-    
         return imageUrl;
       } catch (error) {
         console.error("上傳圖片失敗", error);
