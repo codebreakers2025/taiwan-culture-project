@@ -13,9 +13,9 @@ const JWT_SECRET_KEY = require("json-server-auth/dist/constants").JWT_SECRET_KEY
 
 // Cloudinary 設定
 cloudinary.config({
-  cloud_name: '',
-  api_key: '',
-  api_secret: ''
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
 });
 
 
@@ -60,10 +60,12 @@ server.get('/', (req, res) => {
 });
 
 const rules = auth.rewriter({
-  // Permission rules
-  users: 664,
+  // Permission rule
+  // users: 600,
+  users: 644,
   posts: 666,
-
+  userStats: 666,
+  signIns: 644,
   // Other rules
   // '/posts/:category': '/posts?category=:category',
 });

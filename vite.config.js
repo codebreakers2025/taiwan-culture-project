@@ -17,7 +17,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': '/src', // 設置 @ 為 src 目錄的別名
-      global: 'globalThis', // 設置 alias，使 global 指向 globalThis
     },
   },
   css: {
@@ -26,8 +25,5 @@ export default defineConfig({
         additionalData: `@use "@/assets/css/variables.scss" as *;`, // 引入全局變數文件
       },
     },
-  },
-  define: {
-    global: 'globalThis', // 將 global 指向 globalThis 來解決問題
-  },
+  }
 })
