@@ -28,7 +28,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
     useEffect(() => {
       if (currentOrder) {
         setFormData({
-          contactName: currentOrder.contactName || '',
+          paymentData: currentOrder.paymentData || {},
           activityName: currentOrder.activityName || '',
           activityLocation: currentOrder.activityLocation || '',
           last_bookable_date: currentOrder.last_bookable_date || '',
@@ -102,7 +102,7 @@ const OrderModal = ({ showModal, handleClose, handleSave, currentOrder, setCurre
         <Modal.Body>
           <Form.Group>
             <Form.Label>聯絡人姓名</Form.Label>
-            <Form.Control name="contactName" value={formData.contactName} onChange={handleChange} />
+            <Form.Control name="contactName" value={formData.paymentData?.contactName} onChange={handleChange} />
           </Form.Group>
           <Form.Group>
             <Form.Label>活動名稱</Form.Label>
@@ -172,7 +172,7 @@ OrderModal.propTypes = {
   handleSave: PropTypes.func.isRequired, // 儲存資料的函數
   currentOrder: PropTypes.shape({
       id: PropTypes.string,
-      contactName: PropTypes.string,
+      paymentData: PropTypes.object,
       activityName: PropTypes.string,
       activityLocation: PropTypes.string,
       timeSlot: PropTypes.string,

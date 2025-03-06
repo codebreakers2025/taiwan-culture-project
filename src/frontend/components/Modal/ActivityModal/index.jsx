@@ -167,10 +167,10 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
             <Form.Label>活動類型</Form.Label>
             <Form.Select
               {...register("eventType", { required: "活動類型是必填的" })}
-              value={selectedEventType}
+              value={selectedEventType || ""}
               onChange={(e) => setValue("eventType", e.target.value)}
             >
-              <option value="" disabled selected className="placeholder-option">請選擇活動類型</option>
+              <option disabled selected className="placeholder-option">請選擇活動類型</option>
               {eventTypes.map((type, index) => (
                 <option key={index} value={type}>
                   {type}
@@ -187,10 +187,10 @@ const ActivityModal = ({ showModal, handleClose, handleSave, currentEvent, setCu
             <Form.Label>城市</Form.Label>
             <Form.Select
               {...register("city", { required: "城市是必填的" })}
-              value={selectedCity}
+              value={selectedCity || ""}
               onChange={(e) => setValue("city", e.target.value)}
             >
-              <option value="" disabled selected className="placeholder-option">請選擇城市</option>
+              <option disabled selected className="placeholder-option">請選擇城市</option>
               {cities.map((city, index) => (
                 <option key={index} value={city}>
                   {city}
@@ -325,10 +325,12 @@ ActivityModal.propTypes = {
     ]),
     isFavorited: PropTypes.bool,
     rating: PropTypes.number,
+    price: PropTypes.number,
     startDate: PropTypes.string,
     endDate: PropTypes.string,
     eventType: PropTypes.string,
     eventAddress: PropTypes.string,
+    activityDetails: PropTypes.array,
     content: PropTypes.shape({
       title: PropTypes.string,
       description: PropTypes.string,

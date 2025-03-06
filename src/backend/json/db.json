@@ -5,7 +5,7 @@
       "password": "$2a$10$Wg2B6ggBSZILbvyOnwWnluNtrC8.Dv4ClUSe.9L7WQUFfhA.Q/XoC",
       "name": "系統管理員",
       "role": "ADMIN",
-      "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741172092/1741172091384_xdkp3o.jpg",
+      "avatar": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741274658/uploads/1741274657091_zcfbsm.jpg",
       "id": 1
     },
     {
@@ -203,7 +203,7 @@
           },
           "sections": [
             {
-              "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741186238/1741186238007_ogre2p.avif",
+              "image": {},
               "imageCaption": "高空﻿咖啡廳與紀念品店",
               "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。"
             },
@@ -683,7 +683,48 @@
         "description": "在高雄體驗傳統金工工藝，親手打造屬於自己的金屬飾品！從設計、敲打、焊接到拋光，每個步驟都由專業老師指導，讓您體驗金工藝術的獨特魅力。無論是手環、戒指或吊墜，這將是您專屬的獨特飾品，極具紀念價值。\n"
       },
       "detailsId": 1,
-      "activityDetails": [],
+      "activityDetails": [
+        {
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741280952/uploads/1741280951658_ylux2q.avif"
+            },
+            {
+              "url": ""
+            },
+            {
+              "url": ""
+            },
+            {
+              "url": ""
+            },
+            {
+              "url": ""
+            }
+          ],
+          "trip": {
+            "title": "金工DIY體驗",
+            "highlights": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          "map": {
+            "latitude": "22.627548",
+            "longitude": "120.2604604",
+            "mapLink": "https://maps.google.com"
+          },
+          "sections": [
+            {
+              "imageCaption": "高雄｜金工DIY體驗",
+              "description": "在高雄體驗傳統金工工藝，親手打造屬於自己的金屬飾品！從設計、敲打、焊接到拋光，每個步驟都由專業老師指導，讓您體驗金工藝術的獨特魅力。無論是手環、戒指或吊墜，這將是您專屬的獨特飾品，極具紀念價值。\n",
+              "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741280955/uploads/1741280954102_hubc0l.jpg"
+            }
+          ]
+        }
+      ],
       "eventAddress": "高雄市鼓山區青泉街107巷2之1號"
     },
     {
@@ -747,12 +788,12 @@
           },
           "sections": [
             {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-1.png",
+              "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741278364/uploads/1741278363571_byzpwn.avif",
               "imageCaption": "高空﻿咖啡廳與紀念品店",
               "description": "在高空咖啡廳享受一杯咖啡，細味人生；或於紀念品店挑選限量的台北101周邊商品，為這次獨一無二的旅程畫下完美句點。  111111"
             },
             {
-              "image": "https://raw.githubusercontent.com/codebreakers2025/taiwan-culture-project/refs/heads/dev-ben/public/img/activity/section-2.png",
+              "image": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741278364/uploads/1741278363572_w1bzwt.avif",
               "imageCaption": "夜景﻿時光的浪漫與感動",
               "description": "傍晚時分登上觀景台，欣賞夕陽從地平線緩緩隱去，城市燈火逐漸點亮的絕美過程。夜晚的台北，是無數遊人最深刻的記憶。 快來感受台北101觀景台，讓視野無限延展，與城市天空更近一步！  777"
             }
@@ -895,7 +936,46 @@
       "endDate": "2025-02-26",
       "images": "https://res.cloudinary.com/dwjbzadev/image/upload/v1741188124/uploads/1741188112416_awvbig.jpg",
       "id": 17,
-      "activityDetails": [],
+      "activityDetails": [
+        {
+          "images": [
+            {},
+            {
+              "url": ""
+            },
+            {
+              "url": ""
+            },
+            {
+              "url": ""
+            },
+            {
+              "url": ""
+            }
+          ],
+          "trip": {
+            "title": "",
+            "highlights": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          "map": {
+            "latitude": 0,
+            "longitude": 0,
+            "mapLink": "https://maps.google.com"
+          },
+          "sections": [
+            {
+              "image": "",
+              "imageCaption": "",
+              "description": ""
+            }
+          ]
+        }
+      ],
       "eventAddress": "苗栗市三義鄉龍騰村外庄10號（三義鄉龍騰社區活動中心）"
     },
     {
@@ -937,7 +1017,7 @@
       },
       "eventType": "特色體驗",
       "city": "新竹",
-      "price": "250",
+      "price": 250,
       "rating": 4.1,
       "startDate": "2025-02-17",
       "endDate": "2025-02-17",
@@ -1294,6 +1374,12 @@
       "2025-02-20": {
         "price": 1680
       }
+    },
+    {
+      "id": 11,
+      "2025-02-20": {
+        "price": 1200
+      }
     }
   ],
   "orders": [
@@ -1301,7 +1387,6 @@
       "userId": 3,
       "activityId": 4,
       "createdAt": "2025-03-03 09:56:40",
-      "contactName": "",
       "activityName": "鳳梨酥 DIY 手作體驗",
       "last_bookable_date": "2025-03-22",
       "activityLocation": "台北",
@@ -1311,7 +1396,7 @@
       },
       "adultCount": 2,
       "childCount": 4,
-      "adultPrice": "800",
+      "adultPrice": 800,
       "childPrice": 400,
       "timeSlot": "09:00-17:00",
       "totalAmount": 3200,
@@ -1341,7 +1426,7 @@
       },
       "adultCount": 3,
       "childCount": 1,
-      "adultPrice": "600",
+      "adultPrice": 600,
       "childPrice": 300,
       "timeSlot": "14:00-17:00",
       "totalAmount": 2100,
@@ -1371,7 +1456,7 @@
       },
       "adultCount": 1,
       "childCount": 1,
-      "adultPrice": "2500",
+      "adultPrice": 2500,
       "childPrice": 1250,
       "timeSlot": "14:00-17:00",
       "totalAmount": 3750,
@@ -1401,7 +1486,7 @@
       },
       "adultCount": 1,
       "childCount": "1",
-      "adultPrice": "800",
+      "adultPrice": 800,
       "childPrice": 400,
       "timeSlot": "09:00-12:00",
       "totalAmount": 1200,
@@ -1431,7 +1516,7 @@
       },
       "adultCount": 1,
       "childCount": 2,
-      "adultPrice": "900",
+      "adultPrice": 900,
       "childPrice": 450,
       "timeSlot": "09:00-12:00",
       "totalAmount": 1800,

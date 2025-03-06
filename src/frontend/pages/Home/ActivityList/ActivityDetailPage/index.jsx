@@ -207,6 +207,7 @@ const ActivityDetailPage = () => {
       }
       } catch (error) {
           if (error.response && error.response.status === 404) {
+            console.log(error);
           }
       }
       
@@ -214,6 +215,7 @@ const ActivityDetailPage = () => {
       try {
           const response = await axios.post(`/api/reservations`, result);
       } catch (postError) {
+        console.log(postError);
       }
   }
   
@@ -222,6 +224,7 @@ const ActivityDetailPage = () => {
       const response = await axios.get(`/api/reservations/${id}`)
       setGetReservationData(response.data) 
     }catch(error){
+      console.log(error);
     }
   }
 
@@ -361,7 +364,7 @@ const handleDateClick = (date) => {
     activityLocation: activityData.eventAddress,
     last_bookable_date: date, // 更新最後可預約日期
     actImage : activityData.images,
-    adultPrice : activityData.price,
+    adultPrice : Number(activityData.price),
     childPrice : (activityData.price) * 0.5
   }));
 };

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../OrderDetailPage/OrderDetail.scss';
-import OrderDetailImg from '@/frontend/assets/images/OrderManagement-img/OrderDetail-img.jpeg';
 import { useParams } from "react-router-dom";  // 取得動態路由參數
 
 import { getOrderDetail, getActivitys } from '@/frontend/utils/api';

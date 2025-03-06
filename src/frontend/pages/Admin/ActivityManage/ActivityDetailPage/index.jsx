@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";  // 取得動態路由參數
+import { useParams, useNavigate } from "react-router-dom";  
 import { Modal, Button, Form, Card, Alert } from "react-bootstrap";
 import { addActivitys, updatedActivitys, getActivitys, uploadImageToCloudinary } from '@/frontend/utils/api';
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import './ActivityDetilPage.scss';
+import defaultImage from "@/frontend/assets/images/default-images.png";
 
 
 const EventDetail = () => {
@@ -16,19 +16,18 @@ const EventDetail = () => {
     const { id } = useParams();
     const [initData ,setInitData] = useState({});
 
-    const [previewCoverImages, setPreviewCoverImages] = useState([]);
-    const [mainCoverImageFile, setMainCoverImageFile] = useState(null);
-    const [previewSectionImages, setPreviewSectionImages] = useState([]);
-    const [sectionImageFile, setSectionImageFile] = useState(null);
-
     const [activityData, setActivityData] = useState({  
-      images: [],
-      trip: { title: "", highlights: [] },
+      images: Array(5).fill().map(() => ({ url: "" })),
+      trip: { title: "", highlights: ["","","",""] },
       map: { latitude: 0, longitude: 0, mapLink: "https://maps.google.com" },
-      sections: []
+      sections: [{ image: "", imageCaption: "", description: "" }]
     });
 
+    const [previewCoverImages, setPreviewCoverImages] = useState(Array(5).fill(defaultImage));
+    const [previewSectionImages, setPreviewSectionImages] = useState([defaultImage]);
 
+    const [mainCoverImageFile, setMainCoverImageFile] = useState(null);
+    const [mainSectionImageFile, setMainSectionImageFile] = useState(null);
 
     useEffect(() => {
       const fetchData = async () => {
@@ -42,6 +41,17 @@ const EventDetail = () => {
           map: { latitude: 0, longitude: 0, mapLink: "" },
           sections: []
         };
+
+         // 檢查 sections 並根據 image 設置 previewSectionImages
+         if (firstActivity.sections.length > 0) {
+          // 用 map 來處理多個 sections 的圖片
+          const images = firstActivity.sections.map((section) => {
+            const imageUrl = section.image;
+            return imageUrl && imageUrl !== "" ? imageUrl : defaultImage; // 如果 image 是空的，用預設圖片
+          });
+
+          setPreviewSectionImages(images); // 更新圖片陣列
+        }
   
       // 更新資料時保持原有資料不被清空
       setActivityData(prevState => ({
@@ -65,42 +75,23 @@ const EventDetail = () => {
     fetchData();
     }, [id]);
 
-// 用於初始化預覽圖片
-useEffect(() => {
- 
-}, [activityData]); // 監聽 activityData 變化
-    
 
-    // 新增圖片
-    const addImage = () => {
-      if (activityData.images.length >= 5) {
-        alert("最多只能上傳 5 張圖片");
-        return;
-      }
-
-      setActivityData((prevData) => ({
-        ...prevData, // 保持其他資料
-        images: [...prevData.images, null], // 新增一個空的圖片欄位
-      }));
-    
-      setPreviewCoverImages((prev) => [...prev, ""]); // 確保新增預覽圖片的陣列
-    };
-  
     // 更新封面圖片
     const updateImage = (index, event) => {
       const file = event?.target?.files[0];
+      setMainCoverImageFile(file);
+
       if (!file) return;
-    
+
       const reader = new FileReader();
       reader.onloadend = () => {
+
         setPreviewCoverImages((prevPreviews) => {
           const updatedPreviews = [...prevPreviews];
           updatedPreviews[index] = reader.result || ""; // ✅ 確保不是 undefined
           return updatedPreviews;
         });
 
-       
-    
         setActivityData((prevState) => {
           const updatedImages = [...prevState.images];
           updatedImages[index] = file; // 🚀 暫存 File，不馬上上傳
@@ -110,9 +101,13 @@ useEffect(() => {
       reader.readAsDataURL(file);
     };
 
+
     // 更新活動圖片
     const updateSectionImage = (index, event) => {
+      event.preventDefault(); // 確保不會有額外的觸發
       const file = event?.target?.files[0];
+      setMainSectionImageFile(file);
+
       if (!file) return;
 
       const reader = new FileReader();
@@ -120,7 +115,6 @@ useEffect(() => {
         setPreviewSectionImages((prev) => {
           const newPreviews = [...prev];
           newPreviews[index] = reader.result; // ✅ 預覽圖片
-
           return newPreviews;
         });
 
@@ -129,14 +123,13 @@ useEffect(() => {
           updatedSections[index] = { ...updatedSections[index], image: file }; // ✅ 存 File
           return { ...prev, sections: updatedSections };
         });
-
-        
       };
+
       reader.readAsDataURL(file);
     };
 
     // 上傳圖片
-    const handleUploadImage = async(file, index = null) => {
+    const handleUploadImage = async(file) => {
       try {
         const imageUrl = await uploadImageToCloudinary(file);
         if (!imageUrl) {
@@ -156,9 +149,10 @@ useEffect(() => {
         ...prev,
         sections: [
           ...(prev.sections || []), // 確保 sections 是陣列
-          { image: "", imageCaption: "", description: "" }
+          { imageCaption: "", description: "" }
         ]
       }));
+      setPreviewSectionImages((prev) => [...prev, ""]); // 新增一個空的預覽圖片
     };
 
     // 新增行程特色
@@ -189,8 +183,11 @@ useEffect(() => {
   
     // 移除活動介紹
     const removeSection = (index) => {
-      const newSections = activityData.sections.filter((_, i) => i !== index);
-      setActivityData((prev) => ({ ...prev, sections: newSections }));
+      setActivityData((prev) => {
+        const newSections = prev.sections.filter((_, i) => i !== index);
+        return { ...prev, sections: newSections };
+      });
+      setPreviewSectionImages((prev) => prev.filter((_, i) => i !== index)); // 移除對應的預覽圖片
     };
   
     // 儲存變更
@@ -224,11 +221,18 @@ useEffect(() => {
         }
       }
 
+      // 檢查是否為新的文件上傳
+      // if (mainCoverImageFile) {
+      //   await handleUploadImage(mainCoverImageFile);
+      // }
+    
+      // 檢查是否為新的文件上傳
+      // if (mainSectionImageFile) {
+      //   await handleUploadImage(mainSectionImageFile);
+      // }
     
       // **更新 activityData 狀態**
       setActivityData(submitData);
-
-
 
       if(initData.activityDetails){
         await updatedActivitys(id, {
@@ -237,12 +241,11 @@ useEffect(() => {
         Swal.fire({ title: "編輯成功", icon: "success" });
         
       } else {
-        await addActivitys({
-          activityDetails: [submitData]
-        });
-        Swal.fire({ title: "新增成功", icon: "success" });
+          await addActivitys({
+            activityDetails: [submitData]
+          });
+          Swal.fire({ title: "新增成功", icon: "success" });
       }
-
     };
 
     // 返回
@@ -275,14 +278,12 @@ useEffect(() => {
       }));
     };
     
-
     // 更新 行程特色
     const handleTripChange = (e, index) => {
       const { value } = e.target;
       setActivityData((prev) => {
         const newHighlights = [...(prev.trip?.highlights || [])]; // 避免 prev.trip 為 undefined
         newHighlights[index] = value; // 只更新對應索引的值
-      
         return {
           ...prev,
           trip: { 
@@ -297,195 +298,112 @@ useEffect(() => {
     
 
   {error && <Alert variant="danger">{error}</Alert>}
+
   return (
-      <Card className="p-4 shadow-lg activity-detail-page">
-        <Card.Header className="d-flex justify-content-between align-items-center">
-          <Card.Title>編輯行程</Card.Title>
-          <Button variant="close" onClick={handleClose}></Button>
-        </Card.Header>
-        <Card.Body>
-          <Form onSubmit={handleSubmit(handleSave)}>
-
-            {/* 行程標題 */}
-            <Form.Group className="mb-4 trip-title">
-              <Form.Label>行程標題</Form.Label>
-              <Form.Control
-                type="text"
-                name="title"  // `name` 對應到 `trip.title`
-                value={activityData.trip?.title}
-                onChange={handleChange} // 使用修正後的 `handleChange`
-              />
-            </Form.Group>
-
-            {/* 行程特色 */}
-            <Form.Group className="mb-4 trip-highlights">
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <Form.Label>行程特色</Form.Label>
-                <Button variant="secondary" onClick={addTripHighlight}>新增行程特色</Button>
-              </div>
-              <ul>
-                {activityData.trip?.highlights.map((highlight, index) => (
-                  <li key={index} className="d-flex">
-                    <Form.Control
-                      name={`highlight-${index}`}
-                      value={highlight}
-                      onChange={(e) => handleTripChange(e, index)}
-                    />
-                    <Button variant="danger" onClick={() => removeTripHighlight(index)}>刪除</Button>
-                  </li>
-                ))}
-              </ul>
-            </Form.Group>
-
-            {/* 圖片管理 */}
-            <Form.Group className="mb-4 trip-images">
-              <div className="d-flex justify-content-between">
-                <Form.Label>封面圖片</Form.Label>
-                {activityData.images?.length < 5 && ( // 限制最多 5 張圖片
-                <Button 
-                  variant="secondary" 
-                  onClick={addImage} 
-                >
-                  新增圖片
-                </Button>
-                )}
-              </div>
-
-              <div className="d-flex justify-content-start flex-wrap">
-                {activityData.images?.map((img, index) => (
-                  <div key={index} className="position-relative mb-2 me-2 d-flex flex-column align-items-center">
-                      {/* 圖片預覽區域 */}
-                      <div 
-                        className="img-thumbnail position-relative"
-                        style={{
-                          width: "200px",
-                          height: "200px",
-                          overflow: "hidden",
-                          cursor: "pointer"
-                        }}
-                        onClick={() => document.getElementById(`file-input-${index}`).click()} // 點擊圖片觸發 file input
-                      >
-                        {/* 圖片預覽 */}
-                        {previewCoverImages[index] && (
-                           <img
-                           src={previewCoverImages[index]}
-                           alt={`圖片 ${index + 1}`}
-                           className="img-thumbnail"
-                         />
-                        )}
-                        {/* 隱藏的 file input */}
-                        <input
-                          id={`file-input-${index}`}
-                          type="file"
-                          accept="image/*"
-                          style={{ display: "none" }} // 隱藏 file input 元素
-                          onChange={(e) => updateImage(index, e)}
-                        />
-                      </div>
-                    </div>
-                  ))}
-              </div>
-
-            </Form.Group>
-
-            {/* 地圖連結 */}
-            <Form.Group className="mb-4 trip-map">
-              <Form.Label>地圖座標</Form.Label>
-
-              <div className="d-flex gap-3">
-                {/* 緯度 Latitude */}
-                <div className="flex-grow-1">
-                  <Form.Label className="small text-muted">緯度 (Latitude)</Form.Label>
+    <Modal show={true} onHide={handleClose} size="lg" centered>
+      <Modal.Header closeButton>
+        <Modal.Title>編輯詳細資料</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form className="trip-form" onSubmit={handleSave}>
+          <Form.Group className="mb-4 trip-title">
+            <Form.Label>行程標題</Form.Label>
+            <Form.Control
+              type="text"
+              name="title"
+              value={activityData.trip?.title}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-4 trip-highlights">
+            <div className="d-flex align-items-center mb-3">
+              <Form.Label>行程特色</Form.Label>
+              <Button size="sm" onClick={addTripHighlight}>新增</Button>
+            </div>
+            <ul>
+              {activityData.trip?.highlights.map((highlight, index) => (
+                <li key={index} className="d-flex">
                   <Form.Control
-                    type="text"
-                    name="latitude"
-                    value={activityData.map?.latitude || ""}
-                    onChange={handleMapChange}
-                    placeholder="輸入緯度，如 24.1947"
+                    name={`highlight-${index}`}
+                    value={highlight}
+                    onChange={(e) => handleTripChange(e, index)}
                   />
-                </div>
-
-                {/* 經度 Longitude */}
-                <div className="flex-grow-1">
-                  <Form.Label className="small text-muted">經度 (Longitude)</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="longitude"
-                    value={activityData.map?.longitude || ""}
-                    onChange={handleMapChange}
-                    placeholder="輸入經度，如 120.6354"
-                  />
-                </div>
-              </div>
-
-              <Form.Text className="text-muted">
-                輸入地圖座標，格式：緯度 (Latitude) / 經度 (Longitude)
-              </Form.Text>
-            </Form.Group>
-
-            {/* 活動介紹 */}
-            <Form.Group className="mb-4 trip-section">
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <Form.Label>活動介紹</Form.Label>
-                <Button variant="secondary" onClick={addSection}>新增活動介紹</Button>
-              </div>
-              {activityData.sections?.map((section, index) => (
-                <Card key={index} className=" shadow-sm p-3 mb-3 bg-body rounded">
-                  <Form.Group className="mb-3">
-                    <div className="d-flex align-items-center">
-                      {/* 圖片上傳 Input */}
-                      <Form.Control
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => updateSectionImage(index, e)}
-                      />
-                    </div>
-
-                  {/* 預覽區域 */}
-                    {previewSectionImages.length > 0 && (
-                      <div className="mt-3">
-                        <img
-                          src={previewSectionImages[0]}
-                          alt="預覽圖片"
-                          className="img-thumbnail"
-                          style={{ maxWidth: "300px", maxHeight: "200px", objectFit: "contain" }}
-                        />
-                      </div>
-                    )}
-                  </Form.Group>
-
-                  <Form.Control
-                    type="text"
-                    className="mb-2"
-                    placeholder="圖片描述"
-                    value={section.imageCaption}
-                    onChange={(e) => updateSection(index, "imageCaption", e.target.value)}
-                  />
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    placeholder="活動內容"
-                    value={section.description}
-                    onChange={(e) => updateSection(index, "description", e.target.value)}
-                  />
-                  <Button
-                    variant="danger"
-                    className="mt-2"
-                    onClick={() => removeSection(index)}
-                  >
-                    刪除區塊
-                  </Button>
-                </Card>
+                  <Button variant="danger" size="sm" onClick={() => removeTripHighlight(index)}>刪除</Button>
+                </li>
               ))}
-            </Form.Group>
-
-          </Form>
-        </Card.Body>
-        <Card.Footer className="d-flex justify-content-end">
-          <Button variant="secondary" className="me-2" onClick={handleClose}>取消</Button>
-          <Button variant="primary" onClick={handleSave}>儲存變更</Button>
-        </Card.Footer>
-      </Card>
+            </ul>
+          </Form.Group>
+          <Form.Group className="mb-4 trip-images">
+            <div className="d-flex align-items-center">
+              <Form.Label>封面圖片</Form.Label>
+            </div>
+            <div className="d-flex flex-wrap">
+              {activityData.images?.map((img, index) => (
+                console.log(img),
+                <div key={index} className="position-relative mb-2 mt-4 me-3">
+                  <div className="img-thumbnail" style={{ width: "200px", height: "200px", cursor: "pointer" }} onClick={(e) => e.currentTarget.querySelector("input").click()}>
+                  {img.url ? (
+                      // 如果 img 存在，顯示 img.url
+                      <img src={img.url} alt={`圖片 ${index + 1}`} className="img-thumbnail" />
+                    ) : (
+                      // 如果 img 不存在，顯示 previewCoverImages[index]
+                      <img src={previewCoverImages[index]} alt={`圖片 ${index + 1}`} className="img-thumbnail" />
+                    )}
+                    
+                    <input id={`file-input-${index}`} type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => updateImage(index, e)} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-4 trip-map">
+            <Form.Label>地圖座標</Form.Label>
+            <div className="d-flex gap-3">
+              <Form.Control type="text" name="latitude" value={activityData.map?.latitude || ""} onChange={handleMapChange} placeholder="輸入緯度，如 24.1947" />
+              <Form.Control type="text" name="longitude" value={activityData.map?.longitude || ""} onChange={handleMapChange} placeholder="輸入經度，如 120.6354" />
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-4 trip-section">
+            <div className="d-flex align-items-center mb-2">
+              <Form.Label>活動介紹</Form.Label>
+              <Button size="sm" onClick={addSection}>新增</Button>
+            </div>
+            {activityData.sections?.map((section, index) => (
+              console.log(section),
+              <Card key={index} className="shadow-sm p-3 mb-3 bg-body rounded">
+                <Form.Control className="mb-2" type="file" accept="image/*" onChange={(e) => updateSectionImage(index, e)} />
+                {section.image ? (
+                  <img
+                    src={section.image}
+                    alt="預覽圖片"
+                    className="img-thumbnail mb-2"
+                    style={{ width: "30%" }}
+                  />
+                ) : (
+                  previewSectionImages[0] && (
+                    <img
+                      src={previewSectionImages[0]} // 顯示第一張預設圖片
+                      alt={`預覽圖片 ${index + 1}`}
+                      className="img-thumbnail mb-2"
+                      style={{ width: "30%" }}
+                    />
+                  )
+                )}
+                <Form.Control type="text" className="mb-2" placeholder="圖片描述" value={section.imageCaption} onChange={(e) => updateSection(index, "imageCaption", e.target.value)} />
+                <Form.Control as="textarea" rows={3} placeholder="活動內容" value={section.description} onChange={(e) => updateSection(index, "description", e.target.value)} />
+                {activityData.sections.length > 1 && (
+                  <Button variant="danger" size="sm" className="mt-3" onClick={() => removeSection(index)}>刪除區塊</Button>
+                )}
+              </Card>
+            ))}
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>取消</Button>
+        <Button variant="primary" onClick={handleSave}>儲存變更</Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

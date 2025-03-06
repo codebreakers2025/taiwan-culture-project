@@ -76,7 +76,7 @@ const AdminUsers = async() => {
 
 useEffect(() => {
     AdminUsers();
-}, []); 
+}, [page]); 
 
 return (
     <div className="container py-4">

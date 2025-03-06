@@ -49,13 +49,9 @@ const OrderManagement = () => {
 
   const handleClose = () => {
     setCurrentOrder({
-      contactName: '',
+      paymentData: {},
       activityName: '',
       activityLocation: '',
-      activityPeriod: {
-        startDate: '',
-        endDate: ''
-      },
       timeSlot: '',
       adultCount: 0,
       childCount: 0,
@@ -111,8 +107,6 @@ const OrderManagement = () => {
             <th>下單時間</th>
             <th>活動名稱</th>
             <th>活動期間</th>
-            <th>活動時段</th>
-            <th>預約人數</th>
             <th>預約狀態</th>
             <th>訂單金額</th>
             <th>訂單狀態</th>
@@ -126,8 +120,6 @@ const OrderManagement = () => {
               <td>{order.createdAt}</td>
               <td>{order.activityName}</td>
               <td>{order.last_bookable_date}</td>
-              <td>{order.timeSlot}</td>
-              <td>成人: {order.adultCount}, 兒童: {order.childCount}</td>
               <td>{order.reservedStatus === "reserved" ? "預約中" : order.reservedStatus === "in_progress" ? "進行中" : order.reservedStatus === "cancel" ? "已取消" : "未知的狀態"}</td>
               <td>{order.totalAmount}</td>
               <td>{order.paymentStatus === "PAID" ? "已付款" : order.paymentStatus === "PENDING" ? "尚未付款" : "未知的狀態"}</td>

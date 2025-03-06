@@ -51,19 +51,8 @@ if (!fs.existsSync(uploadDir)) {
 // 創建 Express 應用
 const app = express();
 // 設定 Multer 存儲配置（記憶體存儲）
-const upload = multer({
-  storage: multer.memoryStorage(), // 存儲在記憶體中，不存到磁碟
-  limits: {
-    fileSize: 500 * 1024, // 限制 500 KB
-  },
-  fileFilter: (req, file, cb) => {
-    // 限制圖片格式
-    if (!file.mimetype.startsWith('image/')) {
-      return cb(new Error('Only image files are allowed!'), false);
-    }
-    cb(null, true);
-  },
-});
+const upload = multer({ storage: storage });
+
 app.use(cors()); // 允許跨域請求
 app.use(express.json()); // 允許 json 解析
 
@@ -95,14 +84,21 @@ app.get('/get-signature', (req, res) => {
 // 上傳圖片到 Cloudinary
 app.post('/upload-to-cloudinary', upload.single('file'), async (req, res) => {
   try {
-        if (req.file) {
-          const formData = new FormData();
-          
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded or file size exceeds 500 KB' });
+    }
+    
+    if (!req.file.path) {
+      return res.status(400).json({ error: 'File path is undefined' });
+    }
+
+    const formData = new FormData();
+
           // 傳遞文件路徑
           formData.append('file', fs.createReadStream(req.file.path)); // 使用 fs.createReadStream 處理文件路徑
           formData.append('upload_preset', 'bennyhong');
           formData.append('folder', 'uploads');  // 設定 asset_folder 為 'uploads'
-
+          
           // 上傳到 Cloudinary
           const cloudinaryResponse = await axios.post(
             'https://api.cloudinary.com/v1_1/dwjbzadev/image/upload', formData,
@@ -117,13 +113,16 @@ app.post('/upload-to-cloudinary', upload.single('file'), async (req, res) => {
           fs.unlinkSync(req.file.path);
     
           res.json(cloudinaryResponse.data);
-        } else {
-          res.status(400).json({ error: 'No file uploaded or file size exceeds 500 KB' });
-        }
+
   } catch (error) {
-      console.error("Error during Cloudinary upload:", error);
+      console.error("上傳到 Cloudinary 時出錯:", error);
+      // 提供更詳細的錯誤信息
+      if (error.code === 'ENOENT') {
+        return res.status(500).json({ error: '文件路徑不存在' });
+      }
       res.status(500).json({ error: error.message });
   }
+
 });
 
 // json-server 網站首頁
