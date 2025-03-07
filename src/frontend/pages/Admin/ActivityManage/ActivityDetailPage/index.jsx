@@ -106,12 +106,11 @@ const EventDetail = () => {
     const updateSectionImage = (index, event) => {
       event.preventDefault(); // 確保不會有額外的觸發
       const file = event?.target?.files[0];
-      setMainSectionImageFile(file);
-
       if (!file) return;
 
       const reader = new FileReader();
       reader.onloadend = () => {
+
         setPreviewSectionImages((prev) => {
           const newPreviews = [...prev];
           newPreviews[index] = reader.result; // ✅ 預覽圖片
@@ -201,15 +200,26 @@ const EventDetail = () => {
         sections: [...activityData.sections] // 複製 sections
       }
 
-      // 🔄 **上傳 `images[]`**
+      // 儲存原始圖片的 URL
+      const originalImages = submitData.images.map(img => img.url || null);
+
+      // 🔄 **上傳 `images[]` (僅更新變動的)**
       for (let i = 0; i < submitData.images.length; i++) {
         if (submitData.images[i] instanceof File) {
+          // 🆕 使用者更換了圖片，需上傳
           const uploadedImageUrl = await handleUploadImage(submitData.images[i]);
           if (uploadedImageUrl) {
             submitData.images[i].url = uploadedImageUrl; // ✅ 替換 `File` → `URL`
           }
+        } else if (submitData.images[i].url !== originalImages[i]) {
+          // 🆕 原始圖片 URL 變動，可能是手動修改
+          console.log(`圖片 ${i} 已變更，需更新：`, submitData.images[i].url);
+          // 這裡可以加上額外處理，例如標記需要重新提交
         }
       }
+
+      // 儲存原始圖片的 URL
+      const originalSectionImages = submitData.sections.map(section => section.image || null);
 
       // 🔄 **上傳 `sections[].image`**
       for (let i = 0; i < submitData.sections.length; i++) {
@@ -218,18 +228,12 @@ const EventDetail = () => {
           if (uploadedImageUrl) {
             submitData.sections[i].image = uploadedImageUrl; // ✅ 替換 `File` → `URL`
           }
+        } else if (submitData.sections[i].image !== originalSectionImages[i]) {
+          // 🆕 原始圖片 URL 變動，可能是手動修改
+          console.log(`圖片 ${i} 已變更，需更新：`, submitData.sections[i].image);
+          // 這裡可以加上額外處理，例如標記需要重新提交
         }
       }
-
-      // 檢查是否為新的文件上傳
-      // if (mainCoverImageFile) {
-      //   await handleUploadImage(mainCoverImageFile);
-      // }
-    
-      // 檢查是否為新的文件上傳
-      // if (mainSectionImageFile) {
-      //   await handleUploadImage(mainSectionImageFile);
-      // }
     
       // **更新 activityData 狀態**
       setActivityData(submitData);
@@ -339,7 +343,6 @@ const EventDetail = () => {
             </div>
             <div className="d-flex flex-wrap">
               {activityData.images?.map((img, index) => (
-                console.log(img),
                 <div key={index} className="position-relative mb-2 mt-4 me-3">
                   <div className="img-thumbnail" style={{ width: "200px", height: "200px", cursor: "pointer" }} onClick={(e) => e.currentTarget.querySelector("input").click()}>
                   {img.url ? (
@@ -369,26 +372,27 @@ const EventDetail = () => {
               <Button size="sm" onClick={addSection}>新增</Button>
             </div>
             {activityData.sections?.map((section, index) => (
-              console.log(section),
               <Card key={index} className="shadow-sm p-3 mb-3 bg-body rounded">
                 <Form.Control className="mb-2" type="file" accept="image/*" onChange={(e) => updateSectionImage(index, e)} />
-                {section.image ? (
+                {previewSectionImages.length > 0 ? (
+                  <img
+                  src={previewSectionImages[index]}
+                  alt={`預覽圖片 ${index + 1}`}
+                  className="img-thumbnail mb-2"
+                  style={{ width: "30%" }}
+                />
+                ) : section.image ? (
                   <img
                     src={section.image}
                     alt="預覽圖片"
                     className="img-thumbnail mb-2"
                     style={{ width: "30%" }}
                   />
-                ) : (
-                  previewSectionImages[0] && (
-                    <img
-                      src={previewSectionImages[0]} // 顯示第一張預設圖片
-                      alt={`預覽圖片 ${index + 1}`}
-                      className="img-thumbnail mb-2"
-                      style={{ width: "30%" }}
-                    />
+                  ) : (
+                    // ✅ **如果沒有圖片，顯示預設值**
+                    <div className="text-muted">尚無圖片</div>
                   )
-                )}
+                }
                 <Form.Control type="text" className="mb-2" placeholder="圖片描述" value={section.imageCaption} onChange={(e) => updateSection(index, "imageCaption", e.target.value)} />
                 <Form.Control as="textarea" rows={3} placeholder="活動內容" value={section.description} onChange={(e) => updateSection(index, "description", e.target.value)} />
                 {activityData.sections.length > 1 && (
