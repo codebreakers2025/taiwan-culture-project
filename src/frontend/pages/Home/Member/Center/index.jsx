@@ -100,12 +100,12 @@ const Center = () => {
 
   return (
     <div className="page-container">
-      <div className="row">
+      <div className="member-center container row">
         <div className="col-12">
           {/* 我的行程 */}
           <div className="card shadow-sm mb-4">
             <div className="card-body">
-              <h2 className="card-title">我的行程</h2>
+              <h2 className="card-title text-lg-center pb-lg-2">我的行程</h2>
               <table className="table table-bordered table-responsive">
                 <thead>
                   <tr>

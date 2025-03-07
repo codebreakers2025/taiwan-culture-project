@@ -286,8 +286,8 @@
     line-height: 19.2px;
   }
   .ratingStartDiv{
-    width: 528px !important;
-    height: 121px !important;
+    // width: 528px !important;
+    // height: 121px !important;
     margin-bottom: 24px;
   }
   .mobileView{
@@ -543,6 +543,9 @@
   .progress-wrap {
     width: 100% !important;
     margin-left: 0 !important;
+    span {
+      width: 100%;
+    }
   }
 }  
 

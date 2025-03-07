@@ -97,11 +97,11 @@ const ReviewBars = ({ reviewData }) => {
 
 
   return (
-    <div className="progress-wrap" style={{ width: "300px", marginLeft: "32px" }}>
+    <div className="progress-wrap" style={{ width: "100%" }}>
       {reviewPercentage.map(({ rating, percentage }, index) => {
         return (
           <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "6px" }}>
-            <span style={{ width: "100%", textAlign: "right", marginRight: "8px", whiteSpace: 'nowrap' }}>
+            <span style={{ width: "50%", textAlign: "right", marginRight: "8px", whiteSpace: 'nowrap' }}>
               {rating} ⭐
             </span>
             <div
@@ -541,7 +541,7 @@ return (
                       {/*長條圖及星星*/ }
                       <h4 className="card-title ratingTitle">活動評價</h4>
                       <div className="d-flex align-items-center ratingStartDiv">
-                      <div style={{ width: "176px", height: "105px" }}>
+                      <div style={{ width: "50%", height: "105px" }}>
                         <span
                           className="fs-1 fw-bold"
                           style={{
