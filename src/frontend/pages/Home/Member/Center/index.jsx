@@ -105,7 +105,7 @@ const Center = () => {
           {/* 我的行程 */}
           <div className="card shadow-sm mb-4">
             <div className="card-body">
-              <h5 className="card-title">我的行程</h5>
+              <h2 className="card-title">我的行程</h2>
               <table className="table table-bordered table-responsive">
                 <thead>
                   <tr>

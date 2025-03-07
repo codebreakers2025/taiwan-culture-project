@@ -245,7 +245,7 @@ a {
   box-shadow: 0 0 0 3px rgba(96, 185, 191, .5) !important;
 }
 
-.btn-check:checked+.btn, .btn.active, :not(.btn-check)+.btn:active {
+.btn-check:checked+.btn, .btn.active, .btn:first-child:active, :not(.btn-check)+.btn:active {
   color: #fff !important;
   background-color: #60B9BF !important;
   border-color: #60B9BF !important;
@@ -325,8 +325,13 @@ a {
 }
 
 
-@media (max-width: 375px){
+@media (max-width: 576px){
   .page-container{
     margin-top: 12px;
+    padding: 24px 8px;
+    .card-title {
+      text-align: center;
+      color: #616161;
+    }
   }
 }

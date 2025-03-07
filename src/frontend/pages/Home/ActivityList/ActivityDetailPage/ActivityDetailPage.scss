@@ -196,6 +196,7 @@
   }  
   .progress{
     margin-bottom: 15px;
+
   }
   .roundedCircle {
     width: 64px;
@@ -502,6 +503,7 @@
   .actTitleMobile h2{
       width: 28%;
       margin: 0 !important;
+      white-space: nowrap;
   }
   .callbutton{
       margin: 0 !important;
@@ -529,6 +531,18 @@
   }
   .week-days, .days {
       grid-template-columns: repeat(7, 14%); /* Adjust to 3 columns for small screens */
+  }
+
+  .activity-detail-page .progress {
+    width: 100% !important;
+  }
+  .activity-detail-page .ratingStart {
+    width: 50% !important;
+  }
+
+  .progress-wrap {
+    width: 100% !important;
+    margin-left: 0 !important;
   }
 }  
 

@@ -141,7 +141,7 @@ const Menu = () => {
         </li>
         <li>
           <NavLink to="/member-center/center" className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}>
-            <span className="material-icons">savings</span>會員專區
+            <span className="material-icons">diamond</span>會員專區
           </NavLink>
         </li>
       </ul>

@@ -118,3 +118,17 @@
   height: 420px;
   object-fit: cover;
 }
+
+@media(max-width: 767px){
+  .form-wrap {
+    padding: 12px 0;
+    form {
+      text-align: center !important;
+    }
+  }
+  .progress-steps {
+    flex-direction: column;
+    padding: 0;
+    gap: 12px;
+  }
+}

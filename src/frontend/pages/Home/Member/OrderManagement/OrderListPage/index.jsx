@@ -153,7 +153,7 @@ const OrderListPage = () => {
 
   return (
     <div className="page-container order-list-page">
-        <div className="container py-4">
+        <div className="container">
       <h2 className="mb-4 text-center">我的訂單</h2>
       
       {/* 標籤導航 */}
@@ -191,7 +191,7 @@ const OrderListPage = () => {
                       <h5 className="card-title">{order.activityName}</h5>
                       <p className="card-text mb-1">預約時間: {order.activityPeriod.startDate} {order.timeSlot}</p>
                       <p className="card-text mb-2">訂單編號: {order.id}</p>
-                      <div className="mt-auto text-end">
+                      <div className="mt-auto text-center text-md-end">
                         <Link to={`/member-center/order-management/detail/${order.id}`} className="btn btn-sm custom-btn">查看詳情</Link>
                         {order.reservedStatus !== "cancel" && (
                           <button className="btn btn-danger" onClick={() => handleCancel(order.id)}>取消訂單</button>

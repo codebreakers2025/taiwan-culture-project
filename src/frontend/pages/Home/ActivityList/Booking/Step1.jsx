@@ -68,7 +68,7 @@ const Step1 = () => {
   return (
     <Container className="booking-step1 py-5">
     {/* 頁面標題 */}
-    <h2 className="text-center mb-5 fw-bold">預約行程表單</h2>
+    <h2 className="text-center mb-5 mb-md-3 fw-bold">預約行程表單</h2>
 
     {/* 進度指示器 */}
     <div className="progress-steps d-flex justify-content-center mb-5">
@@ -91,7 +91,7 @@ const Step1 = () => {
               <Col md={6} className="text-center">
                 <img src={submitData.actImage} alt="" className="img-fluid rounded" />
               </Col>
-              <Col md={6}>
+              <Col md={6} className="form-wrap">
                   <Form.Group className="mb-2 d-flex">
                     <Form.Control disabled value={submitData.activityName} />
                   </Form.Group>

@@ -97,11 +97,11 @@ const ReviewBars = ({ reviewData }) => {
 
 
   return (
-    <div style={{ width: "300px", marginLeft: "32px" }}>
+    <div className="progress-wrap" style={{ width: "300px", marginLeft: "32px" }}>
       {reviewPercentage.map(({ rating, percentage }, index) => {
         return (
           <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "6px" }}>
-            <span style={{ width: "60px", textAlign: "right", marginRight: "8px" }}>
+            <span style={{ width: "100%", textAlign: "right", marginRight: "8px", whiteSpace: 'nowrap' }}>
               {rating} ⭐
             </span>
             <div

@@ -119,7 +119,7 @@ const ActivityReview = () => {
     return (
         <div className="page-container">
             <div className="container">
-            <h2>評價留言</h2>
+            <h2 className="text-center">評價留言</h2>
             {/* 新增評價 */}
             <div className="card mb-3">
                 <div className="card-body">
