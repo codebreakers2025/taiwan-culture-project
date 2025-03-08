@@ -40,28 +40,43 @@ const ActivityList = () => {
       const response  = await getActivityAll();
       const totalItems = response.length; // 直接計算總筆數
 
-      // 設定總筆數
+      // 設定總筆數與頁數
       setTotalItems(totalItems);
+      setTotalPage(totalItems ? Math.ceil(totalItems / limit) : 1);
 
-      // 計算總頁數
-      const totalPages = totalItems ? Math.ceil(totalItems / limit) : 1;
-      setTotalPage(totalPages);
+      // 儲存完整資料
+      setActivityData(response);
+      setSearchData(response); // 預設搜尋資料為全部
+
+      // 設定當前頁面應顯示的資料
+      const startIdx = (page - 1) * limit;
+      const endIdx = startIdx + limit;
+      setSearchResultsData(response.slice(startIdx, endIdx));
 
       // 獲取當前頁面的資料
-      const responsePage  = await getActivityPage(page, limit)
-      setActivityData(responsePage); 
-      setSearchData(responsePage)
+      // const responsePage  = await getActivityPage(page, limit)
+      // setActivityData(responsePage); 
+      // setSearchData(responsePage)
 
     } catch (error) {
         setError('Error fetching activity:', error);
     } 
 };
 
-  useEffect(() => {
-  fetchGetActivityAll();
-  // 每次換頁時，讓畫面回到頂部
+//   useEffect(() => {
+//   fetchGetActivityAll();
+//   // 每次換頁時，讓畫面回到頂部
+//   window.scrollTo(0, 0);
+// }, [page , limit]);
+
+useEffect(() => {
+  if (searchingValue.length > 0) {
+      searchActivity(page); // 如果有搜尋條件，則使用搜尋分頁
+  } else {
+    fetchGetActivityAll(page); // 否則獲取一般分頁
+  }
   window.scrollTo(0, 0);
-}, [page , limit]);
+}, [page]); // 當 `page` 變更時執行
 
 
   const getSearchInput = (value) => {
@@ -89,7 +104,7 @@ const ActivityList = () => {
   };
 
   
-  const searchActivity = () => {
+  const searchActivity = (pageNumber = 1) => {
     if (!searchInput && !selectedStartDate && !selectedEndDate && !selectedType && !selectedSite && !selectedPrice) {
       setSearchResultsData([]);
       setSearchingValue([]);
@@ -112,19 +127,20 @@ const ActivityList = () => {
       return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;
     });
 
-    setTotalPage(Math.ceil(searchResults.length/limit))
-    
-    const startIdx = (page - 1) * limit;
+    // 計算總頁數
+    setTotalPage(Math.ceil(searchResults.length / limit));
+
+    // 依據 pageNumber 取 6 筆資料
+    const startIdx = (pageNumber - 1) * limit;
     const endIdx = startIdx + limit;
-    
     const paginatedResults = searchResults.slice(startIdx, endIdx);
 
-    setSearchResultsData(paginatedResults); // Log the filtered results
+    setSearchResultsData(paginatedResults);
   };
 
   const searchBtn = () => {
-    setPage(1);
-    searchActivity();
+    setPage(1); // 每次搜尋時回到第 1 頁
+    searchActivity(1);
   }
 
 
@@ -259,7 +275,7 @@ const ActivityList = () => {
                     ) : (
                       <div className="col-12">
                         {/* Render Pagination only if there are results */}
-                        {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
+                        {totalPage > 1 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
                       </div>
                     )}
                 </div>
