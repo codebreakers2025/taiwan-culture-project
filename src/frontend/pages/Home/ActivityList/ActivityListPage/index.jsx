@@ -50,7 +50,8 @@ const ActivityList = () => {
       // 獲取當前頁面的資料
       const responsePage  = await getActivityPage(page, limit)
       setActivityData(responsePage); 
-      setSearchData(responsePage)
+      // 獲得所有資料(給搜尋用)
+      setSearchData(response)
 
     } catch (error) {
         setError('Error fetching activity:', error);
@@ -61,7 +62,12 @@ const ActivityList = () => {
   fetchGetActivityAll();
   // 每次換頁時，讓畫面回到頂部
   window.scrollTo(0, 0);
-}, [page , limit]);
+}, []);
+
+useEffect(()=>{
+  searchActivity()
+  window.scrollTo(0, 0);
+},[page])
 
 
   const getSearchInput = (value) => {
@@ -116,9 +122,11 @@ const ActivityList = () => {
     
     const startIdx = (page - 1) * limit;
     const endIdx = startIdx + limit;
+    console.log(startIdx , endIdx);
     
     const paginatedResults = searchResults.slice(startIdx, endIdx);
-
+    console.log(paginatedResults);
+    
     setSearchResultsData(paginatedResults); // Log the filtered results
   };
 
