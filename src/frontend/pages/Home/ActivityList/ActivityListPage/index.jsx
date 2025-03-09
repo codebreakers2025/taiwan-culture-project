@@ -122,14 +122,13 @@ useEffect(()=>{
       return matchesTitle && matchesDate && matchesType && matchesSite && matchesPrice;
     });
 
-    setTotalPage(Math.ceil(searchResults.length/limit))
+    setTotalItems(searchResults.length); // 總結果數量
+    setTotalPage(Math.ceil(searchResults.length / limit)); // 總頁數
     
     const startIdx = (page - 1) * limit;
     const endIdx = startIdx + limit;
-    console.log(startIdx , endIdx);
     
     const paginatedResults = searchResults.slice(startIdx, endIdx);
-    console.log(paginatedResults);
     
     setSearchResultsData(paginatedResults); // Log the filtered results
   };
@@ -138,7 +137,7 @@ useEffect(()=>{
     setPage(1);
     searchActivity();
   }
-
+  
 
   return (
     <div className="test-container">
