@@ -105,7 +105,7 @@ useEffect(()=>{
     setSearchingValue([searchInput , selectedStartDate , selectedType, selectedEndDate, selectedSite, selectedPrice])
     
     const searchResults = searchData.filter((item) => {
-      const matchesTitle = searchInput ? item.content?.title?.match(new RegExp(searchInput, 'i')) : true;
+      const matchesTitle = searchInput ? item.content.title.includes(searchInput) || item.content.description.includes(searchInput) || item.city.includes(searchInput) : true;
       const matchesDate =
       selectedStartDate || selectedEndDate
                 ? new Date(item.startDate) >= new Date(selectedStartDate || "1970-01-01") &&
