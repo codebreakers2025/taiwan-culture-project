@@ -36,7 +36,7 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
           }).addTo(mapInstanceRef.current);
 
           L.marker([map.latitude, map.longitude]).addTo(mapInstanceRef.current)
-            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+            .bindPopup(`${activityDetailData[0].trip.title}`)
             .openPopup();
         }
       }
