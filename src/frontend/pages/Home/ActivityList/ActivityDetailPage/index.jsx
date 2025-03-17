@@ -61,6 +61,21 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
   return <div ref={mapContainerRef} style={{ height: '500px' }}></div>;
 };
 
+MapComponent.propTypes = {
+  activityDetailData: PropTypes.arrayOf(
+    PropTypes.shape({
+      trip: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+      }).isRequired,
+      map: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+      }).isRequired,
+    })
+  ).isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
 const ReviewBars = ({ reviewData }) => {
   const [reviewPercentage , setReviewPercentage] = useState([])
   
@@ -116,7 +131,13 @@ const ReviewBars = ({ reviewData }) => {
     </div>
   );
 };
-
+ReviewBars.propTypes = {
+  reviewData: PropTypes.arrayOf(
+    PropTypes.shape({
+      rating: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
 
 const ActivityDetailPage = () => {
 
