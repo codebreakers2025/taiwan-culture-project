@@ -129,7 +129,6 @@ const BlogManagement = () => {
 
       <div className="row">
         <div className="col-12 mb-4">
-          {/* Render Pagination only if there are results */}
           {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
         </div>
       </div>

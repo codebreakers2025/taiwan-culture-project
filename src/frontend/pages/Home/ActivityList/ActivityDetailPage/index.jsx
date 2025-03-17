@@ -9,25 +9,20 @@ import 'leaflet/dist/leaflet.css';
 import { Outlet, useParams , Link , useNavigate , useLocation} from "react-router-dom";
 import axios from "axios";
 
-
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwan-culture-project.onrender.com'
  : 'http://localhost:3002'
 
 
  const MapComponent = ({ activityDetailData, loading }) => {
-  // Ref for the map container and the map instance
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
 
-  // Always call hooks regardless of conditions
   useEffect(() => {
-    // Ensure that we have the necessary data before proceeding
     if (activityDetailData && activityDetailData.length > 0) {
       const { map } = activityDetailData[0] || {};
 
       if (map && map.latitude && map.longitude) {
-        // Initialize the map only if it hasn't been initialized already
         if (!mapInstanceRef.current) {
           mapInstanceRef.current = L.map(mapContainerRef.current).setView([map.latitude, map.longitude], 13);
 
@@ -42,16 +37,14 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
       }
     }
 
-    // Cleanup function to remove the map on unmount or before running the effect again
     return () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
       }
     };
-  }, [activityDetailData]); // Run when activityDetailData changes
+  }, [activityDetailData]); 
 
-  // Conditional rendering for loading and missing data
   if (loading) {
     return <p style={{ marginLeft: 'auto' }}>找不到活動資訊</p>;
   }
@@ -68,8 +61,6 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
   return <div ref={mapContainerRef} style={{ height: '500px' }}></div>;
 };
 
-
-  
 const ReviewBars = ({ reviewData }) => {
   const [reviewPercentage , setReviewPercentage] = useState([])
   
@@ -200,7 +191,7 @@ const ActivityDetailPage = () => {
       
     try {
       const existingResponse = await axios.get(`/api/reservations/${activityData.id}`, {
-        validateStatus: (status) => status === 200 // 只在 200 時視為成功，其他狀況不拋出錯誤
+        validateStatus: (status) => status === 200 
     });
       if (existingResponse.data && Object.keys(existingResponse.data).length > 0) {
           return;
@@ -211,7 +202,6 @@ const ActivityDetailPage = () => {
           }
       }
       
-      // 發送 POST 請求
       try {
           const response = await axios.post(`/api/reservations`, result);
       } catch (postError) {
@@ -387,7 +377,6 @@ const submitDateClick = () => {
   return
   }
 
-
     setTimeout(() => {
       navigate("/activity-list/booking1" ,{ state: submitdData }); // 跳轉到預約頁面
     }, 300); // 帶著資料跳轉到預約頁面
@@ -439,18 +428,15 @@ return (
 
       {Array.isArray(activityDetailData) ? (
           activityDetailData.map((item, index) => (
-            
           <div className="row no-gutter" key={index}>
             {/* 左邊大圖 */}
             <div className="col-12 col-lg-6 no-gutters mainImage-container">
               <img src={showMainImage} alt={`Main ${index}`} />
             </div>
-
             {/* 右邊 2x2 小圖 */}
             <div className="col-12 col-lg-6 rightSide">
               <div className="row no-gutters">
                 {item.images?.slice(1).map((image, imgIndex) => (
-
                   <div className="col-6 no-gutters image-container" key={imgIndex}>
                     <img src={image?.url} alt={`Thumbnail ${index}-${imgIndex}`} />
                   </div>
@@ -462,9 +448,6 @@ return (
         ) : (
           <p>Loading...</p>
       )}
-
-
-
       </div>
       <div className="mainContent">
       <div className="row g-0" >
@@ -472,9 +455,7 @@ return (
                 <div className="card-body actTitleBody">
                   <div className='actTitleDiv'>
                     <h2 className="actTitle" >{activityData.content?.title}
-
                       <button className='addFavorites'><span className="material-icons favoriteHeart">favorite_border</span><span>加入收藏</span></button>
-                      
                     </h2>
                     <span className='rating'><span className="material-icons">star</span>{avgRatingstar}({RatingstarAll.length}) <span className='addFavorites'>{RatingstarAll.length} 人參加過</span></span>
                   </div>
@@ -489,12 +470,9 @@ return (
                           <p className="card-text">{item}</p>
                         </div>
                       )}
-                        
                   </div>
                   <hr/>
-                    
                 </div>
-
                 <div className="card-body actTitleBody">
                   <div className='siteContent'>
                       <div className='actContentTitle site'>
@@ -527,7 +505,6 @@ return (
                                     <p className="contentDescribute">{item.description}</p>
                                   </div>
                                 </div>
-
                          ))
                             ) : (
                               <p>Loading...</p>
@@ -561,8 +538,6 @@ return (
                           <div className="w-50" style={{marginLeft:"32px",height:'121px'}}>
                             <ReviewBars reviewData={reviewData} />
                           </div>
-
-                       
                       </div>
                        {/*評論區塊 */}  
                        <div >
@@ -583,7 +558,6 @@ return (
                                   <div className='singleRating'>
                                   {renderStars(item.rating)}
                                   </div>
-                     
                                 </div>
                                 <p>{item.reviewContent}</p>
                                 
@@ -631,9 +605,7 @@ return (
                 </div>
               </div>
             </div>
-            
       </div>
-
       <div className="mobileView">
         <div className="card-body actTitleMobile">
           <h2 className="">NT${activityData.price}起</h2>
@@ -644,11 +616,7 @@ return (
         </div>
         </div>
       </div>
-
   </div>
-
-
-
 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
@@ -673,9 +641,6 @@ return (
     </div>
   </div>
 </div>
-
-
-                
 </div>
 
   );

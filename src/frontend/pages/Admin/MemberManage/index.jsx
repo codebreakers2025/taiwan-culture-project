@@ -10,7 +10,6 @@ const UserManagement = () => {
     const [showModal, setShowModal] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
     const [loading, setLoading] = useState(false);
-
     const [totalPage , setTotalPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0); // 訂單總筆數
     const [page, setPage] = useState(1); // 頁數狀態
@@ -41,7 +40,6 @@ const handleSave = async(userData) => {
             AdminUsers();
         }
 
-
     } catch(error) {
         console.error('儲存失敗:', error);
     } finally {
@@ -68,7 +66,6 @@ const AdminUsers = async() => {
     const responsePage  = await getMemberPage(page, limit);
     setMembers(responsePage); 
 
-
     } catch(error){
         console.log(error);
     }
@@ -94,7 +91,6 @@ return (
                         <th className="py-3 px-4">姓名</th>
                         <th className="py-3 px-4">Email</th>
                         <th className="py-3 px-4">角色</th>
-                        {/* <th className="py-3 px-4 text-center">操作</th> */}
                     </tr>
                     </thead>
                     <tbody>
@@ -107,13 +103,6 @@ return (
                         <span className="badge rounded-pill bg-primary bg-opacity-10 text-primary px-3">
                             {user.role === 'ADMIN' ? '管理員' : user.role === 'ACTIVITY_MANAGER' ? '活動管理者' : user.role === 'Member' ? '會員': '未指定角色'}
                         </span>
-                        </td>
-                        {/* <td>{user.status ? "啟用" : "停用"}</td> */}
-                        <td className="py-3 px-4">
-                        <div className="d-flex justify-content-center gap-2">
-                            {/* <button className="btn btn-outline-primary btn-sm" onClick={() => handleShow(user)}>編輯</button>{' '} */}
-                            {/* <button className={`btn btn-outline-danger btn-sm ${user.status ? "default" : "destructive"}`} onClick={() => handleToggleStatus(user)}>{user.status ? '啟用' : '停用'}</button> */}
-                        </div>
                         </td>
                     </tr>
                         ))}
@@ -132,7 +121,6 @@ return (
 
     <div className="row">
         <div className="col-12 mb-4">
-            {/* Render Pagination only if there are results */}
             {totalPage > 0 && totalItems >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
         </div>
     </div>

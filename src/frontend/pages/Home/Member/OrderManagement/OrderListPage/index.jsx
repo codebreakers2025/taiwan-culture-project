@@ -16,8 +16,6 @@ const OrderListPage = () => {
 
   const currentUserId = Number(localStorage.getItem("userId"));
 
-
-
    // 標籤狀態
   const [activeTab, setActiveTab] = useState('已預約');
 
@@ -66,14 +64,6 @@ const OrderListPage = () => {
     const endDateTime = new Date(`${activityPeriod.endDate}T${endTime}`);
     return now > endDateTime;
   };
-
-  // const updateOrder = async (orderId, data) => {
-  //   try {
-  //     await updateOrder(orderId, data);
-  //   } catch (error) {
-  //     console.error("更新訂單狀態失敗", error);
-  //   }
-  // };
 
   const handleCancel = async(orderId) => {
     await updateOrder(orderId, {reservedStatus: "cancel"});
@@ -130,27 +120,6 @@ const OrderListPage = () => {
   fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const updateOrderStatus = async() => {
-  //     await fetchData(); // 取得最新訂單
-  //     setOrders((prevOrders) =>
-  //       prevOrders.map((order) => {
-  //         if (isOngoing(order.activityPeriod, order.timeSlot)) {
-  //           return { ...order, reservedStatus: "in_progress" };
-  //         } else if (isEnded(order.activityPeriod, order.timeSlot)) {
-  //           updateOrder(order.id, { reservedStatus: "ended" });
-  //           return { ...order, reservedStatus: "ended" };
-  //         }
-  //         return order;
-  //       })
-  //     );
-  //   };
-    
-  //   updateOrderStatus();
-  //   const interval = setInterval(updateOrderStatus, 60000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   return (
     <div className="page-container order-list-page">
         <div className="container">
@@ -181,7 +150,6 @@ const OrderListPage = () => {
                     <div className="h-100 d-flex align-items-center justify-content-center">
                       <img
                         src={order.actImage}
-                        // alt={order.activity.name}
                         className="card-img order-img"
                       />
                     </div>
@@ -211,13 +179,11 @@ const OrderListPage = () => {
       </div>
       <div className="row">
         <div className="col-12">
-          {/* Render Pagination only if there are results */}
           {totalPage > 0 && userOrders.length >= limit && <PageNation totalPage={totalPage} page={page} setPage={setPage} />}
         </div>
       </div>
     </div>
     </div>
-    
   );
 };
 

@@ -7,12 +7,10 @@ import Swal from 'sweetalert2';
 import './ActivityDetilPage.scss';
 import defaultImage from "@/frontend/assets/images/default-images.png";
 
-
 const EventDetail = () => {
     const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
     const navigate = useNavigate();
     const [error, setError] = useState('');
-  
     const { id } = useParams();
     const [initData ,setInitData] = useState({});
 
@@ -25,7 +23,6 @@ const EventDetail = () => {
 
     const [previewCoverImages, setPreviewCoverImages] = useState(Array(5).fill(defaultImage));
     const [previewSectionImages, setPreviewSectionImages] = useState([defaultImage]);
-
     const [mainCoverImageFile, setMainCoverImageFile] = useState(null);
     const [mainSectionImageFile, setMainSectionImageFile] = useState(null);
 
@@ -75,14 +72,11 @@ const EventDetail = () => {
     fetchData();
     }, [id]);
 
-
     // 更新封面圖片
     const updateImage = (index, event) => {
       const file = event?.target?.files[0];
       setMainCoverImageFile(file);
-
       if (!file) return;
-
       const reader = new FileReader();
       reader.onloadend = () => {
 
@@ -100,7 +94,6 @@ const EventDetail = () => {
       };
       reader.readAsDataURL(file);
     };
-
 
     // 更新活動圖片
     const updateSectionImage = (index, event) => {
@@ -201,7 +194,7 @@ const EventDetail = () => {
       }
 
       // 儲存原始圖片的 URL
-      const originalImages = submitData.images.map(img => img.url || null);
+      submitData.images.map(img => img.url || null);
 
       // 🔄 **上傳 `images[]` (僅更新變動的)**
       for (let i = 0; i < submitData.images.length; i++) {
@@ -211,15 +204,11 @@ const EventDetail = () => {
           if (uploadedImageUrl) {
             submitData.images[i].url = uploadedImageUrl; // ✅ 替換 `File` → `URL`
           }
-        } else if (submitData.images[i].url !== originalImages[i]) {
-          // 🆕 原始圖片 URL 變動，可能是手動修改
-          console.log(`圖片 ${i} 已變更，需更新：`, submitData.images[i].url);
-          // 這裡可以加上額外處理，例如標記需要重新提交
         }
       }
 
       // 儲存原始圖片的 URL
-      const originalSectionImages = submitData.sections.map(section => section.image || null);
+      submitData.sections.map(section => section.image || null);
 
       // 🔄 **上傳 `sections[].image`**
       for (let i = 0; i < submitData.sections.length; i++) {
@@ -228,10 +217,6 @@ const EventDetail = () => {
           if (uploadedImageUrl) {
             submitData.sections[i].image = uploadedImageUrl; // ✅ 替換 `File` → `URL`
           }
-        } else if (submitData.sections[i].image !== originalSectionImages[i]) {
-          // 🆕 原始圖片 URL 變動，可能是手動修改
-          console.log(`圖片 ${i} 已變更，需更新：`, submitData.sections[i].image);
-          // 這裡可以加上額外處理，例如標記需要重新提交
         }
       }
     
@@ -297,9 +282,6 @@ const EventDetail = () => {
         };
       });
     };
-
-
-    
 
   {error && <Alert variant="danger">{error}</Alert>}
 

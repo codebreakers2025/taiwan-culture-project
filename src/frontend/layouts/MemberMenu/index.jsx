@@ -3,14 +3,12 @@ import { NavLink } from 'react-router-dom';
 import './Menu.scss';
 import { getMembers, updatedMembers, uploadImageToCloudinary } from '@/frontend/utils/api';
 
-
 const Menu = () => {
-      const userId = Number(localStorage.getItem("userId")); // 取得 userId
-      const userName = localStorage.getItem("userName"); // 取得 userName
+      const userId = Number(localStorage.getItem("userId")); 
+      const userName = localStorage.getItem("userName"); 
       const [ userData, setUserData ] = useState({});
-
       const [error, setError] = useState("");
-      const fileInputRef = useRef(null); // 引用 input
+      const fileInputRef = useRef(null); 
 
       // 點擊圖片時觸發 input 
       const handleFileChange  = () => {
@@ -42,25 +40,19 @@ const Menu = () => {
 
       try {
         const imageUrl = await uploadImageToCloudinary(file);
-
         if (!imageUrl) setError('無法取得圖片 URL');
-        
         await updatedMembers(userId, {avatar: imageUrl});
-
-
         setUserData((prev) => ({
           ...prev,
-          avatar: imageUrl, // 更新的圖片
+          avatar: imageUrl, 
           name: userName
         }));
-
         await getUsersAvatar();
         localStorage.setItem("userAvator", imageUrl);
         window.location.reload();
       } catch (error) {
         setError('Upload failed:', error);
       }
-      
     };
 
       const getUsersAvatar = async () => {
@@ -76,31 +68,30 @@ const Menu = () => {
         getUsersAvatar();
       }, []);
 
-
   return (
     <div className="custom-menu">
       <div className="user-image-wrap text-center">
-            <label className="d-inline-block position-relative" style={{ cursor: "pointer" }}>
-              <div className="avatar-img-wrap">
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handleUpload}
-                className="d-none"
-              />
-                <img
-                  src={userData.avatar || "https://mighty.tools/mockmind-api/content/human/119.jpg"}
-                  alt="User Avatar"
-                  className="rounded-circle img-hover"
-                  width="100"
-                  height="100"
-                  onClick={handleFileChange}
-                />
-                <span className="material-icons camera-icon">photo_camera</span>
-              </div>
-            </label>
-            <p className="mt-2">{userData.name}</p>
+        <label className="d-inline-block position-relative" style={{ cursor: "pointer" }}>
+          <div className="avatar-img-wrap">
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleUpload}
+            className="d-none"
+          />
+            <img
+              src={userData.avatar || "https://mighty.tools/mockmind-api/content/human/119.jpg"}
+              alt="User Avatar"
+              className="rounded-circle img-hover"
+              width="100"
+              height="100"
+              onClick={handleFileChange}
+            />
+            <span className="material-icons camera-icon">photo_camera</span>
+          </div>
+        </label>
+        <p className="mt-2">{userData.name}</p>
         </div>
 
       <ul className="menu-item-wrap">
@@ -145,7 +136,6 @@ const Menu = () => {
           </NavLink>
         </li>
       </ul>
-      
   </div>
   );
 };
