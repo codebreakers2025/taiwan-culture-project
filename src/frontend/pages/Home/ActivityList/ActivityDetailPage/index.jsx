@@ -8,6 +8,8 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css';
 import { Outlet, useParams , Link , useNavigate , useLocation} from "react-router-dom";
 import axios from "axios";
+import PropTypes from "prop-types";
+
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
  ? 'https://taiwan-culture-project.onrender.com'
