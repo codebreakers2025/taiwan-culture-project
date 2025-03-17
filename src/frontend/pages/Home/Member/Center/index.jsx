@@ -104,8 +104,8 @@ const Center = () => {
         <div className="col-12">
           {/* 我的行程 */}
           <div className="card shadow-sm mb-4">
+          <h2 className="card-title text-lg-center pb-lg-2 mt-4">我的行程</h2>
             <div className="card-body">
-              <h2 className="card-title text-lg-center pb-lg-2">我的行程</h2>
               <table className="table table-bordered table-responsive">
                 <thead>
                   <tr>
